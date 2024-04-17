@@ -13,13 +13,13 @@ namespace Mensch_Aergere_Dich_Nicht
         private List<Spielfigur> _zugehoerigeFiguren = new List<Spielfigur>();
 
 
-        public Haus(string farbe)
+        public Haus(Verfuegbare_Farben farbe)
         {
-            _farbe = farbe;
+            _farbe = farbe.ToString();
             _anzSpielfiguren = 4;
             for(int i = 0; i < 4; i++)
             {
-                _zugehoerigeFiguren.Add(new Spielfigur(i, farbe, 100));
+                _zugehoerigeFiguren.Add(new Spielfigur(i, farbe.ToString(), 100));
             }
 
         }
