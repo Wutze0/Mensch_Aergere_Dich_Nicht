@@ -5,7 +5,7 @@
         static void Main(string[] args)
         {
             Console.WriteLine("Wutzi World!");
-            
+
         }
 
         static void PrintSpielfeld()
