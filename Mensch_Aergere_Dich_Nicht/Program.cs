@@ -5,7 +5,14 @@
         static void Main(string[] args)
         {
             Console.WriteLine("Wutzi World!");
-            Console.WriteLine("Guglhupf");
+            
+        }
+
+        static void PrintSpielfeld()
+        {
+            Console.WriteLine("------------------------------");
+
+            Console.WriteLine("------------------------------");
         }
     }
 }
