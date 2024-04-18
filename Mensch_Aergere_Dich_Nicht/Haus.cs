@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Haus
@@ -13,13 +7,15 @@ namespace Mensch_Aergere_Dich_Nicht
         public List<Spielfigur> _zugehoerigeFiguren { get; set; } = new List<Spielfigur>();
 
 
-        public Haus(string farbe)
+        public Haus(Verfuegbare_Farben farbe)
         {
-            _farbe = farbe;
+            _farbe = farbe.ToString();
+
             _anzSpielfiguren = 4;
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                _zugehoerigeFiguren.Add(new Spielfigur(i, farbe, 100));
+                _zugehoerigeFiguren.Add(new Spielfigur(i, _farbe, 100));
+                _zugehoerigeFiguren.Add(new Spielfigur(i, farbe.ToString(), 100));
             }
 
         }

@@ -1,4 +1,4 @@
-﻿namespace Mensch_Aergere_Dich_Nicht
+namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Program
     {

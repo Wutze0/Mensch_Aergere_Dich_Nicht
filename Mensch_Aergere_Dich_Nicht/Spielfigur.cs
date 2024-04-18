@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Mensch_Aergere_Dich_Nicht
+﻿namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Spielfigur
     {
@@ -13,7 +7,7 @@ namespace Mensch_Aergere_Dich_Nicht
         private double _position;
         private double _printPosition { get; set; } = 0;
 
-        public Spielfigur(int id,  string farbe, double position)
+        public Spielfigur(int id, string farbe, double position)
         {
             _id = id;
             _farbe = farbe;
