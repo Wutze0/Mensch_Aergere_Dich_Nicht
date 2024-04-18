@@ -4,19 +4,26 @@ namespace Mensch_Aergere_Dich_Nicht
     {
         static void Main(string[] args)
         {
-            
-            Haus blauesHaus = new Haus("blau");
-            Haus gruenesHaus = new Haus("gruen");
-            Haus gelbesHaus = new Haus("gelb");
-            Haus rotesHaus = new Haus("rot");
+
+
+
+            Haus blauesHaus = new Haus(Verfuegbare_Farben.Blau);
+            Haus gruenesHaus = new Haus(Verfuegbare_Farben.Grün);
+            Haus gelbesHaus = new Haus(Verfuegbare_Farben.Gelb);
+            Haus rotesHaus = new Haus(Verfuegbare_Farben.Rot);
             List<Haus> haueser = new List<Haus>();
             haueser.Add(blauesHaus);
             haueser.Add(gruenesHaus);
             haueser.Add(gelbesHaus);
             haueser.Add(rotesHaus);
 
+
             PrintSpielfeld(haueser);
-            
+            //Testen der Methode wuerfeln
+            Spielfigur spielfigur = new Spielfigur(0, Verfuegbare_Farben.Blau.ToString(), 0);
+            spielfigur._position += wuerfeln();
+            Console.WriteLine(spielfigur._position);
+
         }
 
         static void PrintSpielfeld(List<Haus> haueser)
@@ -36,7 +43,7 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         foreach(Spielfigur s in h._zugehoerigeFiguren)
                         {
-                            if (Spielfigur.) 
+                           //if (Spielfigur.) 
                         }
                     }
                     Console.WriteLine("");
@@ -54,6 +61,26 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
             Console.WriteLine(rahmen);
+        }
+
+        public static int wuerfeln()
+        {
+            int ziehe = 0;
+            bool erneutWuerfeln = true;
+            Random r = new Random();
+            
+            while(erneutWuerfeln != false) //Logik für, wenn jemand eine 6 würfelt
+            {
+                ziehe += r.Next(1, 7);
+                if (ziehe == 6)
+                    erneutWuerfeln = true;
+                
+                else
+                    erneutWuerfeln = false;
+            }
+            
+
+            return ziehe;
         }
     }
 }
