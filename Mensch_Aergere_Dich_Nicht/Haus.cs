@@ -1,4 +1,4 @@
-﻿namespace Mensch_Aergere_Dich_Nicht
+namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Haus
     {
@@ -7,7 +7,7 @@
         private List<Spielfigur> _zugehoerigeFiguren = new List<Spielfigur>();
 
 
-        public Haus(Enum farbe)
+        public Haus(Verfuegbare_Farben farbe)
         {
             _farbe = farbe.ToString();
 
@@ -15,6 +15,7 @@
             for (int i = 0; i < 4; i++)
             {
                 _zugehoerigeFiguren.Add(new Spielfigur(i, _farbe, 100));
+                _zugehoerigeFiguren.Add(new Spielfigur(i, farbe.ToString(), 100));
             }
 
         }
