@@ -1,9 +1,13 @@
-﻿namespace Mensch_Aergere_Dich_Nicht
+namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Program
     {
         static void Main(string[] args)
         {
+
+            Console.WriteLine("Wutzi World!");
+
+
             Haus blauesHaus = new Haus(Verfuegbare_Farben.Blau);
             Haus gruenesHaus = new Haus(Verfuegbare_Farben.Grün);
             Haus gelbesHaus = new Haus(Verfuegbare_Farben.Gelb);
