@@ -5,10 +5,10 @@ namespace Mensch_Aergere_Dich_Nicht
         static void Main(string[] args)
         {
             
-            Haus blauesHaus = new Haus("blau");
-            Haus gruenesHaus = new Haus("gruen");
-            Haus gelbesHaus = new Haus("gelb");
-            Haus rotesHaus = new Haus("rot");
+            Haus blauesHaus = new Haus(Verfuegbare_Farben.Blau);
+            Haus gruenesHaus = new Haus(Verfuegbare_Farben.Grün);
+            Haus gelbesHaus = new Haus(Verfuegbare_Farben.Gelb);
+            Haus rotesHaus = new Haus(Verfuegbare_Farben.Rot);
             List<Haus> haueser = new List<Haus>();
             haueser.Add(blauesHaus);
             haueser.Add(gruenesHaus);
@@ -54,6 +54,25 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
             Console.WriteLine(rahmen);
+        }
+
+        public static int wuerfeln()
+        {
+            int ziehe = 0;
+            bool erneutWuerfeln = true;
+            Random r = new Random();
+            
+            while(erneutWuerfeln != false) //Logik für, wenn jemand eine 6 würfelt
+            {
+                ziehe = r.Next(6, 1);
+                if (ziehe == 6)
+                    erneutWuerfeln = true;
+                else
+                    erneutWuerfeln = false;
+            }
+            
+
+            return ziehe;
         }
     }
 }

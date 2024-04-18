@@ -5,7 +5,9 @@
         private double _anzSiege = 0;
         private string _name;
 
-
-
+        public Spieler(string name)
+        {
+            _name = name;
+        }
     }
 }
