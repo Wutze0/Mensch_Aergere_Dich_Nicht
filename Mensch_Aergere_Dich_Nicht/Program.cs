@@ -15,6 +15,7 @@ namespace Mensch_Aergere_Dich_Nicht
             haueser.Add(gelbesHaus);
             haueser.Add(rotesHaus);
 
+            haueser.ElementAt(2).ZugehoerigeFiguren.ElementAt(1).PrintPosition = 3;
 
             PrintSpielfeld(haueser);
             //Testen der Methode wuerfeln
@@ -26,7 +27,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
         static void PrintSpielfeld(List<Haus> haueser)
         {
-            string zeilestandard = "\t\t\t\t\t#    |    |    #\t\t";
+            string zeile = "\t\t\t\t\t#    |    |    #\t\t";
             string zeileMitSpieler = "\t\t\t\t\t  ";
 
             List<Spielfigur> figurenInZeile = new List<Spielfigur>();
@@ -106,12 +107,25 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 else if (i % 2 == 1)
                 {
-                    Console.WriteLine(zeilestandard);
+                    Console.WriteLine(zeile);
                 }
+
             }
 
 
+            if(haueser.ElementAt(0).figurenImHaus >= 2)
+            {
+                Console.Write("\t\t\t");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write("MMM  MMM\t");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("#____XXXXXX____#");
+                
+            }
+            else if(haueser.ElementAt(0))
 
+
+            Console.Write('\n');
 
 
 
@@ -138,5 +152,10 @@ namespace Mensch_Aergere_Dich_Nicht
 
             return ziehe;
         }
+
+
+        //Samuel wenn beim Wuerfeln eine Spielfigur aus dem Haus zieht, dies bitte in der figurenImHaus variable der Klasse haus vermerken
+
+
     }
 }

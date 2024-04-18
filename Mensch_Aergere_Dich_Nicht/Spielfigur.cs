@@ -5,7 +5,7 @@
         public int _id { get; set; }
         private string _farbe;
         public double _position { get; set; }
-        private double _printPosition { get; set; } = 0;
+        public double PrintPosition { get; set; } = 0;
 
         public Spielfigur(int id, string farbe, double position)
         {

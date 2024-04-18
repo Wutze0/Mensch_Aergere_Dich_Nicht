@@ -4,6 +4,7 @@ namespace Mensch_Aergere_Dich_Nicht
     {
         private int _anzSpielfiguren;
         private string _farbe;
+        public int figurenImHaus { get; set; } = 4;
         public List<Spielfigur> ZugehoerigeFiguren { get; set; } = new List<Spielfigur>();
 
 
