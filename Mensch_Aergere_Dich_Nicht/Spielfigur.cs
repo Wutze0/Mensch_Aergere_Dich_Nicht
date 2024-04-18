@@ -2,7 +2,7 @@
 {
     internal class Spielfigur
     {
-        private int _id;
+        public int _id { get; set; }
         private string _farbe;
         public double _position { get; set; }
         private double _printPosition { get; set; } = 0;
@@ -12,6 +12,19 @@
             _id = id;
             _farbe = farbe;
             _position = position;
+        }
+
+        public void PrintFigur()
+        {
+            switch (_farbe)
+            {
+                case "Rot": Console.ForegroundColor = ConsoleColor.Red; Console.Write($"P{_id}"); break;
+                case "Gruen": Console.ForegroundColor = ConsoleColor.Green; Console.Write($"P{_id}"); break;
+                case "Blau": Console.ForegroundColor = ConsoleColor.Blue; Console.Write($"P{_id}"); break;
+                case "Gelb": Console.ForegroundColor = ConsoleColor.Yellow; Console.Write($"P{_id}"); break;
+            }
+
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }

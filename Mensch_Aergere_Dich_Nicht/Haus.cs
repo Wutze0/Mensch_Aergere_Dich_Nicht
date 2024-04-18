@@ -4,7 +4,7 @@ namespace Mensch_Aergere_Dich_Nicht
     {
         private int _anzSpielfiguren;
         private string _farbe;
-        public List<Spielfigur> _zugehoerigeFiguren { get; set; } = new List<Spielfigur>();
+        public List<Spielfigur> ZugehoerigeFiguren { get; set; } = new List<Spielfigur>();
 
 
         public Haus(Verfuegbare_Farben farbe)
@@ -12,10 +12,9 @@ namespace Mensch_Aergere_Dich_Nicht
             _farbe = farbe.ToString();
 
             _anzSpielfiguren = 4;
-            for (int i = 0; i < 4; i++)
+            for (int i = 1; i <= 4; i++)
             {
-                _zugehoerigeFiguren.Add(new Spielfigur(i, _farbe, 100));
-                _zugehoerigeFiguren.Add(new Spielfigur(i, farbe.ToString(), 100));
+                ZugehoerigeFiguren.Add(new Spielfigur(i, farbe.ToString(), 100));
             }
 
         }
