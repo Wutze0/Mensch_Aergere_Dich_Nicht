@@ -10,7 +10,7 @@ namespace Mensch_Aergere_Dich_Nicht
     {
         private int _anzSpielfiguren;
         private string _farbe;
-        private List<Spielfigur> _zugehoerigeFiguren = new List<Spielfigur>();
+        public List<Spielfigur> _zugehoerigeFiguren { get; set; } = new List<Spielfigur>();
 
 
         public Haus(string farbe)

@@ -4,17 +4,22 @@
     {
         static void Main(string[] args)
         {
+            
             Haus blauesHaus = new Haus("blau");
             Haus gruenesHaus = new Haus("gruen");
             Haus gelbesHaus = new Haus("gelb");
             Haus rotesHaus = new Haus("rot");
+            List<Haus> haueser = new List<Haus>();
+            haueser.Add(blauesHaus);
+            haueser.Add(gruenesHaus);
+            haueser.Add(gelbesHaus);
+            haueser.Add(rotesHaus);
 
-
-            PrintSpielfeld();
+            PrintSpielfeld(haueser);
             
         }
 
-        static void PrintSpielfeld()
+        static void PrintSpielfeld(List<Haus> haueser)
         {
             string zeilestandard = "\t\t\t\t\t#    |    |    #\t\t";
 
@@ -27,6 +32,13 @@
             {
                 if(i % 2 == 0)
                 {
+                    foreach(Haus h in haueser)
+                    {
+                        foreach(Spielfigur s in h._zugehoerigeFiguren)
+                        {
+                            if (Spielfigur.) 
+                        }
+                    }
                     Console.WriteLine("");
                 }
                 else if(i % 2 == 1)
