@@ -18,10 +18,10 @@
         {
             switch (_farbe)
             {
-                case "Rot": Console.ForegroundColor = ConsoleColor.Red; Console.Write($"P{_id}"); break;
-                case "Gruen": Console.ForegroundColor = ConsoleColor.Green; Console.Write($"P{_id}"); break;
-                case "Blau": Console.ForegroundColor = ConsoleColor.Blue; Console.Write($"P{_id}"); break;
-                case "Gelb": Console.ForegroundColor = ConsoleColor.Yellow; Console.Write($"P{_id}"); break;
+                case "Rot": Console.ForegroundColor = ConsoleColor.Red; Console.Write($"F{_id}"); break;
+                case "Gruen": Console.ForegroundColor = ConsoleColor.Green; Console.Write($"F{_id}"); break;
+                case "Blau": Console.ForegroundColor = ConsoleColor.Blue; Console.Write($"F{_id}"); break;
+                case "Gelb": Console.ForegroundColor = ConsoleColor.Yellow; Console.Write($"F{_id}"); break;
             }
 
             Console.ForegroundColor = ConsoleColor.White;
