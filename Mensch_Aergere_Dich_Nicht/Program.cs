@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Program
@@ -5,7 +7,7 @@ namespace Mensch_Aergere_Dich_Nicht
         static void Main(string[] args)
         {
 
-
+            Einführung();
 
             Haus blauesHaus = new Haus(Verfuegbare_Farben.Blau);
             Haus gruenesHaus = new Haus(Verfuegbare_Farben.Grün);
@@ -63,13 +65,13 @@ namespace Mensch_Aergere_Dich_Nicht
             Console.WriteLine(rahmen);
         }
 
-        public static int wuerfeln()
+        private static int wuerfeln()
         {
             int ziehe = 0;
             bool erneutWuerfeln = true;
             Random r = new Random();
             
-            while(erneutWuerfeln != false) //Logik für, wenn jemand eine 6 würfelt
+            while(erneutWuerfeln != false) //Logik für, wenn jemand eine 6 würfelt, dann darf er erneut würfelln
             {
                 ziehe += r.Next(1, 7);
                 if (ziehe == 6)
@@ -82,5 +84,33 @@ namespace Mensch_Aergere_Dich_Nicht
 
             return ziehe;
         }
+        private static void Einführung()
+        {
+            Console.WriteLine(
+                  "Mensch Ärgere Dich Nicht!" +
+                  "\n" +
+                  "\n" +
+                  "\n[1]Neues Spiel" +
+                  "\n[2]Spiel laden" +
+                  "\n[3]Spiel löschen" +
+                  "\n"
+                  );
+            
+
+            while(true)
+            {
+                char eingabe = '\0';
+                try
+                {
+                    eingabe = Convert.ToChar(Console.ReadLine());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
+                }
+            }
+            
+        }
+
     }
 }
