@@ -224,12 +224,12 @@ namespace Mensch_Aergere_Dich_Nicht
 
             felderlangeZeile.Clear();
             felderlangeZeile.Add(32);
-            for(int i = 45; i < 48; i++)
+            for(int i = 45; i <= 48; i++)
             {
                 felderlangeZeile.Add(i);
             }
 
-            for(int i = 52; i > 48; i--)
+            for(int i = 52; i >= 49; i--)
             {
                 felderlangeZeile.Add(i);
             }
@@ -240,8 +240,25 @@ namespace Mensch_Aergere_Dich_Nicht
             Console.WriteLine("");
             Console.WriteLine(distanceLongRow + "#    X    :    :    :    X####X    :    :    :    X    #");
             Console.WriteLine("");
-            
 
+            Console.WriteLine(distanceLongRow + "#----XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX----#");
+            Console.WriteLine("");
+            Console.WriteLine(distanceLongRow + zeile);
+            Console.WriteLine("");
+
+
+
+            felderlangeZeile.Clear();
+            for(int i = 31; i >= 27; i--)
+            {
+                felderlangeZeile.Add(i);
+            }
+            for(int i = 13; i <= 17; i++)
+            {
+                felderlangeZeile.Add(i);
+            }
+
+            //PrintLangeZeileMitSpieler(haueser, )
 
             Console.Write('\n');
             Console.WriteLine(rahmen);

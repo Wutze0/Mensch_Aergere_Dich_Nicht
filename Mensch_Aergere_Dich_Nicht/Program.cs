@@ -17,7 +17,7 @@ namespace Mensch_Aergere_Dich_Nicht
             haueser.Add(gelbesHaus);
             haueser.Add(rotesHaus);
 
-            haueser.ElementAt(2).ZugehoerigeFiguren.ElementAt(1).PrintPosition = 11;
+            haueser.ElementAt(1).ZugehoerigeFiguren.ElementAt(3).PrintPosition = 34;
             haueser.ElementAt(2).ZugehoerigeFiguren.ElementAt(2).PrintPosition = 44;
 
             print.PrintSpielfeld(haueser);
