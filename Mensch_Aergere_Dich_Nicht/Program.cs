@@ -5,7 +5,7 @@ namespace Mensch_Aergere_Dich_Nicht
         static void Main(string[] args)
         {
 
-            Einführung();
+            //Einführung();
 
             Haus blauesHaus = new Haus(Verfuegbare_Farben.Blau);
             Haus gruenesHaus = new Haus(Verfuegbare_Farben.Gruen);
@@ -219,7 +219,7 @@ namespace Mensch_Aergere_Dich_Nicht
             }
         }
 
-        private static bool istFeldFrei(Print print, Haus zieherHaus, int gezogeneFigur, int gewuerfelt)
+        private static bool istFeldFrei(Print print, Haus zieherHaus, int gezogeneFigur, int gewuerfelt) // idese methode funktioniert NICHT
         {
             List<Spielfigur> alleSpielfiguren = print.GetAllSpielfiguren();
             Spielfigur gezogeneSpielfigur = zieherHaus.ZugehoerigeFiguren.ElementAt(gezogeneFigur);
