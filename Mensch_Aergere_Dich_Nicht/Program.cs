@@ -10,7 +10,7 @@ namespace Mensch_Aergere_Dich_Nicht
         {
             Haus blauesHaus = new Haus(Verfuegbare_Farben.Blau);
             Haus gruenesHaus = new Haus(Verfuegbare_Farben.Gruen);
-            Haus gelbesHaus = new Haus(Verfuegbare_Farben.Gelb);
+            Haus gelbesHaus = new Haus(Verfuegbare_Farben.Dunkelgruen);
             Haus rotesHaus = new Haus(Verfuegbare_Farben.Rot);
             List<Haus> haueser = new List<Haus>();
             haueser.Add(blauesHaus);
