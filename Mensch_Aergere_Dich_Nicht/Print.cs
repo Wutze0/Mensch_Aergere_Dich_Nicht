@@ -9,13 +9,16 @@ namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Print
     {
+        private List<Haus> _haueser = new List<Haus> ();
+        
+        public Print(List<Haus> haueser) 
+        {
+            _haueser = haueser;
+        }
 
 
-        public Print() { }
 
-
-
-        public void PrintSpielfeld(List<Haus> haueser)
+        public void PrintSpielfeld()
         {
             string zeile = "\t\t\t\t\t#    |    |    #\t\t";
             string distanceLongRow = "\t\t    ";
@@ -31,7 +34,7 @@ namespace Mensch_Aergere_Dich_Nicht
                     if (i == 2)
                     {
 
-                        PrintZeileMitSpieler(haueser, 1, 2, 3);
+                        PrintZeileMitSpieler(1, 2, 3);
 
                     }
                     else
@@ -54,7 +57,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 if (i % 2 == 0)
                 {
                     //Ausgabe blaues Haus
-                    if (haueser.ElementAt(0).figurenImHaus == 4)
+                    if (_haueser.ElementAt(0).figurenImHaus == 4)
                     {
                         Console.Write("\t\t\t");
                         Console.ForegroundColor = ConsoleColor.Blue;
@@ -63,7 +66,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         Console.Write(zeile);
 
                     }
-                    else if (haueser.ElementAt(0).figurenImHaus == 3)
+                    else if (_haueser.ElementAt(0).figurenImHaus == 3)
                     {
                         Console.Write("\t\t\t");
                         Console.ForegroundColor = ConsoleColor.Blue;
@@ -71,7 +74,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
                     }
-                    else if (haueser.ElementAt(0).figurenImHaus <= 2)
+                    else if (_haueser.ElementAt(0).figurenImHaus <= 2)
                     {
                         Console.Write("\t\t\t");
                         Console.ForegroundColor = ConsoleColor.Blue;
@@ -82,7 +85,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
                     //Ausgabe gruenes Haus
-                    if (haueser.ElementAt(1).figurenImHaus == 4)
+                    if (_haueser.ElementAt(1).figurenImHaus == 4)
                     {
                         Console.Write("\t");
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -90,14 +93,14 @@ namespace Mensch_Aergere_Dich_Nicht
                         Console.ForegroundColor = ConsoleColor.White;
 
                     }
-                    else if (haueser.ElementAt(1).figurenImHaus == 3)
+                    else if (_haueser.ElementAt(1).figurenImHaus == 3)
                     {
                         Console.Write("\t");
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write($"{block}{block}{block}  MMM\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-                    else if (haueser.ElementAt(1).figurenImHaus <= 2)
+                    else if (_haueser.ElementAt(1).figurenImHaus <= 2)
                     {
                         Console.Write("\t");
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -116,7 +119,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
             }
 
-            PrintZeileMitSpieler(haueser, 40, 41, 4);
+            PrintZeileMitSpieler(40, 41, 4);
             Console.WriteLine("\t\t\t\t\t#    X    X    #");
             Console.WriteLine("");
             Console.WriteLine("\t\t\t\t\t#____X....X____#");
@@ -127,7 +130,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 if (i % 2 == 0)
                 {
                     //Ausgabe blaues Haus
-                    if (haueser.ElementAt(0).figurenImHaus >= 2)
+                    if (_haueser.ElementAt(0).figurenImHaus >= 2)
                     {
                         Console.Write("\t\t\t");
                         Console.ForegroundColor = ConsoleColor.Blue;
@@ -136,7 +139,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         Console.Write(zeile);
 
                     }
-                    else if (haueser.ElementAt(0).figurenImHaus == 1)
+                    else if (_haueser.ElementAt(0).figurenImHaus == 1)
                     {
                         Console.Write("\t\t\t");
                         Console.ForegroundColor = ConsoleColor.Blue;
@@ -144,7 +147,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
                     }
-                    else if (haueser.ElementAt(0).figurenImHaus == 0)
+                    else if (_haueser.ElementAt(0).figurenImHaus == 0)
                     {
                         Console.Write("\t\t\t");
                         Console.ForegroundColor = ConsoleColor.Blue;
@@ -155,7 +158,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
                     //Ausgabe gruenes Haus
-                    if (haueser.ElementAt(1).figurenImHaus >= 2)
+                    if (_haueser.ElementAt(1).figurenImHaus >= 2)
                     {
                         Console.Write("\t");
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -163,14 +166,14 @@ namespace Mensch_Aergere_Dich_Nicht
                         Console.ForegroundColor = ConsoleColor.White;
 
                     }
-                    else if (haueser.ElementAt(1).figurenImHaus == 1)
+                    else if (_haueser.ElementAt(1).figurenImHaus == 1)
                     {
                         Console.Write("\t");
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write($"{block}{block}{block}  MMM\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-                    else if (haueser.ElementAt(1).figurenImHaus == 0)
+                    else if (_haueser.ElementAt(1).figurenImHaus == 0)
                     {
                         Console.Write("\t");
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -182,7 +185,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 else
                 {
-                    PrintZeileMitSpieler(haueser, 39, 42, 5);
+                    PrintZeileMitSpieler(39, 42, 5);
                 }
 
             }
@@ -192,7 +195,7 @@ namespace Mensch_Aergere_Dich_Nicht
             Console.WriteLine("");
             zeile = "\t\t\t\t\t#    X    X    #";
             Console.WriteLine(zeile);
-            PrintZeileMitSpieler(haueser, 38, 43, 6);
+            PrintZeileMitSpieler(38, 43, 6);
             Console.WriteLine(zeile);
             Console.WriteLine("");
 
@@ -212,7 +215,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 felderlangeZeile.Add(i);
             }
 
-            PrintLangeZeileMitSpieler(haueser, felderlangeZeile, 44);
+            PrintLangeZeileMitSpieler(felderlangeZeile, 44);
             Console.WriteLine("");
 
             Console.WriteLine(distanceLongRow + zeile);
@@ -235,7 +238,7 @@ namespace Mensch_Aergere_Dich_Nicht
             }
             felderlangeZeile.Add(12);
 
-            PrintLangeZeileMitSpieler(haueser, felderlangeZeile);
+            PrintLangeZeileMitSpieler(felderlangeZeile);
 
             Console.WriteLine("");
             Console.WriteLine(distanceLongRow + "#    X    :    :    :    X####X    :    :    :    X    #");
@@ -255,11 +258,11 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
 
-            void PrintZeileMitSpieler(List<Haus> haueser, int erstesFeld, int zweitesFeld, int drittesFeld)
+            void PrintZeileMitSpieler(int erstesFeld, int zweitesFeld, int drittesFeld)
             {
                 List<Spielfigur> figurenInZeile = new List<Spielfigur>();
                 string zeileMitSpieler = "\t\t\t\t\t  ";
-                foreach (Haus h in haueser)
+                foreach (Haus h in _haueser)
                 {
                     foreach (Spielfigur s in h.ZugehoerigeFiguren)
                     {
@@ -313,7 +316,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 Console.Write('\n');
             }
 
-            void PrintLangeZeileMitSpieler(List<Haus> haueser, List<int> felder, int sechstesFeld = 0)
+            void PrintLangeZeileMitSpieler(List<int> felder, int sechstesFeld = 0)
             {
                 if (sechstesFeld != 0)
                 {
@@ -321,7 +324,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 List<Spielfigur> figurenInZeile = new List<Spielfigur>();
                 string langeZeileMitSpieler = "\t\t      ";
-                foreach (Haus h in haueser)
+                foreach (Haus h in _haueser)
                 {
                     foreach (Spielfigur s in h.ZugehoerigeFiguren)
                     {
@@ -362,7 +365,18 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
             }
         }
-
+        public List<Spielfigur> GetAllSpielfiguren()
+        {
+            List<Spielfigur> allSpielfiguren = new List<Spielfigur> ();
+            foreach(Haus h in _haueser)
+            {
+                foreach(Spielfigur s in h.ZugehoerigeFiguren)
+                {
+                    allSpielfiguren.Add(s);
+                }
+            }
+            return allSpielfiguren;
+        }
         
     }
 }

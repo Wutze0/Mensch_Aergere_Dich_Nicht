@@ -6,6 +6,7 @@
         private string _farbe;
         public double _position { get; set; }
         public double PrintPosition { get; set; } = 0;
+        public bool IsInHouse { get; set; } = true;
 
         public Spielfigur(int id, string farbe, double position)
         {
