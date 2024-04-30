@@ -1,5 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
-
 namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Program
@@ -7,9 +5,9 @@ namespace Mensch_Aergere_Dich_Nicht
         static void Main(string[] args)
         {
             Print print = new Print();
-            Haus blauesHaus = new Haus(Verfuegbare_Farben.Blau);
+            Haus blauesHaus = new Haus(Verfuegbare_Farben.Tuerkis);
             Haus gruenesHaus = new Haus(Verfuegbare_Farben.Gruen);
-            Haus gelbesHaus = new Haus(Verfuegbare_Farben.Gelb);
+            Haus gelbesHaus = new Haus(Verfuegbare_Farben.Dunkelgruen);
             Haus rotesHaus = new Haus(Verfuegbare_Farben.Rot);
             List<Haus> haueser = new List<Haus>();
             haueser.Add(blauesHaus);
@@ -17,11 +15,11 @@ namespace Mensch_Aergere_Dich_Nicht
             haueser.Add(gelbesHaus);
             haueser.Add(rotesHaus);
 
-            haueser.ElementAt(1).ZugehoerigeFiguren.ElementAt(3).PrintPosition = 34;
-            haueser.ElementAt(2).ZugehoerigeFiguren.ElementAt(2).PrintPosition = 44;
+            haueser.ElementAt(1).ZugehoerigeFiguren.ElementAt(3).PrintPosition = 1;
+            haueser.ElementAt(2).ZugehoerigeFiguren.ElementAt(2).PrintPosition = 20;
 
             print.PrintSpielfeld(haueser);
-            
+
 
             //Testen der Methode wuerfeln
             Spielfigur spielfigur = new Spielfigur(0, Verfuegbare_Farben.Blau.ToString(), 0);

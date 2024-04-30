@@ -6,7 +6,11 @@ namespace Mensch_Aergere_Dich_Nicht
         Rot,
         Gruen,
         Blau,
-        Gelb
+        Gelb,
+        Tuerkis,
+        Dunkelrot,
+        Dunkelgruen,
+        Magenta
     }
 
 }

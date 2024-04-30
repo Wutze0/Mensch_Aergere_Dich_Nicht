@@ -22,6 +22,11 @@
                 case "Gruen": Console.ForegroundColor = ConsoleColor.Green; Console.Write($"F{_id}"); break;
                 case "Blau": Console.ForegroundColor = ConsoleColor.Blue; Console.Write($"F{_id}"); break;
                 case "Gelb": Console.ForegroundColor = ConsoleColor.Yellow; Console.Write($"F{_id}"); break;
+                case "Tuerkis": Console.ForegroundColor = ConsoleColor.Cyan; Console.Write($"F{_id}"); break;
+                case "Dunkelrot": Console.ForegroundColor = ConsoleColor.DarkRed; Console.Write($"F{_id}"); break;
+                case "Dunkelgruen": Console.ForegroundColor = ConsoleColor.DarkGreen; Console.Write($"F{_id}"); break;
+                case "Magenta": Console.ForegroundColor = ConsoleColor.Magenta; Console.Write($"F{_id}"); break;
+
             }
 
             Console.ForegroundColor = ConsoleColor.White;

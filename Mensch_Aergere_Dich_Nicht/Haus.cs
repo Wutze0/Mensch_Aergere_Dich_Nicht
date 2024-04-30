@@ -20,6 +20,24 @@ namespace Mensch_Aergere_Dich_Nicht
 
         }
 
+        public void changeColour()
+        {
+
+            switch (_farbe)
+            {
+                case "Rot": Console.ForegroundColor = ConsoleColor.Red; break;
+                case "Gruen": Console.ForegroundColor = ConsoleColor.Green; break;
+                case "Blau": Console.ForegroundColor = ConsoleColor.Blue; break;
+                case "Gelb": Console.ForegroundColor = ConsoleColor.Yellow; break;
+                case "Tuerkis": Console.ForegroundColor = ConsoleColor.Cyan; break;
+                case "Dunkelrot": Console.ForegroundColor = ConsoleColor.DarkRed; break;
+                case "Dunkelgruen": Console.ForegroundColor = ConsoleColor.DarkGreen; break;
+                case "Magenta": Console.ForegroundColor = ConsoleColor.Magenta; break;
+            }
+
+
+        }
+
     }
 
 }
