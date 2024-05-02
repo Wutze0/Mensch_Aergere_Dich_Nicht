@@ -2,15 +2,17 @@ using System.ComponentModel.Design;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 
+
 namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Program
     {
         static void Main(string[] args)
         {
+
             Haus blauesHaus = new Haus(Verfuegbare_Farben.Blau);
             Haus gruenesHaus = new Haus(Verfuegbare_Farben.Gruen);
-            Haus gelbesHaus = new Haus(Verfuegbare_Farben.Dunkelgruen);
+            Haus gelbesHaus = new Haus(Verfuegbare_Farben.Magenta);
             Haus rotesHaus = new Haus(Verfuegbare_Farben.Rot);
             List<Haus> _haueser = new List<Haus>();
             _haueser.Add(blauesHaus);
@@ -67,7 +69,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         erneutWuerfeln = false;
 
                 }
-                //auswaehlen(haus, false, ziehe, print);
+                auswaehlen(haus, false, ziehe, print);
                 print.PrintSpielfeld();
                 //maximal drei mal würfeln und maximal drei mal 6 würfeln
                 //auswählen welche figur GEMACHT
