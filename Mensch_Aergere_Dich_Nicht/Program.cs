@@ -49,7 +49,7 @@ namespace Mensch_Aergere_Dich_Nicht
             if(haus.figurenImHaus != 4) //normaler Spielablauf
             {
                 int sechsCounter = 0;
-                while (erneutWuerfeln != false && sechsCounter < 3) //Logik für, wenn jemand eine 6 würfelt //Man darf nur maximal drei mal hintereinander eine 6 würfeln
+                while (erneutWuerfeln == true && sechsCounter <= 3) //Logik für, wenn jemand eine 6 würfelt //Man darf nur maximal drei mal hintereinander eine 6 würfeln
                 {
                     ziehe = r.Next(1, 7);
                     if (ziehe == 6) 
@@ -66,7 +66,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         erneutWuerfeln = false;
 
                 }
-                //auswaehlen(haus, false, ziehe, print);
+                auswaehlen(haus, false, ziehe, print);
                 print.PrintSpielfeld();
                 //maximal drei mal würfeln und maximal drei mal 6 würfeln
                 //auswählen welche figur GEMACHT
@@ -88,12 +88,12 @@ namespace Mensch_Aergere_Dich_Nicht
                     //haus.ZugehoerigeFiguren.ElementAt(1).PrintPosition = haus.StartingPrintPosition;
                     //haus.ZugehoerigeFiguren.ElementAt(1)._position = 1;
                     auswaehlen(haus, true, ziehe,print);
-                    print.PrintSpielfeld();
+                    //print.PrintSpielfeld();
                 }
+                print.PrintSpielfeld();
 
 
             }
-
 
         }
 
@@ -228,31 +228,22 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 foreach (Spielfigur s in alleSpielfiguren)
                 {
-
-                    if (zieherHaus.IsStartingPositionFree == true)
-                    {
-                        Console.WriteLine("supa");
-                        zieherHaus.IsStartingPositionFree = false;
-                        return true;
-                    }
-
-                }
-            }
-            else
-            {
-                foreach(Spielfigur s in alleSpielfiguren)
-                {
-
-                    if((gezogeneSpielfigur._position + gewuerfelt) == s._position)
+                    Console.WriteLine(s.PrintPosition);
+                    if (s.PrintPosition == zieherHaus.StartingPrintPosition)
                     {
                         Console.WriteLine("get nid");
+                        //zieherHaus.IsStartingPositionFree = false;
                         return false;
                     }
+                    
                 }
             }
+
+            
+
             
             //(gezogeneSpielfigur._position + gewuerfelt) == s._position
-            return false;
+            return true;
         }
         //private static void Einführung()
         //{
