@@ -9,15 +9,15 @@ namespace Mensch_Aergere_Dich_Nicht
 
             Haus blauesHaus = new Haus(Verfuegbare_Farben.Blau);
             Haus gruenesHaus = new Haus(Verfuegbare_Farben.Gruen);
-            Haus gelbesHaus = new Haus(Verfuegbare_Farben.Gelb);
+            Haus gelbesHaus = new Haus(Verfuegbare_Farben.Dunkelgruen);
             Haus rotesHaus = new Haus(Verfuegbare_Farben.Rot);
-            List<Haus> haueser = new List<Haus>();
-            haueser.Add(blauesHaus);
-            haueser.Add(gruenesHaus);
-            haueser.Add(gelbesHaus);
-            haueser.Add(rotesHaus);
+            List<Haus> _haueser = new List<Haus>();
+            _haueser.Add(blauesHaus);
+            _haueser.Add(gruenesHaus);
+            _haueser.Add(gelbesHaus);
+            _haueser.Add(rotesHaus);
 
-            Print print = new Print(haueser);
+            Print print = new Print(_haueser);
             print.PrintSpielfeld();
 
 
@@ -27,12 +27,12 @@ namespace Mensch_Aergere_Dich_Nicht
                 wuerfeln(blauesHaus, print);
                 //print.PrintSpielfeld();
             }
-            //haueser.ElementAt(0).ZugehoerigeFiguren.ElementAt(1)._position += wuerfeln(haueser[0]);
+            //_haueser.ElementAt(0).ZugehoerigeFiguren.ElementAt(1)._position += wuerfeln(_haueser[0]);
             //Console.WriteLine(spielfigur._position);
-            /*print.PrintSpielfeld(haueser);
+            /*print.PrintSpielfeld(_haueser);
             
-            haueser.ElementAt(0).ZugehoerigeFiguren.ElementAt(1).PrintPosition += wuerfeln(haueser[0]);
-            print.PrintSpielfeld(haueser);*/
+            _haueser.ElementAt(0).ZugehoerigeFiguren.ElementAt(1).PrintPosition += wuerfeln(_haueser[0]);
+            print.PrintSpielfeld(_haueser);*/
 
 
         }
