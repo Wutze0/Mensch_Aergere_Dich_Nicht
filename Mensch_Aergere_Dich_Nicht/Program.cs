@@ -1,3 +1,8 @@
+using System.ComponentModel.Design;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
+
+
 namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Program
@@ -9,7 +14,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
             Haus blauesHaus = new Haus(Verfuegbare_Farben.Blau);
             Haus gruenesHaus = new Haus(Verfuegbare_Farben.Gruen);
-            Haus gelbesHaus = new Haus(Verfuegbare_Farben.Dunkelgruen);
+            Haus gelbesHaus = new Haus(Verfuegbare_Farben.Magenta);
             Haus rotesHaus = new Haus(Verfuegbare_Farben.Rot);
             List<Haus> _haueser = new List<Haus>();
             _haueser.Add(blauesHaus);
@@ -111,6 +116,7 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 Console.WriteLine("Möchten Sie eine Figur aus dem Haus ziehen?");
                 jaNein = Convert.ToBoolean(Console.ReadLine());
+                eingabe = 4 - haus.figurenImHaus;
             }
 
             if (rausziehen == true && jaNein == true && istFeldFrei(print,haus,eingabe,gewuerfelt))
@@ -133,7 +139,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
 
             }
-            else if (rausziehen == false && jaNein == false && istFeldFrei(print, haus, eingabe, gewuerfelt))
+            else if (rausziehen == false && jaNein == false && istFeldFrei(print, haus, eingabe - 1, gewuerfelt))
             {
 
                 switch (eingabe)
@@ -222,44 +228,47 @@ namespace Mensch_Aergere_Dich_Nicht
         private static bool istFeldFrei(Print print, Haus zieherHaus, int gezogeneFigur, int gewuerfelt) // idese methode funktioniert NICHT
         {
             List<Spielfigur> alleSpielfiguren = print.GetAllSpielfiguren();
-            Console.WriteLine(gezogeneFigur);
-            Spielfigur gezogeneSpielfigur = zieherHaus.ZugehoerigeFiguren.ElementAt(gezogeneFigur); 
-            Console.WriteLine(gezogeneSpielfigur.IsInHouse);
-            if (gezogeneSpielfigur.IsInHouse == true)
-            {
-                foreach (Spielfigur s in alleSpielfiguren)
-                {
+            Spielfigur gezogeneSpielfigur = zieherHaus.ZugehoerigeFiguren.ElementAt(gezogeneFigur);
 
-                    if (s.PrintPosition == zieherHaus.StartingPrintPosition && s.PrintPosition != gezogeneSpielfigur.PrintPosition)
+
+            if(gezogeneSpielfigur.PrintPosition == 0)
+            {
+                foreach(Spielfigur x in alleSpielfiguren)
+                {
+                    if(x._position == 1)
                     {
-                        Console.WriteLine("get nid");
-                        //zieherHaus.IsStartingPositionFree = false;
-                        return false;
+                        if(x._farbe == gezogeneSpielfigur._farbe)
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            return true;
+                        }
                     }
-
                 }
             }
-
-
-            foreach (Spielfigur s in alleSpielfiguren)
+            else
             {
-                Console.WriteLine("werteoderso");
-                Console.WriteLine(gezogeneSpielfigur.PrintPosition + gewuerfelt);
-                Console.WriteLine(s.PrintPosition);
-                if (s.PrintPosition == (gezogeneSpielfigur.PrintPosition + gewuerfelt))
+                foreach (Spielfigur x in alleSpielfiguren)
                 {
-                    Console.WriteLine("faose");
-                    return false;
+                    if (x._position == gezogeneSpielfigur._position + gewuerfelt)
+                    {
+                        if (x._farbe == gezogeneSpielfigur._farbe)
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
                 }
+
             }
-
-            
-
-
-
-            //(gezogeneSpielfigur._position + gewuerfelt) == s._position
             return true;
         }
+
         //private static void Einführung()
         //{
         //    Console.WriteLine(
