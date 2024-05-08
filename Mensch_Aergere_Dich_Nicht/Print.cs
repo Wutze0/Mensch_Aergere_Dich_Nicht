@@ -4,9 +4,9 @@
     {
         private List<Haus> _haueser = new List<Haus> ();
         
-        public Print(List<Haus> _haueser) 
+        public Print(List<Haus> haueser) 
         {
-            _haueser = _haueser;
+            _haueser = haueser;
         }
 
 

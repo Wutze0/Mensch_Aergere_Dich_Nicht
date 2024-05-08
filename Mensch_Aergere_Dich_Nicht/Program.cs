@@ -22,7 +22,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
             //Testen der Methode wuerfeln
-            for(int j = 0; j < 25; j++)
+            for(int j = 0; j < 100; j++)
             {
                 wuerfeln(blauesHaus, print);
                 //print.PrintSpielfeld();
@@ -175,7 +175,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
             }
             //Man kommt hier hin wenn man eine 6 würfelt und rausziehen KÖNNTE, aber nicht will.
-            else
+            else if(istFeldFrei(print, haus, eingabe, gewuerfelt))
             {
                 Console.WriteLine($"Ziehe {gewuerfelt} Felder mit einer Figur!");
                 Console.WriteLine("Welche Figur möchten Sie ziehen? Verfügbar: [1, 2, 3, 4]");
@@ -222,26 +222,41 @@ namespace Mensch_Aergere_Dich_Nicht
         private static bool istFeldFrei(Print print, Haus zieherHaus, int gezogeneFigur, int gewuerfelt) // idese methode funktioniert NICHT
         {
             List<Spielfigur> alleSpielfiguren = print.GetAllSpielfiguren();
-            Spielfigur gezogeneSpielfigur = zieherHaus.ZugehoerigeFiguren.ElementAt(gezogeneFigur);
-            
-            if(gezogeneSpielfigur.IsInHouse == true)
+            Console.WriteLine(gezogeneFigur);
+            Spielfigur gezogeneSpielfigur = zieherHaus.ZugehoerigeFiguren.ElementAt(gezogeneFigur); 
+            Console.WriteLine(gezogeneSpielfigur.IsInHouse);
+            if (gezogeneSpielfigur.IsInHouse == true)
             {
                 foreach (Spielfigur s in alleSpielfiguren)
                 {
-                    Console.WriteLine(s.PrintPosition);
-                    if (s.PrintPosition == zieherHaus.StartingPrintPosition)
+
+                    if (s.PrintPosition == zieherHaus.StartingPrintPosition && s.PrintPosition != gezogeneSpielfigur.PrintPosition)
                     {
                         Console.WriteLine("get nid");
                         //zieherHaus.IsStartingPositionFree = false;
                         return false;
                     }
-                    
+
+                }
+            }
+
+
+            foreach (Spielfigur s in alleSpielfiguren)
+            {
+                Console.WriteLine("werteoderso");
+                Console.WriteLine(gezogeneSpielfigur.PrintPosition + gewuerfelt);
+                Console.WriteLine(s.PrintPosition);
+                if (s.PrintPosition == (gezogeneSpielfigur.PrintPosition + gewuerfelt))
+                {
+                    Console.WriteLine("faose");
+                    return false;
                 }
             }
 
             
 
-            
+
+
             //(gezogeneSpielfigur._position + gewuerfelt) == s._position
             return true;
         }

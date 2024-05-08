@@ -7,8 +7,6 @@ namespace Mensch_Aergere_Dich_Nicht
         public int figurenImHaus { get; set; } = 4;
 
         private static int numberOfHouses = 0;
-        public bool IsStartingPositionFree { get; set; } = true;
-
         public int StartingPrintPosition {  get; set; }
         public List<Spielfigur> ZugehoerigeFiguren { get; set; } = new List<Spielfigur>();
 
