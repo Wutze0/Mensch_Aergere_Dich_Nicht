@@ -15,7 +15,7 @@
         {
             string zeile = "\t\t\t\t\t\t\t#        |        |        #\t\t";
             string distanceLongRow = "\t\t    ";
-            string rahmen = "\t\t------------------------------------------------------------------------------------------------";                 // ein \t entspricht 8 Zeichen
+            string rahmen = "\t------------------------------------------------------------------------------------------------------------------------------";                 // ein \t entspricht 8 Zeichen
 
             Console.WriteLine(rahmen);
             Console.WriteLine("\t\t\t\t\t\t\t############################\t\t");
@@ -197,7 +197,7 @@
             Console.WriteLine(" ");
             zeile = "#        |        |        |        |        X        X        |        |        |        |        #";
 
-            Console.WriteLine(distanceLongRow + zeile + "\n");
+            Console.Write(distanceLongRow + zeile + "\n");
 
 
             List<int> felderlangeZeile = new List<int>();
@@ -249,7 +249,7 @@
             {
                 felderlangeZeile.Add(i);
             }
-            for (int i = 13; i <= 17; i++)
+            for (int i = 17; i >= 13; i--)
             {
                 felderlangeZeile.Add(i);
             }
@@ -261,7 +261,7 @@
             Console.WriteLine("");
             zeile = "\t\t\t\t\t\t\t#        X        X        #";
             Console.WriteLine(zeile);
-            PrintZeileMitSpieler(27, 55, 19);
+            PrintZeileMitSpieler(26, 55, 18);
             Console.WriteLine(zeile);
             Console.WriteLine("");
 
@@ -399,7 +399,7 @@
                 }
                 else
                 {
-                    PrintZeileMitSpieler(39, 42, 5);
+                    Console.WriteLine("");
                 }
 
             }
@@ -409,7 +409,7 @@
             Console.WriteLine("\t\t\t\t\t\t\t#________XXXXXXXXXX________#");
             Console.WriteLine("");
             Console.WriteLine("\t\t\t\t\t\t\t#        |        |        #");
-            Console.WriteLine("");
+            PrintZeileMitSpieler(23, 22, 21);
             Console.WriteLine("\t\t\t\t\t\t\t#        |        |        #");
             Console.WriteLine("");
             Console.WriteLine("\t\t\t\t\t\t\t##############################");
@@ -504,6 +504,7 @@
                 {
                     PrintFeld(i);
                 }
+                Console.Write("\n");
 
 
 

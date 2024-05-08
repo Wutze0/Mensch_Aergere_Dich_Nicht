@@ -3,9 +3,9 @@
     internal class Spielfigur
     {
         public int _id { get; set; }
-        private string _farbe;
+        public string _farbe { get; private set; }
         public double _position { get; set; }
-        public double PrintPosition { get; set; } = 0;
+        public double PrintPosition { get; set; } = 0;      //Printposition standardmäßig 0
         public bool IsInHouse { get; set; } = true;
 
         public Spielfigur(int id, string farbe, double position)
