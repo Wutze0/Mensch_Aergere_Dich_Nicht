@@ -50,7 +50,7 @@
                 if (i % 2 == 0)
                 {
                     //Ausgabe blaues Haus
-                    if (_haueser.ElementAt(0).figurenImHaus == 4)
+                    if (_haueser.ElementAt(0).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t\t\t");
                         _haueser.ElementAt(0).changeColour();
@@ -59,7 +59,7 @@
                         Console.Write(zeile);
 
                     }
-                    else if (_haueser.ElementAt(0).figurenImHaus == 3)
+                    else if (_haueser.ElementAt(0).FigurenImHaus == 3)
                     {
                         Console.Write("\t\t\t\t");
                         _haueser.ElementAt(0).changeColour();
@@ -67,7 +67,7 @@
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
                     }
-                    else if (_haueser.ElementAt(0).figurenImHaus <= 2)
+                    else if (_haueser.ElementAt(0).FigurenImHaus <= 2)
                     {
                         Console.Write("\t\t\t\t");
                         _haueser.ElementAt(0).changeColour();
@@ -78,7 +78,7 @@
 
 
                     //Ausgabe gruenes Haus
-                    if (_haueser.ElementAt(1).figurenImHaus == 4)
+                    if (_haueser.ElementAt(1).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t");
                         _haueser.ElementAt(1).changeColour();
@@ -86,14 +86,14 @@
                         Console.ForegroundColor = ConsoleColor.White;
 
                     }
-                    else if (_haueser.ElementAt(1).figurenImHaus == 3)
+                    else if (_haueser.ElementAt(1).FigurenImHaus == 3)
                     {
                         Console.Write("\t\t");
                         _haueser.ElementAt(1).changeColour();
                         Console.Write($"{block}{block}{block}    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-                    else if (_haueser.ElementAt(1).figurenImHaus <= 2)
+                    else if (_haueser.ElementAt(1).FigurenImHaus <= 2)
                     {
                         Console.Write("\t\t");
                         _haueser.ElementAt(1).changeColour();
@@ -123,7 +123,7 @@
                 if (i % 2 == 0)
                 {
                     //Ausgabe blaues Haus
-                    if (_haueser.ElementAt(0).figurenImHaus >= 2)
+                    if (_haueser.ElementAt(0).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t\t\t");
                         _haueser.ElementAt(0).changeColour();
@@ -132,7 +132,7 @@
                         Console.Write(zeile);
 
                     }
-                    else if (_haueser.ElementAt(0).figurenImHaus == 1)
+                    else if (_haueser.ElementAt(0).FigurenImHaus == 1)
                     {
                         Console.Write("\t\t\t\t");
                         _haueser.ElementAt(0).changeColour();
@@ -140,7 +140,7 @@
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
                     }
-                    else if (_haueser.ElementAt(0).figurenImHaus == 0)
+                    else if (_haueser.ElementAt(0).FigurenImHaus == 0)
                     {
                         Console.Write("\t\t\t\t");
                         _haueser.ElementAt(0).changeColour();
@@ -151,7 +151,7 @@
 
 
                     //Ausgabe gruenes Haus
-                    if (_haueser.ElementAt(1).figurenImHaus >= 2)
+                    if (_haueser.ElementAt(1).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t");
                         _haueser.ElementAt(1).changeColour();
@@ -159,14 +159,14 @@
                         Console.ForegroundColor = ConsoleColor.White;
 
                     }
-                    else if (_haueser.ElementAt(1).figurenImHaus == 1)
+                    else if (_haueser.ElementAt(1).FigurenImHaus == 1)
                     {
                         Console.Write("\t\t");
                         _haueser.ElementAt(1).changeColour();
                         Console.Write($"{block}{block}{block}    MMM\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-                    else if (_haueser.ElementAt(1).figurenImHaus == 0)
+                    else if (_haueser.ElementAt(1).FigurenImHaus == 0)
                     {
                         Console.Write("\t\t");
                         _haueser.ElementAt(1).changeColour();
@@ -272,7 +272,7 @@
                 if (i % 2 == 0)
                 {
                     //Ausgabe gelbes Haus
-                    if (_haueser.ElementAt(2).figurenImHaus == 4)
+                    if (_haueser.ElementAt(2).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t\t\t");
                         _haueser.ElementAt(2).changeColour();
@@ -281,7 +281,7 @@
                         Console.Write(zeile);
 
                     }
-                    else if (_haueser.ElementAt(2).figurenImHaus == 3)
+                    else if (_haueser.ElementAt(2).FigurenImHaus == 3)
                     {
                         Console.Write("\t\t\t\t");
                         _haueser.ElementAt(2).changeColour();
@@ -289,7 +289,7 @@
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
                     }
-                    else if (_haueser.ElementAt(2).figurenImHaus <= 2)
+                    else if (_haueser.ElementAt(2).FigurenImHaus <= 2)
                     {
                         Console.Write("\t\t\t\t");
                         _haueser.ElementAt(2).changeColour();
@@ -300,7 +300,7 @@
 
 
                     //Ausgabe rotes Haus
-                    if (_haueser.ElementAt(3).figurenImHaus == 4)
+                    if (_haueser.ElementAt(3).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t");
                         _haueser.ElementAt(3).changeColour();
@@ -308,14 +308,14 @@
                         Console.ForegroundColor = ConsoleColor.White;
 
                     }
-                    else if (_haueser.ElementAt(3).figurenImHaus == 3)
+                    else if (_haueser.ElementAt(3).FigurenImHaus == 3)
                     {
                         Console.Write("\t\t");
                         _haueser.ElementAt(3).changeColour();
                         Console.Write($"{block}{block}{block}    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-                    else if (_haueser.ElementAt(3).figurenImHaus <= 2)
+                    else if (_haueser.ElementAt(3).FigurenImHaus <= 2)
                     {
                         Console.Write("\t\t");
                         _haueser.ElementAt(3).changeColour();
@@ -344,7 +344,7 @@
                 if (i % 2 == 0)
                 {
                     //Ausgabe gelbes Haus
-                    if (_haueser.ElementAt(2).figurenImHaus >= 2)
+                    if (_haueser.ElementAt(2).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t\t\t");
                         _haueser.ElementAt(2).changeColour();
@@ -353,7 +353,7 @@
                         Console.Write(zeile);
 
                     }
-                    else if (_haueser.ElementAt(2).figurenImHaus == 1)
+                    else if (_haueser.ElementAt(2).FigurenImHaus == 1)
                     {
                         Console.Write("\t\t\t\t");
                         _haueser.ElementAt(2).changeColour();
@@ -361,7 +361,7 @@
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
                     }
-                    else if (_haueser.ElementAt(2).figurenImHaus == 0)
+                    else if (_haueser.ElementAt(2).FigurenImHaus == 0)
                     {
                         Console.Write("\t\t\t\t");
                         _haueser.ElementAt(2).changeColour();
@@ -372,7 +372,7 @@
 
 
                     //Ausgabe rotes Haus
-                    if (_haueser.ElementAt(3).figurenImHaus >= 2)
+                    if (_haueser.ElementAt(3).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t");
                         _haueser.ElementAt(3).changeColour();
@@ -380,14 +380,14 @@
                         Console.ForegroundColor = ConsoleColor.White;
 
                     }
-                    else if (_haueser.ElementAt(3).figurenImHaus == 1)
+                    else if (_haueser.ElementAt(3).FigurenImHaus == 1)
                     {
                         Console.Write("\t\t");
                         _haueser.ElementAt(3).changeColour();
                         Console.Write($"{block}{block}{block}    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-                    else if (_haueser.ElementAt(3).figurenImHaus == 0)
+                    else if (_haueser.ElementAt(3).FigurenImHaus == 0)
                     {
                         Console.Write("\t\t");
                         _haueser.ElementAt(3).changeColour();

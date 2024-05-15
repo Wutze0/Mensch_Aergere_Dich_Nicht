@@ -4,9 +4,12 @@ namespace Mensch_Aergere_Dich_Nicht
     {
         private int _anzSpielfiguren;
         private string _farbe;
-        public int figurenImHaus { get; set; } = 4;
+        public int FigurenImHaus { get; set; } = 4;
+        public int ZiehbareFiguren { get; set; } = 4;
+        public int _aktuellLetztesFeld { get; set; } = 44;
 
-        private static int numberOfHouses = 0;
+        public int HausID { get; private set; }
+        public static int _numberOfHouses { get; private set; } = 0;
 
         public int StartingPrintPosition {  get; set; }
         public List<Spielfigur> ZugehoerigeFiguren { get; set; } = new List<Spielfigur>();
@@ -15,14 +18,15 @@ namespace Mensch_Aergere_Dich_Nicht
         public Haus(Verfuegbare_Farben farbe)
         {
             _farbe = farbe.ToString();
-            switch (numberOfHouses)
+            switch (_numberOfHouses)
             {
                 case 0: StartingPrintPosition = 33; break;
                 case 1: StartingPrintPosition = 3; break;
                 case 2: StartingPrintPosition = 13; break;
                 case 3: StartingPrintPosition = 23;break;
             }
-            numberOfHouses++;
+            _numberOfHouses++;
+            HausID = _numberOfHouses;
             _anzSpielfiguren = 4;
             for (int i = 1; i <= 4; i++)
             {
@@ -48,6 +52,8 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
         }
+
+        
 
     }
 

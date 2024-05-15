@@ -27,7 +27,7 @@ namespace Mensch_Aergere_Dich_Nicht
             //Testen der Methode wuerfeln
             for(int j = 0; j < 25; j++)
             {
-                wuerfeln(blauesHaus, print, _haueser);
+                //wuerfeln(blauesHaus, print, _haueser);
                 //print.PrintSpielfeld();
             }
             //_haueser.ElementAt(0).ZugehoerigeFiguren.ElementAt(1)._position += wuerfeln(_haueser[0]);
@@ -42,14 +42,14 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
 
-        private static void wuerfeln(Haus haus, Print print, List<Haus> haueser)
+        private static void wuerfeln(Haus haus, Print print, List<Haus> haueser, bool botYesNo)
         {
             int ziehe = 0;
             bool erneutWuerfeln = true;
             
             Random r = new Random();
 
-            if(haus.figurenImHaus != 4) //normaler Spielablauf
+            if(haus.FigurenImHaus <= haus.ZiehbareFiguren) //normaler Spielablauf, ziehbareFiguren speichert die Anzahl der Figuren, die sich noch bewegen könnte und somit nicht am Ende angelangt sind
             {
                 int sechsCounter = 0;
                 while (erneutWuerfeln != false && sechsCounter < 3) //Logik für, wenn jemand eine 6 würfelt //Man darf nur maximal drei mal hintereinander eine 6 würfeln
@@ -59,15 +59,32 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
 
                         erneutWuerfeln = true;
-                        if(haus.figurenImHaus > 0)
+                        if (haus.FigurenImHaus > 0)
                         {
-                            Console.WriteLine("Sie dürfen eine Figur aus dem haus ziehen!");        //noch nicht fertig; muss nicht immer der Fall sein, dass man eine Figur rausziehen darf.
-                            auswaehlen(haus, true, ziehe, print, haueser);
+                            if (botYesNo)
+                            {
+
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("Sie dürfen eine Figur aus dem haus ziehen!");        //noch nicht fertig; muss nicht immer der Fall sein, dass man eine Figur rausziehen darf.
+                                auswaehlen(haus, true, ziehe, print, haueser);
+                            }
+
                         }
                         else
                         {
-                            auswaehlen(haus, false, ziehe, print, haueser);
-                        }
+                            if (botYesNo)
+                            {
+
+                            }
+                            else
+                            {
+                                auswaehlen(haus, false, ziehe, print, haueser);
+                            }
+                        }  
+
                         print.PrintSpielfeld();
                         sechsCounter++;
                         
@@ -77,7 +94,14 @@ namespace Mensch_Aergere_Dich_Nicht
                         erneutWuerfeln = false;
 
                 }
-                auswaehlen(haus, false, ziehe, print, haueser);
+                if (botYesNo)
+                {
+                    
+                }
+                else
+                {
+                    auswaehlen(haus, false, ziehe, print, haueser);
+                }
                 print.PrintSpielfeld();
                 //maximal drei mal würfeln und maximal drei mal 6 würfeln
                 //auswählen welche figur GEMACHT
@@ -122,12 +146,12 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 Console.WriteLine("Möchten Sie eine Figur aus dem Haus ziehen?");
                 jaNein = Convert.ToBoolean(Console.ReadLine());
-                eingabe = 4 - haus.figurenImHaus;
+                eingabe = 4 - haus.FigurenImHaus;
             }
 
             if (rausziehen == true && jaNein == true && istFeldFrei(print,haus,eingabe,gewuerfelt))
             {
-                haus.figurenImHaus--;
+                haus.FigurenImHaus--;
                 bool einmal = true;
                 int i = 0;
                 Spielfigur aktuelleFigur = null;
@@ -138,7 +162,7 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         haus.ZugehoerigeFiguren.ElementAt(i).PrintPosition = haus.StartingPrintPosition;
                         haus.ZugehoerigeFiguren.ElementAt(i).IsInHouse = false;
-                        haus.ZugehoerigeFiguren.ElementAt(i)._position = 1;
+                        haus.ZugehoerigeFiguren.ElementAt(i).Position = 1;
                         einmal = false;
                         aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(i);
                     }
@@ -151,9 +175,9 @@ namespace Mensch_Aergere_Dich_Nicht
                         if(s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
                         {
                             s.PrintPosition = 0;
-                            s._position = 0;
+                            s.Position = 0;
                             s.IsInHouse = true;
-                            h.figurenImHaus++;
+                            h.FigurenImHaus++;
                         }
                     }
                 }
@@ -166,8 +190,19 @@ namespace Mensch_Aergere_Dich_Nicht
                 if (haus.ZugehoerigeFiguren.ElementAt(temp).IsInHouse == false)
                 {
                     Spielfigur aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(temp);
-                    aktuelleFigur._position += gewuerfelt;
+                    aktuelleFigur.Position += gewuerfelt;
+                    if(aktuelleFigur.Position > haus._aktuellLetztesFeld)               //Diese Verzweigung wird betreten, wenn die Figur übers Haus hinauszieht
+                    {
+                        aktuelleFigur.Position %= (haus._aktuellLetztesFeld + 1);
+                        aktuelleFigur.Position++;
+                    }
                     aktuelleFigur.PrintPosition += gewuerfelt;
+
+                    if (aktuelleFigur.PrintPosition > 40 && aktuelleFigur.PrintPosition < (40 + (4 * (haus.HausID - 1))) && aktuelleFigur.PrintPosition > (40 + (4 * (haus.HausID))))
+                    {
+
+                    }
+
                     foreach (Haus h in haeuser)
                     {
                         foreach (Spielfigur s in h.ZugehoerigeFiguren)
@@ -175,9 +210,9 @@ namespace Mensch_Aergere_Dich_Nicht
                             if (s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
                             {
                                 s.PrintPosition = 0;
-                                s._position = 0;
+                                s.Position = 0;
                                 s.IsInHouse = true;
-                                h.figurenImHaus++;
+                                h.FigurenImHaus++;
                             }
                         }
                     }
@@ -196,7 +231,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 if (haus.ZugehoerigeFiguren.ElementAt(temp).IsInHouse == false)
                 {
                     Spielfigur aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(temp);
-                    aktuelleFigur._position += gewuerfelt;
+                    aktuelleFigur.Position += gewuerfelt;
                     aktuelleFigur.PrintPosition += gewuerfelt;
                     foreach (Haus h in haeuser)
                     {
@@ -205,9 +240,9 @@ namespace Mensch_Aergere_Dich_Nicht
                             if (s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
                             {
                                 s.PrintPosition = 0;
-                                s._position = 0;
+                                s.Position = 0;
                                 s.IsInHouse = true;
-                                h.figurenImHaus++;
+                                h.FigurenImHaus++;
                             }
                         }
                     }
@@ -227,7 +262,7 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 foreach(Spielfigur x in alleSpielfiguren)
                 {
-                    if(x._position == 1)
+                    if(x.Position == 1)
                     {
                         if(x._farbe == gezogeneSpielfigur._farbe)
                         {
@@ -244,7 +279,7 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 foreach (Spielfigur x in alleSpielfiguren)
                 {
-                    if (x._position == gezogeneSpielfigur._position + gewuerfelt)
+                    if (x.Position == (gezogeneSpielfigur.Position + gewuerfelt) % 40)
                     {
                         if (x._farbe == gezogeneSpielfigur._farbe)
                         {
