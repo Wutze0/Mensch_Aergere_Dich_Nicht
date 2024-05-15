@@ -3,18 +3,18 @@ namespace Mensch_Aergere_Dich_Nicht
     internal class Haus
     {
         private int _anzSpielfiguren;
-        private string _farbe;
+        public string Farbe { get; private set; }
         public int figurenImHaus { get; set; } = 4;
 
         private static int numberOfHouses = 0;
 
-        public int StartingPrintPosition {  get; set; }
+        public int StartingPrintPosition { get; set; }
         public List<Spielfigur> ZugehoerigeFiguren { get; set; } = new List<Spielfigur>();
 
 
         public Haus(Verfuegbare_Farben farbe)
         {
-            _farbe = farbe.ToString();
+            Farbe = farbe.ToString();
             StartingPrintPosition = 1 + (numberOfHouses * 10);
             numberOfHouses++;
             _anzSpielfiguren = 4;
@@ -28,7 +28,7 @@ namespace Mensch_Aergere_Dich_Nicht
         public void changeColour()
         {
 
-            switch (_farbe)
+            switch (Farbe)
             {
                 case "Rot": Console.ForegroundColor = ConsoleColor.Red; break;
                 case "Gruen": Console.ForegroundColor = ConsoleColor.Green; break;
@@ -38,6 +38,8 @@ namespace Mensch_Aergere_Dich_Nicht
                 case "Dunkelrot": Console.ForegroundColor = ConsoleColor.DarkRed; break;
                 case "Dunkelgruen": Console.ForegroundColor = ConsoleColor.DarkGreen; break;
                 case "Magenta": Console.ForegroundColor = ConsoleColor.Magenta; break;
+                case "Weiss": Console.ForegroundColor = ConsoleColor.White; break;
+
             }
 
 

@@ -10,7 +10,8 @@ namespace Mensch_Aergere_Dich_Nicht
         Tuerkis,
         Dunkelrot,
         Dunkelgruen,
-        Magenta
+        Magenta,
+        Weiss
     }
 
 }

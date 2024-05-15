@@ -2,9 +2,9 @@
 {
     internal class Print
     {
-        private List<Haus> _haueser = new List<Haus> ();
-        
-        public Print(List<Haus> haueser) 
+        private List<Haus> _haueser = new List<Haus>();
+
+        public Print(List<Haus> haueser)
         {
             _haueser = haueser;
         }
@@ -526,10 +526,10 @@
         }
         public List<Spielfigur> GetAllSpielfiguren()
         {
-            List<Spielfigur> allSpielfiguren = new List<Spielfigur> ();
-            foreach(Haus h in _haueser)
+            List<Spielfigur> allSpielfiguren = new List<Spielfigur>();
+            foreach (Haus h in _haueser)
             {
-                foreach(Spielfigur s in h.ZugehoerigeFiguren)
+                foreach (Spielfigur s in h.ZugehoerigeFiguren)
                 {
                     allSpielfiguren.Add(s);
                 }
