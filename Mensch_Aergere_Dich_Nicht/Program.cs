@@ -4,7 +4,7 @@ namespace Mensch_Aergere_Dich_Nicht
     {
         static void Main(string[] args)
         {
-
+            //julian, wenn du testen willst und nicht immer die Einführung durchmachen willst, kannst du Zeile 8 auskommentieren.
             Einführung();
 
             Haus blauesHaus = new Haus(Verfuegbare_Farben.Blau);
@@ -306,6 +306,8 @@ namespace Mensch_Aergere_Dich_Nicht
         {
             Console.Clear();
             int spielerzahl = int.MinValue;
+            bool bot = false;
+            int botAnzahl = 0;
             do
             {
                 Console.WriteLine("Bitte geben Sie die Anzahl der Spieler ein(2-4):");
@@ -320,6 +322,26 @@ namespace Mensch_Aergere_Dich_Nicht
                     Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
                 }
             } while (spielerzahl != 2 && spielerzahl != 3 && spielerzahl != 4);
+
+            if(spielerzahl != 0)
+            {
+                do
+                {
+                    Console.WriteLine($"Bitte geben Sie die Anzahl der Bots ein(0-{4 - spielerzahl}):");
+                    string eingabe = Console.ReadLine();
+                    try
+                    {
+                        botAnzahl = Convert.ToInt32(eingabe);
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
+                    }
+                } while (botAnzahl != 2 && botAnzahl != 3 && botAnzahl != 1 && botAnzahl != 0);
+                bot = true;
+            }
+
             List<Spieler> spielerliste = new List<Spieler>();
             List<Haus> haeuser = new List<Haus>();
 
@@ -357,6 +379,10 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
 
             }
+            for(int i = 0; i < botAnzahl; i++)
+            {
+
+            }
             for (int i = haeuser.Count; i < 4; i++)
             {
                 haeuser.Add(new Haus(Verfuegbare_Farben.Weiss));
@@ -370,38 +396,54 @@ namespace Mensch_Aergere_Dich_Nicht
                 Console.WriteLine($"Spieler {j + 1}: {s.Name} mit {haeuser.ElementAt(j).Farbe} als Farbe des Hauses.");
                 j++;
             }
-            foreach (Haus h in haeuser)
-            {
-                Console.WriteLine("haus hier");
-            }
 
-            Spielablauf(haeuser, spielerliste);
+
+            Spielablauf(haeuser, spielerliste, bot);
 
         }
 
-        private static void Spielablauf(List<Haus> haeuser, List<Spieler> spieler)
+        private static void Spielablauf(List<Haus> haeuser, List<Spieler> spieler, bool bot)
         {
             Print p = new Print(haeuser);
 
             int abtauschen = 0;
             for (int k = 0; k < 100; k++)
             {
-                
-                Console.WriteLine($"Der Spieler {spieler.ElementAt(abtauschen).Name} ist dran!");
-                Console.WriteLine(abtauschen);
-                Console.WriteLine(haeuser.ElementAt(abtauschen).Farbe);
 
-                switch (abtauschen)
+                if(abtauschen < spieler.Count)
                 {
-                    case 0:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen++; break;
-                    case 1:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen++; break;
-                    case 2:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen++; break;
-                    case 3:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen = 0; break;
+                    Console.WriteLine($"Der Spieler {spieler.ElementAt(abtauschen ).Name} ist dran!");
                 }
+                //Console.WriteLine(haeuser.ElementAt(abtauschen).Farbe);
+
+                if (haeuser.ElementAt(abtauschen).Farbe != "Weiss")
+                {
+                    switch (abtauschen)
+                    {
+                        case 0:
+                            wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen++; break;
+                        case 1:
+                            wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen++; break;
+                        case 2:
+                            wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen++; break;
+                        case 3:
+                            wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen = 0; break;
+                    }
+                }
+                else
+                {
+                    if(abtauschen != 3)
+                    {
+                        abtauschen++;
+                    }
+                    else
+                    {
+                        abtauschen = 0;
+                    }
+
+                }
+
+                
 
                 //updaten: so machen dass für die weißen nicht gewürfelt werden darf.
 
@@ -424,7 +466,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
             foreach (Verfuegbare_Farben farbe in Enum.GetValues(typeof(Verfuegbare_Farben)))
             {
-                if (!verwendeteFarben.Contains(farbe))
+                if (!verwendeteFarben.Contains(farbe) && farbe != Verfuegbare_Farben.Weiss)
                 {
                     liste.Add(farbe);
                 }
@@ -437,7 +479,11 @@ namespace Mensch_Aergere_Dich_Nicht
 
             return alleFarben;
         }
+        //für gewinnüberprüfung eventuell: jedes haus hat ja 4 felder wo eine figur reingehen muss, also für jedes haus einen positionsArray machen.
 
+        public static void SpielSpeichern()
+        {
 
+        }
     }
 }

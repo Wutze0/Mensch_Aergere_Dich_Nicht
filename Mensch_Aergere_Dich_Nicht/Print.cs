@@ -536,6 +536,7 @@
             }
             return allSpielfiguren;
         }
+        //für gewinnüberprüfung eventuell: jedes haus hat ja 4 felder wo eine figur reingehen muss, also für jedes haus einen positionsArray machen.
 
 
     }
