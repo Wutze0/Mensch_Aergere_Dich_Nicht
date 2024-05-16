@@ -18,15 +18,12 @@ namespace Mensch_Aergere_Dich_Nicht
         public Haus(Verfuegbare_Farben farbe)
         {
             Farbe = farbe.ToString();
-            StartingPrintPosition = 1 + (NumberOfHouses * 10);
-            NumberOfHouses++;
-            Farbe = farbe.ToString();
             switch (NumberOfHouses)
             {
                 case 0: StartingPrintPosition = 33; break;
                 case 1: StartingPrintPosition = 3; break;
                 case 2: StartingPrintPosition = 13; break;
-                case 3: StartingPrintPosition = 23;break;
+                case 3: StartingPrintPosition = 23; break;
             }
             NumberOfHouses++;
             HausID = NumberOfHouses;
