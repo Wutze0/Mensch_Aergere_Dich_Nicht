@@ -423,13 +423,14 @@ namespace Mensch_Aergere_Dich_Nicht
                 switch (abtauschen)
                 {
                     case 0:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen++; break;
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
                     case 1:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen++; break;
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
                     case 2:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen++; break;
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
                     case 3:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen = 0; break;
+                        
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen = 0; break;
                 }
 
                 //updaten: so machen dass für die weißen nicht gewürfelt werden darf.
