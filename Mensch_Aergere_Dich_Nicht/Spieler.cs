@@ -3,11 +3,13 @@
     internal class Spieler
     {
         private double _anzSiege = 0;
-        private string _name;
+        public string Name { get; private set; }
+        public int Id { get; set; }
 
-        public Spieler(string name)
+        public Spieler(string name, int id)
         {
-            _name = name;
+            Name = name;
+            Id = id;
         }
     }
 }

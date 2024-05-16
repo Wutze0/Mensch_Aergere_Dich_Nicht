@@ -3,6 +3,8 @@ namespace Mensch_Aergere_Dich_Nicht
     internal class Haus
     {
         private int _anzSpielfiguren;
+        public string Farbe { get; private set; }
+        public int figurenImHaus { get; set; } = 4;
         private string _farbe;
         public int FigurenImHaus { get; set; } = 4;
         public int ZiehbareFiguren { get; set; } = 4;
@@ -11,12 +13,15 @@ namespace Mensch_Aergere_Dich_Nicht
         public int HausID { get; private set; }
         public static int _numberOfHouses { get; private set; } = 0;
 
-        public int StartingPrintPosition {  get; set; }
+        public int StartingPrintPosition { get; set; }
         public List<Spielfigur> ZugehoerigeFiguren { get; set; } = new List<Spielfigur>();
 
         
         public Haus(Verfuegbare_Farben farbe)
         {
+            Farbe = farbe.ToString();
+            StartingPrintPosition = 1 + (numberOfHouses * 10);
+            numberOfHouses++;
             _farbe = farbe.ToString();
             switch (_numberOfHouses)
             {
@@ -38,7 +43,7 @@ namespace Mensch_Aergere_Dich_Nicht
         public void changeColour()
         {
 
-            switch (_farbe)
+            switch (Farbe)
             {
                 case "Rot": Console.ForegroundColor = ConsoleColor.Red; break;
                 case "Gruen": Console.ForegroundColor = ConsoleColor.Green; break;
@@ -48,6 +53,8 @@ namespace Mensch_Aergere_Dich_Nicht
                 case "Dunkelrot": Console.ForegroundColor = ConsoleColor.DarkRed; break;
                 case "Dunkelgruen": Console.ForegroundColor = ConsoleColor.DarkGreen; break;
                 case "Magenta": Console.ForegroundColor = ConsoleColor.Magenta; break;
+                case "Weiss": Console.ForegroundColor = ConsoleColor.White; break;
+
             }
 
 
