@@ -305,6 +305,7 @@ namespace Mensch_Aergere_Dich_Nicht
         private static void EinleitungNeuesSpiel()
         {
             Console.Clear();
+            Console.WriteLine("Um ein Spiel zu speicher, einfach während des Spielablaufes 'Speicher' eingeben.");
             int spielerzahl = int.MinValue;
             bool bot = false;
             int botAnzahl = 0;
@@ -379,8 +380,23 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
 
             }
-            for(int i = 0; i < botAnzahl; i++)
+            for (int i = 0; i < botAnzahl; i++)
             {
+                Random r = new Random();
+                int farbeIndex = r.Next(0, 7); // 0 bis 7 weil es so viele Farben im Enum gibt.
+                Verfuegbare_Farben farbe = (Verfuegbare_Farben)farbeIndex; //somit kann man auf die korrekte Stelle des Enums zugreifen.
+                if (!getAvailableColors(haeuser).Contains(farbe.ToString()))
+                {
+                    haeuser.Add(new Haus(farbe));
+
+                        //Die Bots werden noch nicht in die Spielerliste hinzugefügt.
+
+                    Console.WriteLine("haus zugefürgt");
+                }
+                else
+                {
+                    i--;
+                }
 
             }
             for (int i = haeuser.Count; i < 4; i++)
@@ -444,14 +460,10 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
 
                 
-
-                //updaten: so machen dass für die weißen nicht gewürfelt werden darf.
-
             }
         }
         private static string getAvailableColors(List<Haus> haeuser)
         {
-            //die weißen sollen nicht als farbe gelten
             List<Verfuegbare_Farben> liste = new List<Verfuegbare_Farben>();
             List<Verfuegbare_Farben> verwendeteFarben = new List<Verfuegbare_Farben>();
             int i = 0;
@@ -481,9 +493,9 @@ namespace Mensch_Aergere_Dich_Nicht
         }
         //für gewinnüberprüfung eventuell: jedes haus hat ja 4 felder wo eine figur reingehen muss, also für jedes haus einen positionsArray machen.
 
-        public static void SpielSpeichern()
+        public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser)
         {
-
+            File.Create("./././abc.txt");
         }
     }
 }
