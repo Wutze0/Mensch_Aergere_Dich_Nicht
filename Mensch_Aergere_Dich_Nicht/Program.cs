@@ -389,8 +389,6 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     haeuser.Add(new Haus(farbe));
 
-                        //Die Bots werden noch nicht in die Spielerliste hinzugefügt.
-
                     Console.WriteLine("haus zugefürgt");
                 }
                 else
@@ -428,7 +426,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
                 if(abtauschen < spieler.Count)
                 {
-                    Console.WriteLine($"Der Spieler {spieler.ElementAt(abtauschen ).Name} ist dran!");
+                    Console.WriteLine($"Der Spieler {spieler.ElementAt(abtauschen).Name} ist dran!");
                 }
                 //Console.WriteLine(haeuser.ElementAt(abtauschen).Farbe);
 
