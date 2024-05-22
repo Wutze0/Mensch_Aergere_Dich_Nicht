@@ -4,7 +4,7 @@
     {
         public int _id { get; set; }
         public string _farbe { get; private set; }
-        public double _position { get; set; }
+        public double Position { get; set; } = 0;
         public double PrintPosition { get; set; } = 0;      //Printposition standardmäßig 0
         public bool IsInHouse { get; set; } = true;
 
@@ -12,7 +12,7 @@
         {
             _id = id;
             _farbe = farbe;
-            _position = position;
+            Position = position;
         }
 
         public void PrintFigur()

@@ -24,7 +24,7 @@ namespace Mensch_Aergere_Dich_Nicht
             //Testen der Methode wuerfeln
             for (int j = 0; j < 100; j++)
             {
-                wuerfeln(blauesHaus, print);
+                //wuerfeln(blauesHaus, print, _haueser);
                 //print.PrintSpielfeld();
             }
             //_haueser.ElementAt(0).ZugehoerigeFiguren.ElementAt(1)._position += wuerfeln(_haueser[0]);
@@ -39,14 +39,14 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
 
-        private static void wuerfeln(Haus haus, Print print)
+        private static void wuerfeln(Haus haus, Print print, List<Haus> haueser, bool botYesNo)
         {
             int ziehe = 0;
             bool erneutWuerfeln = true;
 
             Random r = new Random();
 
-            if (haus.figurenImHaus != 4) //normaler Spielablauf
+            if(haus.FigurenImHaus <= haus.ZiehbareFiguren) //normaler Spielablauf, ziehbareFiguren speichert die Anzahl der Figuren, die sich noch bewegen könnte und somit nicht am Ende angelangt sind
             {
                 int sechsCounter = 0;
                 while (erneutWuerfeln == true && sechsCounter <= 3) //Logik für, wenn jemand eine 6 würfelt //Man darf nur maximal drei mal hintereinander eine 6 würfeln
@@ -54,9 +54,34 @@ namespace Mensch_Aergere_Dich_Nicht
                     ziehe = r.Next(1, 7);
                     if (ziehe == 6)
                     {
-                        Console.WriteLine("Sie dürfen eine Figur aus dem haus ziehen!"); //noch nicht fertig; muss nicht immer der Fall sein, dass man eine Figur rausziehen darf.
+
                         erneutWuerfeln = true;
-                        auswaehlen(haus, true, ziehe, print);
+                        if (haus.FigurenImHaus > 0)
+                        {
+                            if (botYesNo)
+                            {
+
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("Sie dürfen eine Figur aus dem haus ziehen!");        //noch nicht fertig; muss nicht immer der Fall sein, dass man eine Figur rausziehen darf.
+                                auswaehlen(haus, true, ziehe, print, haueser);
+                            }
+
+                        }
+                        else
+                        {
+                            if (botYesNo)
+                            {
+
+                            }
+                            else
+                            {
+                                auswaehlen(haus, false, ziehe, print, haueser);
+                            }
+                        }  
+
                         print.PrintSpielfeld();
                         sechsCounter++;
 
@@ -66,7 +91,14 @@ namespace Mensch_Aergere_Dich_Nicht
                         erneutWuerfeln = false;
 
                 }
-                auswaehlen(haus, false, ziehe, print);
+                if (botYesNo)
+                {
+                    
+                }
+                else
+                {
+                    auswaehlen(haus, false, ziehe, print, haueser);
+                }
                 print.PrintSpielfeld();
                 //maximal drei mal würfeln und maximal drei mal 6 würfeln
                 //auswählen welche figur GEMACHT
@@ -87,8 +119,8 @@ namespace Mensch_Aergere_Dich_Nicht
 
                     //haus.ZugehoerigeFiguren.ElementAt(1).PrintPosition = haus.StartingPrintPosition;
                     //haus.ZugehoerigeFiguren.ElementAt(1)._position = 1;
-                    auswaehlen(haus, true, ziehe, print);
-                    //print.PrintSpielfeld();
+                    auswaehlen(haus, true, ziehe,print, haueser);
+                    print.PrintSpielfeld();
                 }
                 print.PrintSpielfeld();
 
@@ -97,7 +129,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
         }
 
-        private static void auswaehlen(Haus haus, bool rausziehen, int gewuerfelt, Print print) //rausziehen bestimmt, ob man eine Figur rausziehen darf oder nicht
+        private static void auswaehlen(Haus haus, bool rausziehen, int gewuerfelt, Print print, List<Haus> haeuser) //rausziehen bestimmt, ob man eine Figur rausziehen darf oder nicht
         {
             bool jaNein = false;
             int eingabe = 0;
@@ -111,14 +143,15 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 Console.WriteLine("Möchten Sie eine Figur aus dem Haus ziehen?");
                 jaNein = Convert.ToBoolean(Console.ReadLine());
-                eingabe = 4 - haus.figurenImHaus;
+                eingabe = 4 - haus.FigurenImHaus;
             }
 
             if (rausziehen == true && jaNein == true && istFeldFrei(print, haus, eingabe, gewuerfelt))
             {
-                haus.figurenImHaus--;
+                haus.FigurenImHaus--;
                 bool einmal = true;
                 int i = 0;
+                Spielfigur aktuelleFigur = null;
 
                 foreach (Spielfigur s in haus.ZugehoerigeFiguren)
                 {
@@ -126,54 +159,63 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         haus.ZugehoerigeFiguren.ElementAt(i).PrintPosition = haus.StartingPrintPosition;
                         haus.ZugehoerigeFiguren.ElementAt(i).IsInHouse = false;
-                        haus.ZugehoerigeFiguren.ElementAt(i)._position = 1;
+                        haus.ZugehoerigeFiguren.ElementAt(i).Position = 1;
                         einmal = false;
+                        aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(i);
                     }
                     i++;
-
+                }
+                foreach(Haus h in haeuser)
+                {
+                    foreach(Spielfigur s in h.ZugehoerigeFiguren)
+                    {
+                        if(s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
+                        {
+                            s.PrintPosition = 0;
+                            s.Position = 0;
+                            s.IsInHouse = true;
+                            h.FigurenImHaus++;
+                        }
+                    }
                 }
 
             }
             else if (rausziehen == false && jaNein == false && istFeldFrei(print, haus, eingabe - 1, gewuerfelt))
             {
+                int temp = eingabe - 1;
 
-                switch (eingabe)
+                if (haus.ZugehoerigeFiguren.ElementAt(temp).IsInHouse == false)
                 {
-                    case 0:
-                        break;
-                    case 1:
-                        if (haus.ZugehoerigeFiguren.ElementAt(0).IsInHouse == false)
-                        {
-                            haus.ZugehoerigeFiguren.ElementAt(0)._position += gewuerfelt;
-                            haus.ZugehoerigeFiguren.ElementAt(0).PrintPosition += gewuerfelt;
-                        }
-                        break;
-                    case 2:
-                        if (haus.ZugehoerigeFiguren.ElementAt(1).IsInHouse == false)
-                        {
-                            haus.ZugehoerigeFiguren.ElementAt(1)._position += gewuerfelt;
-                            haus.ZugehoerigeFiguren.ElementAt(1).PrintPosition += gewuerfelt;
-                        }
-                        break;
+                    Spielfigur aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(temp);
+                    aktuelleFigur.Position += gewuerfelt;
+                    if(aktuelleFigur.Position > haus._aktuellLetztesFeld)               //Diese Verzweigung wird betreten, wenn die Figur übers Haus hinauszieht
+                    {
+                        aktuelleFigur.Position %= (haus._aktuellLetztesFeld + 1);
+                        aktuelleFigur.Position++;
+                    }
+                    aktuelleFigur.PrintPosition += gewuerfelt;
 
-                    case 3:
-                        if (haus.ZugehoerigeFiguren.ElementAt(2).IsInHouse == false)
-                        {
-                            haus.ZugehoerigeFiguren.ElementAt(2)._position += gewuerfelt;
-                            haus.ZugehoerigeFiguren.ElementAt(2).PrintPosition += gewuerfelt;
-                        }
-                        break;
+                    if (aktuelleFigur.PrintPosition > 40 && aktuelleFigur.PrintPosition < (40 + (4 * (haus.HausID - 1))) && aktuelleFigur.PrintPosition > (40 + (4 * (haus.HausID))))
+                    {
 
-                    case 4:
-                        if (haus.ZugehoerigeFiguren.ElementAt(3).IsInHouse == false)
-                        {
-                            haus.ZugehoerigeFiguren.ElementAt(3)._position += gewuerfelt;
-                            haus.ZugehoerigeFiguren.ElementAt(3).PrintPosition += gewuerfelt;
-                        }
-                        break;
+                    }
 
+                    foreach (Haus h in haeuser)
+                    {
+                        foreach (Spielfigur s in h.ZugehoerigeFiguren)
+                        {
+                            if (s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
+                            {
+                                s.PrintPosition = 0;
+                                s.Position = 0;
+                                s.IsInHouse = true;
+                                h.FigurenImHaus++;
+                            }
+                        }
+                    }
                 }
 
+                
             }
             //Man kommt hier hin wenn man eine 6 würfelt und rausziehen KÖNNTE, aber nicht will.
             else if (istFeldFrei(print, haus, eingabe, gewuerfelt))
@@ -181,43 +223,30 @@ namespace Mensch_Aergere_Dich_Nicht
                 Console.WriteLine($"Ziehe {gewuerfelt} Felder mit einer Figur!");
                 Console.WriteLine("Welche Figur möchten Sie ziehen? Verfügbar: [1, 2, 3, 4]");
                 eingabe = Convert.ToUInt16(Console.ReadLine());
+                int temp = eingabe - 1;
 
-                switch (eingabe)
+                if (haus.ZugehoerigeFiguren.ElementAt(temp).IsInHouse == false)
                 {
-                    case 0:
-                        break;
-                    case 1:
-                        if (haus.ZugehoerigeFiguren.ElementAt(0).IsInHouse == false)
+                    Spielfigur aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(temp);
+                    aktuelleFigur.Position += gewuerfelt;
+                    aktuelleFigur.PrintPosition += gewuerfelt;
+                    foreach (Haus h in haeuser)
+                    {
+                        foreach (Spielfigur s in h.ZugehoerigeFiguren)
                         {
-                            haus.ZugehoerigeFiguren.ElementAt(0)._position += gewuerfelt;
-                            haus.ZugehoerigeFiguren.ElementAt(0).PrintPosition += gewuerfelt;
+                            if (s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
+                            {
+                                s.PrintPosition = 0;
+                                s.Position = 0;
+                                s.IsInHouse = true;
+                                h.FigurenImHaus++;
+                            }
                         }
-                        break;
-                    case 2:
-                        if (haus.ZugehoerigeFiguren.ElementAt(1).IsInHouse == false)
-                        {
-                            haus.ZugehoerigeFiguren.ElementAt(1)._position += gewuerfelt;
-                            haus.ZugehoerigeFiguren.ElementAt(1).PrintPosition += gewuerfelt;
-                        }
-                        break;
-
-                    case 3:
-                        if (haus.ZugehoerigeFiguren.ElementAt(2).IsInHouse == false)
-                        {
-                            haus.ZugehoerigeFiguren.ElementAt(2)._position += gewuerfelt;
-                            haus.ZugehoerigeFiguren.ElementAt(2).PrintPosition += gewuerfelt;
-                        }
-                        break;
-
-                    case 4:
-                        if (haus.ZugehoerigeFiguren.ElementAt(3).IsInHouse == false)
-                        {
-                            haus.ZugehoerigeFiguren.ElementAt(3)._position += gewuerfelt;
-                            haus.ZugehoerigeFiguren.ElementAt(3).PrintPosition += gewuerfelt;
-                        }
-                        break;
+                    }
                 }
+
             }
+            
         }
 
         private static bool istFeldFrei(Print print, Haus zieherHaus, int gezogeneFigur, int gewuerfelt) // idese methode funktioniert NICHT
@@ -230,7 +259,7 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 foreach (Spielfigur x in alleSpielfiguren)
                 {
-                    if (x._position == 1)
+                    if(x.Position == 1)
                     {
                         if (x._farbe == gezogeneSpielfigur._farbe)
                         {
@@ -247,7 +276,7 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 foreach (Spielfigur x in alleSpielfiguren)
                 {
-                    if (x._position == gezogeneSpielfigur._position + gewuerfelt)
+                    if (x.Position == (gezogeneSpielfigur.Position + gewuerfelt) % 40)
                     {
                         if (x._farbe == gezogeneSpielfigur._farbe)
                         {
@@ -430,30 +459,18 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 //Console.WriteLine(haeuser.ElementAt(abtauschen).Farbe);
 
-                if (haeuser.ElementAt(abtauschen).Farbe != "Weiss")
+                switch (abtauschen)
                 {
-                    switch (abtauschen)
-                    {
-                        case 0:
-                            wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen++; break;
-                        case 1:
-                            wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen++; break;
-                        case 2:
-                            wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen++; break;
-                        case 3:
-                            wuerfeln(haeuser.ElementAt(abtauschen), p); abtauschen = 0; break;
-                    }
+                    case 0:
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
+                    case 1:
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
+                    case 2:
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
+                    case 3:
+                        
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen = 0; break;
                 }
-                else
-                {
-                    if(abtauschen != 3)
-                    {
-                        abtauschen++;
-                    }
-                    else
-                    {
-                        abtauschen = 0;
-                    }
 
                 }
 
