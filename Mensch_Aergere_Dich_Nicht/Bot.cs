@@ -67,17 +67,17 @@ namespace Mensch_Aergere_Dich_Nicht
                         }
                     }
                 }
-                if(priority == 4)
-                {
-                    foreach(Spielfigur s in hausDesBots.ZugehoerigeFiguren)
-                    {
-                        for()
-                        foreach(Spielfigur sGegner in alleHaueser.ElementAt(i)
-                        {
+                //if(priority == 4)
+                //{
+                //    foreach(Spielfigur s in hausDesBots.ZugehoerigeFiguren)
+                //    {
+                //        for()
+                //        foreach(Spielfigur sGegner in alleHaueser.ElementAt(i)
+                //        {
                             
-                        }
-                    }
-                }
+                //        }
+                //    }
+                //}
 
 
             }
