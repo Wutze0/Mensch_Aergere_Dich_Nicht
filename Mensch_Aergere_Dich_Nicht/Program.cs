@@ -369,6 +369,8 @@ namespace Mensch_Aergere_Dich_Nicht
                         Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
                     }
                 } while (botAnzahl != 2 && botAnzahl != 3 && botAnzahl != 1 && botAnzahl != 0);
+
+                if(botAnzahl > 0)
                 bot = true;
             }
 
