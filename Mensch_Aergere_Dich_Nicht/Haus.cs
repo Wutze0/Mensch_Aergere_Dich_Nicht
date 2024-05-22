@@ -14,7 +14,7 @@ namespace Mensch_Aergere_Dich_Nicht
         public int StartingPrintPosition { get; set; }
         public List<Spielfigur> ZugehoerigeFiguren { get; set; } = new List<Spielfigur>();
 
-        
+
         public Haus(Verfuegbare_Farben farbe)
         {
             Farbe = farbe.ToString();
@@ -55,7 +55,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
         }
 
-        
+
 
     }
 

@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Mensch_Aergere_Dich_Nicht
+﻿namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Bot
     {
@@ -24,11 +15,11 @@ namespace Mensch_Aergere_Dich_Nicht
             bool movefound = true;
             int priority = 1;
             Spielfigur? zuBewegendeSpielfigur = null;
-            while(movefound)
+            while (movefound)
             {
-                if(priority == 1)
+                if (priority == 1)
                 {
-                    foreach(Spielfigur s in hausDesBots.ZugehoerigeFiguren)
+                    foreach (Spielfigur s in hausDesBots.ZugehoerigeFiguren)
                     {
                         if (movefound)
                         {
@@ -38,7 +29,7 @@ namespace Mensch_Aergere_Dich_Nicht
                                 zuBewegendeSpielfigur = s;
                             }
                         }
-                       
+
                     }
                 }
                 /*if(priority == 2)

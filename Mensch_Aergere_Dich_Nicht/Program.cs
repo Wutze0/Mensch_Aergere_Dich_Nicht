@@ -46,7 +46,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
             Random r = new Random();
 
-            if(haus.FigurenImHaus <= haus.ZiehbareFiguren) //normaler Spielablauf, ziehbareFiguren speichert die Anzahl der Figuren, die sich noch bewegen könnte und somit nicht am Ende angelangt sind
+            if (haus.FigurenImHaus <= haus.ZiehbareFiguren) //normaler Spielablauf, ziehbareFiguren speichert die Anzahl der Figuren, die sich noch bewegen könnte und somit nicht am Ende angelangt sind
             {
                 int sechsCounter = 0;
                 while (erneutWuerfeln == true && sechsCounter <= 3) //Logik für, wenn jemand eine 6 würfelt //Man darf nur maximal drei mal hintereinander eine 6 würfeln
@@ -80,7 +80,7 @@ namespace Mensch_Aergere_Dich_Nicht
                             {
                                 auswaehlen(haus, false, ziehe, print, haueser);
                             }
-                        }  
+                        }
 
                         print.PrintSpielfeld();
                         sechsCounter++;
@@ -93,7 +93,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 if (botYesNo)
                 {
-                    
+
                 }
                 else
                 {
@@ -119,7 +119,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
                     //haus.ZugehoerigeFiguren.ElementAt(1).PrintPosition = haus.StartingPrintPosition;
                     //haus.ZugehoerigeFiguren.ElementAt(1)._position = 1;
-                    auswaehlen(haus, true, ziehe,print, haueser);
+                    auswaehlen(haus, true, ziehe, print, haueser);
                     print.PrintSpielfeld();
                 }
                 print.PrintSpielfeld();
@@ -165,11 +165,11 @@ namespace Mensch_Aergere_Dich_Nicht
                     }
                     i++;
                 }
-                foreach(Haus h in haeuser)
+                foreach (Haus h in haeuser)
                 {
-                    foreach(Spielfigur s in h.ZugehoerigeFiguren)
+                    foreach (Spielfigur s in h.ZugehoerigeFiguren)
                     {
-                        if(s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
+                        if (s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
                         {
                             s.PrintPosition = 0;
                             s.Position = 0;
@@ -188,7 +188,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     Spielfigur aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(temp);
                     aktuelleFigur.Position += gewuerfelt;
-                    if(aktuelleFigur.Position > haus._aktuellLetztesFeld)               //Diese Verzweigung wird betreten, wenn die Figur übers Haus hinauszieht
+                    if (aktuelleFigur.Position > haus._aktuellLetztesFeld)               //Diese Verzweigung wird betreten, wenn die Figur übers Haus hinauszieht
                     {
                         aktuelleFigur.Position %= (haus._aktuellLetztesFeld + 1);
                         aktuelleFigur.Position++;
@@ -215,7 +215,7 @@ namespace Mensch_Aergere_Dich_Nicht
                     }
                 }
 
-                
+
             }
             //Man kommt hier hin wenn man eine 6 würfelt und rausziehen KÖNNTE, aber nicht will.
             else if (istFeldFrei(print, haus, eingabe, gewuerfelt))
@@ -246,7 +246,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
 
             }
-            
+
         }
 
         private static bool istFeldFrei(Print print, Haus zieherHaus, int gezogeneFigur, int gewuerfelt) // idese methode funktioniert NICHT
@@ -259,7 +259,7 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 foreach (Spielfigur x in alleSpielfiguren)
                 {
-                    if(x.Position == 1)
+                    if (x.Position == 1)
                     {
                         if (x._farbe == gezogeneSpielfigur._farbe)
                         {
@@ -353,7 +353,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
             } while (spielerzahl != 2 && spielerzahl != 3 && spielerzahl != 4);
 
-            if(spielerzahl != 0)
+            if (spielerzahl != 0)
             {
                 do
                 {
@@ -453,7 +453,7 @@ namespace Mensch_Aergere_Dich_Nicht
             for (int k = 0; k < 100; k++)
             {
 
-                if(abtauschen < spieler.Count)
+                if (abtauschen < spieler.Count)
                 {
                     Console.WriteLine($"Der Spieler {spieler.ElementAt(abtauschen).Name} ist dran!");
                 }
@@ -462,20 +462,19 @@ namespace Mensch_Aergere_Dich_Nicht
                 switch (abtauschen)
                 {
                     case 0:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser, bot); abtauschen++; break;
                     case 1:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser, bot); abtauschen++; break;
                     case 2:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser, bot); abtauschen++; break;
                     case 3:
-                        
-                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen = 0; break;
+
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser, bot); abtauschen = 0; break;
                 }
 
-                }
-
-                
             }
+
+
         }
         private static string getAvailableColors(List<Haus> haeuser)
         {
@@ -515,3 +514,5 @@ namespace Mensch_Aergere_Dich_Nicht
     }
 
 }
+
+
