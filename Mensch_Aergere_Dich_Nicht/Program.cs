@@ -39,10 +39,12 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
 
-        private static void wuerfeln(Haus haus, Print print, List<Haus> haueser, bool botYesNo)
+        private static void wuerfeln(Haus haus, Print print, List<Haus> haueser)
         {
             int ziehe = 0;
             bool erneutWuerfeln = true;
+            bool botYesNo = haus.ZugehoerigerSpieler.BotYesNo;
+
 
             Random r = new Random();
 
@@ -56,31 +58,29 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
 
                         erneutWuerfeln = true;
-                        if (haus.FigurenImHaus > 0)
+                        if (botYesNo)
                         {
-                            if (botYesNo)
-                            {
-
-
-                            }
-                            else
-                            {
-                                Console.WriteLine("Sie dürfen eine Figur aus dem haus ziehen!");        //noch nicht fertig; muss nicht immer der Fall sein, dass man eine Figur rausziehen darf.
-                                auswaehlen(haus, true, ziehe, print, haueser);
-                            }
-
+                            Bot x = haus.ZugehoerigerSpieler as Bot;
+                            x.Spielfigurbewegen(haus, haueser, ziehe);
                         }
                         else
                         {
-                            if (botYesNo)
+                            if (haus.FigurenImHaus > 0)
                             {
+
+                                Console.WriteLine("Sie dürfen eine Figur aus dem haus ziehen!");        //noch nicht fertig; muss nicht immer der Fall sein, dass man eine Figur rausziehen darf.
+                                auswaehlen(haus, true, ziehe, print, haueser);
+
 
                             }
                             else
                             {
+
                                 auswaehlen(haus, false, ziehe, print, haueser);
+
                             }
                         }
+                        
 
                         print.PrintSpielfeld();
                         sechsCounter++;
@@ -93,7 +93,8 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 if (botYesNo)
                 {
-
+                    Bot x = haus.ZugehoerigerSpieler as Bot;
+                    x.Spielfigurbewegen(haus, haueser, ziehe);
                 }
                 else
                 {
@@ -116,11 +117,19 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 if (ziehe == 6)
                 {
-
-                    //haus.ZugehoerigeFiguren.ElementAt(1).PrintPosition = haus.StartingPrintPosition;
-                    //haus.ZugehoerigeFiguren.ElementAt(1)._position = 1;
-                    auswaehlen(haus, true, ziehe, print, haueser);
-                    print.PrintSpielfeld();
+                    if(botYesNo)
+                    {
+                        Bot x = haus.ZugehoerigerSpieler as Bot;
+                        x.Spielfigurbewegen(haus, haueser, ziehe);
+                    }
+                    else
+                    {
+                        //haus.ZugehoerigeFiguren.ElementAt(1).PrintPosition = haus.StartingPrintPosition;
+                        //haus.ZugehoerigeFiguren.ElementAt(1)._position = 1;
+                        auswaehlen(haus, true, ziehe, print, haueser);
+                        print.PrintSpielfeld();
+                    }
+                    
                 }
                 print.PrintSpielfeld();
 
@@ -188,19 +197,19 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     Spielfigur aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(temp);
                     aktuelleFigur.Position += gewuerfelt;
-                    if (aktuelleFigur.Position > haus._aktuellLetztesFeld)               //Diese Verzweigung wird betreten, wenn die Figur übers Haus hinauszieht
+                    if (aktuelleFigur.Position > haus.AktuellLetztesFelde)               //Diese Verzweigung wird betreten, wenn die Figur übers Haus hinauszieht
                     {
-                        aktuelleFigur.Position %= (haus._aktuellLetztesFeld + 1);
+                        aktuelleFigur.Position %= (haus.AktuellLetztesFelde + 1);
                         aktuelleFigur.Position++;
                     }
-                    if(aktuelleFigur.Position <= 44 && aktuelleFigur.Position >= 41)
+                    if (aktuelleFigur.Position <= 44 && aktuelleFigur.Position >= 41)
                     {
                         aktuelleFigur.PrintPosition = aktuelleFigur.Position + (4 + (haus.HausID - 1));
                     }
                     else
                     {
                         aktuelleFigur.PrintPosition += gewuerfelt;
-                        if(aktuelleFigur.PrintPosition > 40)
+                        if (aktuelleFigur.PrintPosition > 40)
                         {
                             aktuelleFigur.PrintPosition %= 41;
                             aktuelleFigur.PrintPosition++;
@@ -342,7 +351,7 @@ namespace Mensch_Aergere_Dich_Nicht
         private static void EinleitungNeuesSpiel()
         {
             Console.Clear();
-            Console.WriteLine("Um ein Spiel zu speicher, einfach während des Spielablaufes 'Speicher' eingeben.");
+            Console.WriteLine("Um ein Spiel zu speichern, einfach während des Spielablaufes 'Speicher' eingeben.");
             int spielerzahl = int.MinValue;
             bool bot = false;
             int botAnzahl = 0;
@@ -378,8 +387,8 @@ namespace Mensch_Aergere_Dich_Nicht
                     }
                 } while (botAnzahl != 2 && botAnzahl != 3 && botAnzahl != 1 && botAnzahl != 0);
 
-                if(botAnzahl > 0)
-                bot = true;
+                if (botAnzahl > 0)
+                    bot = true;
             }
 
             List<Spieler> spielerliste = new List<Spieler>();
@@ -389,7 +398,6 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 Console.WriteLine($"Bitte den Namen des {i + 1}. Spielers eingeben:");
                 string name = Console.ReadLine();
-                spielerliste.Add(new Spieler(name, i + 1));
                 Console.WriteLine($"\n{name}, Bitte geben Sie Ihre gewünschte Hausfarbe ein\n" +
                     $"Verfügbar sind folgende:\n{getAvailableColors(haeuser)}");
                 bool check = true;
@@ -417,7 +425,8 @@ namespace Mensch_Aergere_Dich_Nicht
                         Console.WriteLine("Diese Farbe existiert nicht, bitte eine andere Farbe wählen:");
                     }
                 }
-
+                haeuser.ElementAt(i).ZugehoerigerSpieler = new Menschlicher_Spieler(name, i + 1);
+                spielerliste.Add(haeuser.ElementAt(i).ZugehoerigerSpieler);
             }
             for (int i = 0; i < botAnzahl; i++)
             {
@@ -444,7 +453,7 @@ namespace Mensch_Aergere_Dich_Nicht
             Console.Clear();
 
             int j = 0;
-            foreach (Spieler s in spielerliste)
+            foreach (Menschlicher_Spieler s in spielerliste)
             {
                 Console.WriteLine($"Spieler {j + 1}: {s.Name} mit {haeuser.ElementAt(j).Farbe} als Farbe des Hauses.");
                 j++;
@@ -472,14 +481,13 @@ namespace Mensch_Aergere_Dich_Nicht
                 switch (abtauschen)
                 {
                     case 0:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser, bot); abtauschen++; break;
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
                     case 1:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser, bot); abtauschen++; break;
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
                     case 2:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser, bot); abtauschen++; break;
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
                     case 3:
-
-                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser, bot); abtauschen = 0; break;
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen = 0; break;
                 }
 
             }
@@ -517,7 +525,7 @@ namespace Mensch_Aergere_Dich_Nicht
         }
         //für gewinnüberprüfung eventuell: jedes haus hat ja 4 felder wo eine figur reingehen muss, also für jedes haus einen positionsArray machen.
 
-        public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser)
+        public static void SpielSpeichern(List<Menschlicher_Spieler> spielerliste, List<Haus> haeuser)
         {
             File.Create("./././abc.txt");
         }
