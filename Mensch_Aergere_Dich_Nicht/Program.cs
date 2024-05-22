@@ -146,7 +146,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 eingabe = 4 - haus.FigurenImHaus;
             }
 
-            if (rausziehen == true && jaNein == true && istFeldFrei(print, haus, eingabe, gewuerfelt))
+            if (rausziehen == true && jaNein == true && istFeldFrei(print, haus, eingabe, gewuerfelt))      //Hier kommt man hinein, wenn man eine Figur aus dem Haus ziehen darf und will
             {
                 haus.FigurenImHaus--;
                 bool einmal = true;
@@ -180,7 +180,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
 
             }
-            else if (rausziehen == false && jaNein == false && istFeldFrei(print, haus, eingabe - 1, gewuerfelt))
+            else if (rausziehen == false && jaNein == false && istFeldFrei(print, haus, eingabe - 1, gewuerfelt))       //Hier kommt man hinein, wenn man eine Figur nur ziehen darf
             {
                 int temp = eingabe - 1;
 
@@ -193,11 +193,19 @@ namespace Mensch_Aergere_Dich_Nicht
                         aktuelleFigur.Position %= (haus._aktuellLetztesFeld + 1);
                         aktuelleFigur.Position++;
                     }
-                    aktuelleFigur.PrintPosition += gewuerfelt;
-
-                    if (aktuelleFigur.PrintPosition > 40 && aktuelleFigur.PrintPosition < (40 + (4 * (haus.HausID - 1))) && aktuelleFigur.PrintPosition > (40 + (4 * (haus.HausID))))
+                    if(aktuelleFigur.Position <= 44 && aktuelleFigur.Position >= 41)
                     {
+                        aktuelleFigur.PrintPosition = aktuelleFigur.Position + (4 + (haus.HausID - 1));
+                    }
+                    else
+                    {
+                        aktuelleFigur.PrintPosition += gewuerfelt;
+                        if(aktuelleFigur.PrintPosition > 40)
+                        {
+                            aktuelleFigur.PrintPosition %= 41;
+                            aktuelleFigur.PrintPosition++;
 
+                        }
                     }
 
                     foreach (Haus h in haeuser)
@@ -218,7 +226,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
             }
             //Man kommt hier hin wenn man eine 6 würfelt und rausziehen KÖNNTE, aber nicht will.
-            else if (istFeldFrei(print, haus, eingabe, gewuerfelt))
+            else
             {
                 Console.WriteLine($"Ziehe {gewuerfelt} Felder mit einer Figur!");
                 Console.WriteLine("Welche Figur möchten Sie ziehen? Verfügbar: [1, 2, 3, 4]");
