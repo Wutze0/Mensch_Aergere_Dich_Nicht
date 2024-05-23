@@ -2,14 +2,14 @@
 {
     internal class Spieler
     {
-        private double _anzSiege = 0;
+        public bool BotYesNo { get; private set; }
         public string Name { get; private set; }
-        public int Id { get; set; }
 
-        public Spieler(string name, int id)
+        public Spieler(string name, bool bot)
         {
+
             Name = name;
-            Id = id;
+            BotYesNo = bot;
         }
     }
 }

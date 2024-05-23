@@ -4,11 +4,11 @@
     {
         public int _id { get; set; }
         public string _farbe { get; private set; }
-        public double Position { get; set; } = 0;
-        public double PrintPosition { get; set; } = 0;      //Printposition standardmäßig 0
+        public int Position { get; set; } = 0;
+        public int PrintPosition { get; set; } = 0;      //Printposition standardmäßig 0
         public bool IsInHouse { get; set; } = true;
 
-        public Spielfigur(int id, string farbe, double position)
+        public Spielfigur(int id, string farbe, int position)
         {
             _id = id;
             _farbe = farbe;
