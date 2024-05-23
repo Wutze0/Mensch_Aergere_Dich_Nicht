@@ -2,13 +2,8 @@
 {
     internal class Menschlicher_Spieler : Spieler
     {
-        public int Id { get; set; }
-
-
-
-        public Menschlicher_Spieler(string name, int id) : base(name, false)
+        public Menschlicher_Spieler(string name) : base(name, false)
         {
-            Id = id;
         }
     }
 }

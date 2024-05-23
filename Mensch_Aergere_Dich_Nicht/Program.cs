@@ -279,7 +279,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     if (x.Position == 1)
                     {
-                        if (x._farbe == gezogeneSpielfigur._farbe)
+                        if (x.Farbe == gezogeneSpielfigur.Farbe)
                         {
                             return false;
                         }
@@ -296,7 +296,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     if (x.Position == (gezogeneSpielfigur.Position + gewuerfelt) % 40)
                     {
-                        if (x._farbe == gezogeneSpielfigur._farbe)
+                        if (x.Farbe == gezogeneSpielfigur.Farbe)
                         {
                             return false;
                         }
@@ -426,7 +426,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         Console.WriteLine("Diese Farbe existiert nicht, bitte eine andere Farbe wählen:");
                     }
                 }
-                haeuser.ElementAt(i).ZugehoerigerSpieler = new Menschlicher_Spieler(name, i + 1);
+                haeuser.ElementAt(i).ZugehoerigerSpieler = new Menschlicher_Spieler(name);
                 spielerliste.Add(haeuser.ElementAt(i).ZugehoerigerSpieler);
             }
             for (int i = 0; i < botAnzahl; i++)
@@ -437,7 +437,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 if (!getAvailableColors(haeuser).Contains(farbe.ToString()))
                 {
                     haeuser.Add(new Haus(farbe));
-
+                    haeuser.ElementAt(i + spielerzahl).ZugehoerigerSpieler = new Bot();
                     Console.WriteLine("haus zugefürgt");
                 }
                 else
@@ -446,9 +446,11 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
 
             }
-            for (int i = haeuser.Count; i < 4; i++)
+            for (int i = haeuser.Count; i < 4; i++)                                                                                         //Die leeren Haueser mit Pseudo bots auffuelen
             {
-                haeuser.Add(new Haus(Verfuegbare_Farben.Weiss));
+                Haus x = new Haus(Verfuegbare_Farben.Weiss);
+                x.AuffuellHaus = true;
+                haeuser.Add(x);
             }
             Thread.Sleep(1000);
             Console.Clear();
@@ -482,14 +484,38 @@ namespace Mensch_Aergere_Dich_Nicht
                 switch (abtauschen)
                 {
                     case 0:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
+
+                        if (!haeuser.ElementAt(abtauschen).AuffuellHaus) 
+                        {
+                            wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
+                        } 
+                        abtauschen++;
+                        break;
+
                     case 1:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
+
+                        if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
+                        {
+                            wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
+                        }
+                        abtauschen++;
+                        break;
+
                     case 2:
-                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); abtauschen++; break;
+
+                        if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
+                        {
+                            wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
+                        }
+                        abtauschen++;
+                        break;
+
                     case 3:
 
-                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser); 
+                        if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
+                        {
+                            wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
+                        }
                         abtauschen = 0;
                         Console.WriteLine("Wollen Sie das Spiel speichern? [y/n]");
                         char eingabe = '\0';

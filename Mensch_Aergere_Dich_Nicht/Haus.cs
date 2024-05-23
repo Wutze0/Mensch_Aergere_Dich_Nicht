@@ -8,9 +8,10 @@ namespace Mensch_Aergere_Dich_Nicht
         public int ZiehbareFiguren { get; set; } = 4;
         public int AktuellLetztesFelde { get; set; } = 44;
 
-        public int HausID { get; private set; }
+        public int HausID { get; private set; }                         //Die HausID dient hauptsächlich dazu, die Printpositionen innerhalb des Hauses zu bestimmen, geht von 1 - 4
         public static int NumberOfHouses { get; private set; } = 0;
 
+        public bool AuffuellHaus {  get; set; } = false;
         public int StartingPrintPosition { get; set; }
         public List<Spielfigur> ZugehoerigeFiguren { get; set; } = new List<Spielfigur>();
 
@@ -24,8 +25,8 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 case 0: StartingPrintPosition = 33; break;
                 case 1: StartingPrintPosition = 3; break;
-                case 2: StartingPrintPosition = 13; break;
-                case 3: StartingPrintPosition = 23; break;
+                case 2: StartingPrintPosition = 23; break;
+                case 3: StartingPrintPosition = 13; break;
             }
             NumberOfHouses++;
             HausID = NumberOfHouses;
