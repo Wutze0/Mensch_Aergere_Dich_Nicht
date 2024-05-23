@@ -4,6 +4,7 @@ namespace Mensch_Aergere_Dich_Nicht
     {
         static void Main(string[] args)
         {
+            
             //julian, wenn du testen willst und nicht immer die Einführung durchmachen willst, kannst du Zeile 8 auskommentieren.
             Einführung();
 
@@ -471,7 +472,16 @@ namespace Mensch_Aergere_Dich_Nicht
                         wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser, bot); abtauschen++; break;
                     case 3:
 
-                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser, bot); abtauschen = 0; break;
+                        wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser, bot); 
+                        abtauschen = 0;
+                        Console.WriteLine("Wollen Sie das Spiel speichern? [y/n]");
+                        char eingabe = '\0';
+                        char.TryParse(Console.ReadLine(), out eingabe);
+
+                        if (eingabe.Equals('y'))
+                            SpielSpeichern(spieler, haeuser);
+
+                        break;
                 }
 
             }
@@ -511,7 +521,38 @@ namespace Mensch_Aergere_Dich_Nicht
 
         public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser)
         {
-            File.Create("./././abc.txt");
+            //geht noch nicct
+            string path = string.Empty;
+            string header = "Spieler\tHausfarbe\tZugehörige Spielfiguren\nBraucheDaten!";
+            for (int i = 1; i <= 3; i++)
+            {
+                path = $"SaveFile{i}.txt";
+                Console.WriteLine(path);
+ 
+                if (!File.Exists(path))
+                {                    
+
+                    //*** Hier werden alle Daten die vorhanden sind gespeichert! ***
+
+                    FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+                    StreamWriter sw = new StreamWriter(fs);
+
+
+                    //Header:
+                    sw.Write(header);
+
+                    sw.Write($"{spielerliste.ElementAt(0).Name}\t{haeuser.ElementAt(0).Farbe}\t{haeuser.ElementAt(0).ZugehoerigeFiguren.ElementAt(0).Position};{haeuser.ElementAt(0).ZugehoerigeFiguren.ElementAt(1).Position};{haeuser.ElementAt(0).ZugehoerigeFiguren.ElementAt(2).Position};{haeuser.ElementAt(0).ZugehoerigeFiguren.ElementAt(3).Position}\n"
+                    + $"{spielerliste.ElementAt(1).Name}\t{haeuser.ElementAt(1).Farbe}\t{haeuser.ElementAt(1).ZugehoerigeFiguren.ElementAt(0).Position};{haeuser.ElementAt(1).ZugehoerigeFiguren.ElementAt(1).Position};{haeuser.ElementAt(1).ZugehoerigeFiguren.ElementAt(2).Position};{haeuser.ElementAt(1).ZugehoerigeFiguren.ElementAt(3).Position}\n"
+                    );
+
+                    sw.Close();
+                    fs.Close();
+                    break;
+                }
+                
+                
+            }
+
         }
     }
 
