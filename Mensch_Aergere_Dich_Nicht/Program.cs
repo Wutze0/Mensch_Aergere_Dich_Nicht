@@ -197,40 +197,115 @@ namespace Mensch_Aergere_Dich_Nicht
                 if (haus.ZugehoerigeFiguren.ElementAt(temp).IsInHouse == false)
                 {
                     Spielfigur aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(temp);
-                    aktuelleFigur.Position += gewuerfelt;
-                    if (aktuelleFigur.Position > haus.AktuellLetztesFelde)               //Diese Verzweigung wird betreten, wenn die Figur übers Haus hinauszieht
+                    int letztesBefahrbaresFeld = 44;
+                    if(aktuelleFigur.Position <= 44 && aktuelleFigur.Position >= 41)                    //Im Haus fahren
                     {
-                        aktuelleFigur.Position %= (haus.AktuellLetztesFelde + 1);
-                        aktuelleFigur.Position++;
-                    }
-                    if (aktuelleFigur.Position <= 44 && aktuelleFigur.Position >= 41)
-                    {
-                        aktuelleFigur.PrintPosition = aktuelleFigur.Position + (4 + (haus.HausID - 1));
+                        List<int> positionen = new List<int>();
+                        foreach(Spielfigur s in haus.ZugehoerigeFiguren)
+                        {
+                            if(s != aktuelleFigur)
+                            {
+                                positionen.Add(s.Position);
+                            }
+                        }
+
+                        for(int i = 0; i < 4; i++)
+                        {
+                            if(positionen.Contains(44 - i))
+                            {
+                                letztesBefahrbaresFeld--;
+                            }
+                            else
+                            {
+                                i = 4;
+                            }
+                        }
+
+                        if(aktuelleFigur.Position > letztesBefahrbaresFeld)
+                        {
+                            Console.WriteLine("Diese Figur kann nicht gezogen werden.");                                            // Man könnte es so machen, dass immer wenn der Benutzer eine ungueltige Eingabe taetigt, eine Exception geworfen wird und am Ende ueberprueft wird, ob eine Exception geworfen worden ist.
+                        }                                                                                                           //Wenn Ja darf der Benutzer nochmal auswaehlen
+                        else
+                        {
+                            if(positionen.Contains(aktuelleFigur.Position + 1))
+                            {
+                                Console.WriteLine("Diese Figur kann nicht gezogen werden.");
+                            }
+                            else
+                            {
+                                int maximalZiehbareAnzahl;
+                                int naehesteFigur = letztesBefahrbaresFeld;
+                                foreach(int i in positionen)
+                                {
+                                    if(i > aktuelleFigur.Position && i < naehesteFigur)
+                                    {
+                                        naehesteFigur = i;
+                                    }
+                                }
+
+                                maximalZiehbareAnzahl = naehesteFigur - aktuelleFigur.Position;
+
+                                if(maximalZiehbareAnzahl >= gewuerfelt)
+                                {
+                                    aktuelleFigur.Position += gewuerfelt;
+                                    aktuelleFigur.PrintPosition = 40 + gewuerfelt + (haus.HausID * 4);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Diese Figur kann nicht gezogen werden.");
+                                }
+                            }
+                        }
+
+
+
                     }
                     else
                     {
+                        aktuelleFigur.Position += gewuerfelt;
                         aktuelleFigur.PrintPosition += gewuerfelt;
-                        if (aktuelleFigur.PrintPosition > 40)
-                        {
-                            aktuelleFigur.PrintPosition %= 41;
-                            aktuelleFigur.PrintPosition++;
 
-                        }
-                    }
 
-                    foreach (Haus h in haeuser)
-                    {
-                        foreach (Spielfigur s in h.ZugehoerigeFiguren)
+
+                        foreach (Haus h in haeuser)
                         {
-                            if (s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
+                            foreach (Spielfigur s in h.ZugehoerigeFiguren)
                             {
-                                s.PrintPosition = 0;
-                                s.Position = 0;
-                                s.IsInHouse = true;
-                                h.FigurenImHaus++;
+                                if (s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
+                                {
+                                    s.PrintPosition = 0;
+                                    s.Position = 0;
+                                    s.IsInHouse = true;
+                                    h.FigurenImHaus++;
+                                }
                             }
                         }
+
                     }
+
+                    //aktuelleFigur.Position += gewuerfelt;
+                    //if(aktuelleFigur.)
+                    //if (aktuelleFigur.Position > haus.AktuellLetztesFelde)               //Diese Verzweigung wird betreten, wenn die Figur übers Haus hinauszieht
+                    //{
+                    //    aktuelleFigur.Position %= (haus.AktuellLetztesFelde + 1);
+                    //    aktuelleFigur.Position++;
+                    //}
+                    //if (aktuelleFigur.Position <= 44 && aktuelleFigur.Position >= 41)
+                    //{
+                    //    aktuelleFigur.PrintPosition = aktuelleFigur.Position + (4 + (haus.HausID - 1));
+                    //}
+                    //else
+                    //{
+                    //    aktuelleFigur.PrintPosition += gewuerfelt;
+                    //    if (aktuelleFigur.PrintPosition > 40)
+                    //    {
+                    //        aktuelleFigur.PrintPosition %= 41;
+                    //        aktuelleFigur.PrintPosition++;
+
+                    //    }
+                    //}
+
+                    
                 }
 
 
@@ -263,7 +338,7 @@ namespace Mensch_Aergere_Dich_Nicht
                     }
                 }
 
-            }
+            }                                                                                                                                   
 
         }
 

@@ -58,6 +58,22 @@ namespace Mensch_Aergere_Dich_Nicht
 
         }
 
+        public int aktuellLetztesFeldBerechnen()
+        {
+            int x = 44;
+
+            foreach(Spielfigur s in ZugehoerigeFiguren)
+            {
+                if(s.Position > 40 && s.Position < x)
+                {
+                    x = s.Position;
+                }
+            }
+
+
+            return x;
+        }
+
 
 
     }
