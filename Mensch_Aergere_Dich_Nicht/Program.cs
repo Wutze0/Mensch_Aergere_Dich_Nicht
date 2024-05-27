@@ -557,7 +557,6 @@ namespace Mensch_Aergere_Dich_Nicht
 
         public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser)
         {
-            // Erzeuge einen dynamischen Dateinamen mit einem Zeitstempel
             string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string path = $"SaveFile_{timestamp}.txt";
 
@@ -579,7 +578,6 @@ namespace Mensch_Aergere_Dich_Nicht
                     Haus haus = haeuser.ElementAt(i);
                     sw.Write($"{spieler.Name}\t{haus.Farbe}\t");
 
-                    // Füge die Positionen der zugehörigen Spielfiguren hinzu
                     List<string> figurenPositionen = new List<string>();
                     for (int j = 0; j < haus.ZugehoerigeFiguren.Count; j++)
                     {
