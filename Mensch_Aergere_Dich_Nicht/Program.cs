@@ -101,6 +101,16 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     auswaehlen(haus, false, ziehe, print, haueser);
                 }
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 print.PrintSpielfeld();
                 //maximal drei mal würfeln und maximal drei mal 6 würfeln
                 //auswählen welche figur GEMACHT
@@ -438,6 +448,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     haeuser.Add(new Haus(farbe));
 
+
                     Console.WriteLine("haus zugefürgt");
                 }
                 else
@@ -449,6 +460,7 @@ namespace Mensch_Aergere_Dich_Nicht
             for (int i = haeuser.Count; i < 4; i++)
             {
                 haeuser.Add(new Haus(Verfuegbare_Farben.Weiss));
+                haeuser.ElementAt(i).ZugehoerigerSpieler = new Bot();
             }
             Thread.Sleep(1000);
             Console.Clear();
@@ -468,6 +480,7 @@ namespace Mensch_Aergere_Dich_Nicht
         private static void Spielablauf(List<Haus> haeuser, List<Spieler> spieler, bool bot)
         {
             Print p = new Print(haeuser);
+            int updaten = 0;
 
             int abtauschen = 0;
             for (int k = 0; k < 100; k++)
@@ -495,9 +508,15 @@ namespace Mensch_Aergere_Dich_Nicht
                         char eingabe = '\0';
                         char.TryParse(Console.ReadLine(), out eingabe);
 
-                        if (eingabe.Equals('y'))
+                        if (eingabe.Equals('y') && updaten == 0)
+                        {
                             SpielSpeichern(spieler, haeuser);
-
+                            updaten = 1;
+                        }
+                        else if(eingabe.Equals('y') && updaten == 1)
+                        {
+                            SpielSpeichern(spieler, haeuser);
+                        }
                         break;
                 }
 
@@ -538,6 +557,56 @@ namespace Mensch_Aergere_Dich_Nicht
 
         public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser)
         {
+            // Erzeuge einen dynamischen Dateinamen mit einem Zeitstempel
+            string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string path = $"SaveFile_{timestamp}.txt";
+
+            // Erstelle eine neue Datei und schreibe den Header
+            FileStream fs = null;
+            StreamWriter sw = null;
+
+            try
+            {
+                fs = new FileStream(path, FileMode.Create, FileAccess.Write);
+                sw = new StreamWriter(fs);
+
+                string header = "Spieler\tHausfarbe\tZugehörige Spielfiguren\n";
+                sw.Write(header);
+
+                for (int i = 0; i < spielerliste.Count; i++)
+                {
+                    Spieler spieler = spielerliste.ElementAt(i);
+                    Haus haus = haeuser.ElementAt(i);
+                    sw.Write($"{spieler.Name}\t{haus.Farbe}\t");
+
+                    // Füge die Positionen der zugehörigen Spielfiguren hinzu
+                    List<string> figurenPositionen = new List<string>();
+                    for (int j = 0; j < haus.ZugehoerigeFiguren.Count; j++)
+                    {
+                        figurenPositionen.Add(haus.ZugehoerigeFiguren.ElementAt(j).Position.ToString());
+                    }
+
+                    sw.WriteLine(string.Join(";", figurenPositionen));
+                }
+            }
+            finally
+            {
+                if (sw != null)
+                {
+                    sw.Close();
+                }
+                if (fs != null)
+                {
+                    fs.Close();
+                }
+            }
+
+            Console.WriteLine($"Spielstand wurde in {path} gespeichert.");
+        }
+
+
+        /*public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser)
+        {
             //geht noch nicct
             string path = string.Empty;
             string header = "Spieler\tHausfarbe\tZugehörige Spielfiguren\nBraucheDaten!";
@@ -545,10 +614,8 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 path = $"SaveFile{i}.txt";
                 Console.WriteLine(path);
- 
-                if (!File.Exists(path))
-                {                    
-
+                if(!File.Exists(path))
+                {
                     //*** Hier werden alle Daten die vorhanden sind gespeichert! ***
 
                     FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
@@ -568,9 +635,10 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 
                 
+                
             }
 
-        }
+        }*/
     }
 
 }
