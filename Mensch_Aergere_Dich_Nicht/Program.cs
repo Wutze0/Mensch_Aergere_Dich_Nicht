@@ -422,6 +422,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 switch (modus)
                 {
                     case 1: EinleitungNeuesSpiel(); break;
+                    case 2: LadeSpiel(); break;
                     default: Console.WriteLine("Falsche Eingabe... erneuter Versuch: "); break;
 
                 }
@@ -677,12 +678,25 @@ namespace Mensch_Aergere_Dich_Nicht
                         figurenPositionen.Add(haus.ZugehoerigeFiguren.ElementAt(j).Position.ToString());
                     }
 
-                    sw.WriteLine(string.Join(";", figurenPositionen));
+                    sw.WriteLine(string.Join(";", figurenPositionen)); //zwischen jedem Element in figurenPositionen wird ein ; eingefügt
                 }
             sw.Close();
             fs.Close();
 
             Console.WriteLine($"Spielstand wurde in {path} gespeichert.");
+        }
+
+        private static void LadeSpiel()
+        {
+            DirectoryInfo d = new DirectoryInfo(""); //muss noch geändert werden
+            FileInfo[] Files = d.GetFiles("*.txt");
+            string s = string.Empty;
+
+            foreach(FileInfo f in Files )
+            {
+                s += f.Name;
+            }
+            Console.WriteLine(s);
         }
 
     }
