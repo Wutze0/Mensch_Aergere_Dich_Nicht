@@ -101,6 +101,16 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     auswaehlen(haus, false, ziehe, print, haueser);
                 }
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 print.PrintSpielfeld();
                 //maximal drei mal würfeln und maximal drei mal 6 würfeln
                 //auswählen welche figur GEMACHT
@@ -545,8 +555,11 @@ namespace Mensch_Aergere_Dich_Nicht
         private static void Spielablauf(List<Haus> haeuser, List<Spieler> spieler, bool bot)
         {
             Print p = new Print(haeuser);
+            int updaten = 0;
 
             int abtauschen = 0;
+            string timestamp = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
+            string path = $"SaveFile_{timestamp}.txt";
             for (int k = 0; k < 100; k++)
             {
 
@@ -554,7 +567,6 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     Console.WriteLine($"Der Spieler {spieler.ElementAt(abtauschen).Name} ist dran!");
                 }
-                //Console.WriteLine(haeuser.ElementAt(abtauschen).Farbe);
 
                 switch (abtauschen)
                 {
@@ -596,9 +608,15 @@ namespace Mensch_Aergere_Dich_Nicht
                         char eingabe = '\0';
                         char.TryParse(Console.ReadLine(), out eingabe);
 
-                        if (eingabe.Equals('y'))
-                            SpielSpeichern(spieler, haeuser);
-
+                        if (eingabe.Equals('y') && updaten == 0)
+                        {
+                            SpielSpeichern(spieler, haeuser, path);
+                            updaten = 1;
+                        }
+                        else if(eingabe.Equals('y') && updaten == 1)
+                        {
+                            SpielSpeichern(spieler, haeuser, path);
+                        }
                         break;
                 }
 
@@ -637,7 +655,38 @@ namespace Mensch_Aergere_Dich_Nicht
         }
         //für gewinnüberprüfung eventuell: jedes haus hat ja 4 felder wo eine figur reingehen muss, also für jedes haus einen positionsArray machen.
 
-        public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser)
+        public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser, string path)
+        {
+            
+
+                FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
+                StreamWriter sw = new StreamWriter(fs);
+
+                string header = "Spieler\tHausfarbe\tZugehörige Spielfiguren\n";
+                sw.Write(header);
+
+                for (int i = 0; i < spielerliste.Count; i++)
+                {
+                    Spieler spieler = spielerliste.ElementAt(i);
+                    Haus haus = haeuser.ElementAt(i);
+                    sw.Write($"{spieler.Name}\t{haus.Farbe}\t");
+
+                    List<string> figurenPositionen = new List<string>();
+                    for (int j = 0; j < haus.ZugehoerigeFiguren.Count; j++)
+                    {
+                        figurenPositionen.Add(haus.ZugehoerigeFiguren.ElementAt(j).Position.ToString());
+                    }
+
+                    sw.WriteLine(string.Join(";", figurenPositionen));
+                }
+            sw.Close();
+            fs.Close();
+
+            Console.WriteLine($"Spielstand wurde in {path} gespeichert.");
+        }
+
+
+        /*public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser)
         {
             //geht noch nicct
             string path = string.Empty;
@@ -646,10 +695,8 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 path = $"SaveFile{i}.txt";
                 Console.WriteLine(path);
- 
-                if (!File.Exists(path))
-                {                    
-
+                if(!File.Exists(path))
+                {
                     //*** Hier werden alle Daten die vorhanden sind gespeichert! ***
 
                     FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
@@ -669,9 +716,10 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 
                 
+                
             }
 
-        }
+        }*/
     }
 
 }
