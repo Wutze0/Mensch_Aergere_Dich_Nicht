@@ -685,41 +685,6 @@ namespace Mensch_Aergere_Dich_Nicht
             Console.WriteLine($"Spielstand wurde in {path} gespeichert.");
         }
 
-
-        /*public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser)
-        {
-            //geht noch nicct
-            string path = string.Empty;
-            string header = "Spieler\tHausfarbe\tZugehörige Spielfiguren\nBraucheDaten!";
-            for (int i = 1; i <= 3; i++)
-            {
-                path = $"SaveFile{i}.txt";
-                Console.WriteLine(path);
-                if(!File.Exists(path))
-                {
-                    //*** Hier werden alle Daten die vorhanden sind gespeichert! ***
-
-                    FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
-                    StreamWriter sw = new StreamWriter(fs);
-
-
-                    //Header:
-                    sw.Write(header);
-
-                    sw.Write($"{spielerliste.ElementAt(0).Name}\t{haeuser.ElementAt(0).Farbe}\t{haeuser.ElementAt(0).ZugehoerigeFiguren.ElementAt(0).Position};{haeuser.ElementAt(0).ZugehoerigeFiguren.ElementAt(1).Position};{haeuser.ElementAt(0).ZugehoerigeFiguren.ElementAt(2).Position};{haeuser.ElementAt(0).ZugehoerigeFiguren.ElementAt(3).Position}\n"
-                    + $"{spielerliste.ElementAt(1).Name}\t{haeuser.ElementAt(1).Farbe}\t{haeuser.ElementAt(1).ZugehoerigeFiguren.ElementAt(0).Position};{haeuser.ElementAt(1).ZugehoerigeFiguren.ElementAt(1).Position};{haeuser.ElementAt(1).ZugehoerigeFiguren.ElementAt(2).Position};{haeuser.ElementAt(1).ZugehoerigeFiguren.ElementAt(3).Position}\n"
-                    );
-
-                    sw.Close();
-                    fs.Close();
-                    break;
-                }
-                
-                
-                
-            }
-
-        }*/
     }
 
 }
