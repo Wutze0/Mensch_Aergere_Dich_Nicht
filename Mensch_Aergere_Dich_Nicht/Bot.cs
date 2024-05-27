@@ -1,6 +1,4 @@
-﻿using System.Data.SqlTypes;
-
-namespace Mensch_Aergere_Dich_Nicht
+﻿namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Bot : Spieler
     {
@@ -22,50 +20,137 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         if (!movefound)
                         {
-                            if ((s.Position + wieWeitZiehen) >= 41 && (s.Position + wieWeitZiehen) <= hausDesBots.AktuellLetztesFelde)                              //Ins Haus fahren
+                            if ((s.Position + wieWeitZiehen) > 40 && (s.Position + wieWeitZiehen) <= hausDesBots.letztesMoeglichesFeldBeimReinfahrenberechnen())                              //Ins Haus fahren
                             {
                                 movefound = true;
                                 s.Position += wieWeitZiehen;
                                 s.PrintPosition = (40 + (hausDesBots.HausID - 1) * 4) - (s.Position - 40);
-                                hausDesBots.AktuellLetztesFelde = s.Position - 1;
                             }
                         }
 
                     }
                 }
-                if(priority == 2)                                                                                                                                   //Im Haus fahren
+                if (priority == 2)                                                                                                                                   //Im Haus fahren
                 {
+                    List<Spielfigur> moeglicheFiguren = hausDesBots.ZugehoerigeFiguren;
+                    int letztesBefahrbaresFeld = hausDesBots.letztesBefahrbaresFeldBerechnen();
+                    Spielfigur? zuBewegen = null;
+
+                    List<int> positionen = new List<int>();
                     foreach (Spielfigur s in hausDesBots.ZugehoerigeFiguren)
                     {
-                        if (!movefound)
+                        positionen.Add(s.Position);
+                    }
+
+                    foreach (Spielfigur s in moeglicheFiguren)
+                    {
+                        if (s.Position <= 40 || s.Position > letztesBefahrbaresFeld)
                         {
-                            if((s.Position - 1) == hausDesBots.AktuellLetztesFelde)
-                            {
-                                if(s.Position + wieWeitZiehen <= 44 - (4 - hausDesBots.ZiehbareFiguren))
-                                {
-                                    movefound = true;
-                                    s.Position += wieWeitZiehen;
-                                    s.PrintPosition = (40 + (hausDesBots.HausID - 1) * 4) - (s.Position - 40);
-                                    hausDesBots.AktuellLetztesFelde = s.Position - 1;
-                                }
-                            }
+                            moeglicheFiguren.Remove(s);
                         }
                     }
-                }
-                if(priority == 3)                                                                                                                                   //Aus dem Haus fahren
-                {
-                    if(wieWeitZiehen == 6)
+                    foreach (Spielfigur s in moeglicheFiguren)
                     {
-                        for(int i = 0; i < 4; i++)
+                        if (positionen.Contains(s.Position + 1))
                         {
-                            if (hausDesBots.ZugehoerigeFiguren.ElementAt(i).IsInHouse && !movefound)
+                            moeglicheFiguren.Remove(s);
+                        }
+                    }
+                    foreach (Spielfigur s in moeglicheFiguren)
+                    {
+                        int naehesteFigurFeld = letztesBefahrbaresFeld;
+
+                        for (int i = 0; i < 4; i++)
+                        {
+                            if (positionen[i] != s.Position)
                             {
-                                movefound = true;
-                                hausDesBots.FigurenImHaus--;
-                                hausDesBots.ZugehoerigeFiguren.ElementAt(i).Position = 1;
-                                hausDesBots.ZugehoerigeFiguren.ElementAt(i).PrintPosition = hausDesBots.StartingPrintPosition;
+                                if (positionen[i] > s.Position && positionen[i] < naehesteFigurFeld)
+                                {
+                                    naehesteFigurFeld = positionen[i];
+                                }
+                            }
+
+                        }
+                        int maximaleAnz = naehesteFigurFeld - s.Position;
+
+                        if(maximaleAnz < wieWeitZiehen)
+                        {
+                            moeglicheFiguren.Remove(s);
+                        }
+                    }
+
+                    if (moeglicheFiguren.Count() > 0)
+                    {
+                        if (moeglicheFiguren.Count() > 1)
+                        {
+                            foreach (Spielfigur s in moeglicheFiguren)
+                            {
+                                if (zuBewegen == null)
+                                {
+                                    zuBewegen = s;
+                                }
+                                else
+                                {
+                                    if (s.Position > zuBewegen.Position)
+                                    {
+                                        zuBewegen = s;
+                                    }
+                                }
+
                             }
                         }
+
+                        zuBewegen.Position += wieWeitZiehen;
+                        zuBewegen.Position += wieWeitZiehen;
+                        movefound = true;
+                    }
+
+                }
+                if (priority == 3)                                                                                                                                   //Aus dem Haus fahren
+                {
+                    bool feldFrei = true;
+                    if (wieWeitZiehen == 6)
+                    {
+                        foreach(Spielfigur s in hausDesBots.ZugehoerigeFiguren)
+                        {
+                            if(s.Position == 1)
+                            {
+                                feldFrei = false;
+                            }
+                        }
+
+                        if (feldFrei)
+                        {
+                            for (int i = 0; i < 4; i++)
+                            {
+                                if (hausDesBots.ZugehoerigeFiguren.ElementAt(i).IsInHouse && !movefound)
+                                {
+                                    movefound = true;
+                                    hausDesBots.FigurenImHaus--;
+                                    hausDesBots.ZugehoerigeFiguren.ElementAt(i).Position = 1;
+                                    hausDesBots.ZugehoerigeFiguren.ElementAt(i).PrintPosition = hausDesBots.StartingPrintPosition;
+                                    foreach (Haus h in alleHaueser)
+                                    {
+                                        if (h != hausDesBots)
+                                        {
+                                            foreach (Spielfigur s in h.ZugehoerigeFiguren)
+                                            {
+                                                if(s.PrintPosition == hausDesBots.ZugehoerigeFiguren.ElementAt(i).PrintPosition)
+                                                {
+                                                    s.Position = 0;
+                                                    s.PrintPosition = 0;
+                                                    s.IsInHouse = true;
+                                                    h.FigurenImHaus++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            
+                        }
+                        
                     }
                 }
                 if (priority == 4)                                                                                                                                  //Gegner schlagen
@@ -78,8 +163,7 @@ namespace Mensch_Aergere_Dich_Nicht
                             temp = s.PrintPosition;
                             if (temp > 40)
                             {
-                                temp %= 41;
-                                temp++;
+                                temp %= 40;
                             }
                             for (int i = 0; i < 4 && !movefound; i++)
                             {
@@ -101,35 +185,35 @@ namespace Mensch_Aergere_Dich_Nicht
                                     }
                                 }
                             }
-                        }     
+                        }
                     }
                 }
-                if(priority == 5)                                                                                                                                   //Vorderste Figur ziehen
+                if (priority == 5)                                                                                                                                   //Vorderste Figur ziehen
                 {
                     int amWeitestenVorne = 0;
-                    foreach(Spielfigur s in hausDesBots.ZugehoerigeFiguren)
+                    foreach (Spielfigur s in hausDesBots.ZugehoerigeFiguren)
                     {
                         if (!s.IsInHouse)
                         {
-                            if(s.Position > amWeitestenVorne && s.Position < hausDesBots.AktuellLetztesFelde)
+                            if (s.Position > amWeitestenVorne && s.Position < 41)
                             {
                                 s.Position = amWeitestenVorne;
                             }
                         }
                     }
-                    if(amWeitestenVorne != 0) 
+                    if (amWeitestenVorne != 0)
                     {
-                        foreach(Spielfigur s in hausDesBots.ZugehoerigeFiguren)
+                        foreach (Spielfigur s in hausDesBots.ZugehoerigeFiguren)
                         {
                             if (s.Position == amWeitestenVorne)
                             {
                                 s.Position += wieWeitZiehen;
-                                if(s.Position > 40)
+                                if (s.Position > 40)
                                 {
                                     s.Position %= 40;
                                 }
                                 s.PrintPosition += wieWeitZiehen;
-                                if(s.PrintPosition > 40)
+                                if (s.PrintPosition > 40)
                                 {
                                     s.PrintPosition %= 40;
                                 }
