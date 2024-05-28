@@ -278,6 +278,10 @@ namespace Mensch_Aergere_Dich_Nicht
                                 }
                             }
                         }
+                        if(aktuelleFigur.PrintPosition > 40)
+                        {
+                            aktuelleFigur.PrintPosition %= 40;
+                        }
                         if (check)
                         {
                             foreach (Haus h in haeuser)
@@ -626,6 +630,11 @@ namespace Mensch_Aergere_Dich_Nicht
                         {
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
                         }
+                        haeuser.ElementAt(abtauschen).ziehbareFigurenBerechnen();
+                        if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
+                        {
+                            win = true;
+                        }
                         abtauschen++;
                         break;
 
@@ -634,6 +643,11 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
                         {
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
+                        }
+                        haeuser.ElementAt(abtauschen).ziehbareFigurenBerechnen();
+                        if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
+                        {
+                            win = true;
                         }
                         abtauschen++;
                         break;
@@ -644,14 +658,23 @@ namespace Mensch_Aergere_Dich_Nicht
                         {
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
                         }
+                        haeuser.ElementAt(abtauschen).ziehbareFigurenBerechnen();
+                        if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
+                        {
+                            win = true;
+                        }
                         abtauschen++;
                         break;
 
                     case 3:
-
                         if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
                         {
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
+                        }
+                        haeuser.ElementAt(abtauschen).ziehbareFigurenBerechnen();
+                        if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
+                        {
+                            win = true;
                         }
                         abtauschen = 0;
                         Console.WriteLine("Wollen Sie das Spiel speichern? [y/n]");
@@ -669,11 +692,8 @@ namespace Mensch_Aergere_Dich_Nicht
                         }
                         break;
                 }
-                haeuser.ElementAt(abtauschen - 1).ziehbareFigurenBerechnen();
-                if (haeuser.ElementAt(abtauschen - 1).ZiehbareFiguren == 0)
-                {
-                    win = true;
-                }
+                
+                
             }
 
 
