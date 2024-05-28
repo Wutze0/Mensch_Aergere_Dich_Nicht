@@ -85,11 +85,11 @@ namespace Mensch_Aergere_Dich_Nicht
 
         public int letztesMoeglichesFeldBeimReinfahrenberechnen()
         {
-            int x = 44;
+            int x = 45;
 
             foreach (Spielfigur s in ZugehoerigeFiguren)
             {
-                if (s.Position < x)
+                if (s.Position < x && s.Position > 40)
                 {
                     x = s.Position;
                 }
@@ -101,6 +101,7 @@ namespace Mensch_Aergere_Dich_Nicht
         public void ziehbareFigurenBerechnen()
         {
             int x = 4;
+            bool again = false;
             for (int i = 0; i < 4; i++)
             {
                 foreach (Spielfigur s in ZugehoerigeFiguren)
@@ -108,8 +109,18 @@ namespace Mensch_Aergere_Dich_Nicht
                     if (s.Position == 44 - i)
                     {
                         x--;
+                        again = true;
                     }
                 }
+                if(again)
+                {
+                    again = false;
+                }
+                else
+                {
+                    i = 4;
+                }
+
             }
             ZiehbareFiguren = x;
 
