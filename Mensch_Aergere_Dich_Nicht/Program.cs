@@ -556,11 +556,10 @@ namespace Mensch_Aergere_Dich_Nicht
         private static void Spielablauf(List<Haus> haeuser, List<Spieler> spieler, bool bot)
         {
             Print p = new Print(haeuser);
-            int updaten = 0;
-
             int abtauschen = 0;
-            string timestamp = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
-            string path = $"SaveFile_{timestamp}.txt";
+            string timestamp = DateTime.Now.ToString("dd-MM-HH-mm");
+            string path = $"SaveFile-{timestamp}.txt";
+
             for (int k = 0; k < 100; k++)
             {
 
@@ -609,12 +608,11 @@ namespace Mensch_Aergere_Dich_Nicht
                         char eingabe = '\0';
                         char.TryParse(Console.ReadLine(), out eingabe);
 
-                        if (eingabe.Equals('y') && updaten == 0)
+                        if (eingabe.Equals('y'))
                         {
                             SpielSpeichern(spieler, haeuser, path);
-                            updaten = 1;
                         }
-                        else if(eingabe.Equals('y') && updaten == 1)
+                        else if(eingabe.Equals('y'))
                         {
                             SpielSpeichern(spieler, haeuser, path);
                         }
@@ -658,8 +656,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
         public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser, string path)
         {
-            
-
+           
                 FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
                 StreamWriter sw = new StreamWriter(fs);
 
@@ -685,18 +682,22 @@ namespace Mensch_Aergere_Dich_Nicht
 
             Console.WriteLine($"Spielstand wurde in {path} gespeichert.");
         }
-
-        private static void LadeSpiel()
+        private static string GetAllSaveFiles()
         {
-            DirectoryInfo d = new DirectoryInfo(""); //muss noch geändert werden
-            FileInfo[] Files = d.GetFiles("*.txt");
+            string c = Directory.GetCurrentDirectory();
+            DirectoryInfo d = new DirectoryInfo(c); 
+            FileInfo[] Files = d.GetFiles("*.txt");//alle files die die Dateiendung .txt haben.
             string s = string.Empty;
 
-            foreach(FileInfo f in Files )
+            foreach (FileInfo f in Files)
             {
-                s += f.Name;
+                s += f.Name + '\n';
             }
-            Console.WriteLine(s);
+            return s;
+        }
+        private static void LadeSpiel()
+        {
+            Console.WriteLine(GetAllSaveFiles());
         }
 
     }
