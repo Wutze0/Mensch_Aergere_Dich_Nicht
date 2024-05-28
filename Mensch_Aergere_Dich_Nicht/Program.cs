@@ -623,7 +623,6 @@ namespace Mensch_Aergere_Dich_Nicht
             Console.Clear();
             Print p = new Print(haeuser);
             p.PrintSpielfeld();
-            int updaten = 0;
             bool win = false;
             int abtauschen = 0;
             string timestamp = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
@@ -698,12 +697,11 @@ namespace Mensch_Aergere_Dich_Nicht
                         char eingabe = '\0';
                         char.TryParse(Console.ReadLine(), out eingabe);
 
-                        if (eingabe.Equals('y') && updaten == 0)
+                        if (eingabe.Equals('y'))
                         {
                             SpielSpeichern(spieler, haeuser, path);
-                            updaten = 1;
                         }
-                        else if (eingabe.Equals('y') && updaten == 1)
+                        else if (eingabe.Equals('y'))
                         {
                             SpielSpeichern(spieler, haeuser, path);
                         }
