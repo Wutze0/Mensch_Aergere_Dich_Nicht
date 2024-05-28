@@ -11,7 +11,7 @@ namespace Mensch_Aergere_Dich_Nicht
         public int HausID { get; private set; }                         //Die HausID dient hauptsächlich dazu, die Printpositionen innerhalb des Hauses zu bestimmen, geht von 1 - 4
         public static int NumberOfHouses { get; private set; } = 0;
 
-        public bool AuffuellHaus {  get; set; } = false;
+        public bool AuffuellHaus { get; set; } = false;
         public int StartingPrintPosition { get; set; }
         public List<Spielfigur> ZugehoerigeFiguren { get; set; } = new List<Spielfigur>();
 
@@ -57,25 +57,74 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
         }
-
-        public int aktuellLetztesFeldBerechnen()
+        public int letztesBefahrbaresFeldBerechnen()
         {
-            int x = 44;
+            int letztesBefahrbaresFeld = 44;
+            List<int> positionen = new List<int>();
 
-            foreach(Spielfigur s in ZugehoerigeFiguren)
+            foreach (Spielfigur s in ZugehoerigeFiguren)
             {
-                if(s.Position > 40 && s.Position < x)
+                positionen.Add(s.Position);
+            }
+
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (positionen.Contains(44 - i))
+                {
+                    letztesBefahrbaresFeld--;
+                }
+                else
+                {
+                    i = 4;
+                }
+            }
+
+            return letztesBefahrbaresFeld;
+        }
+
+        public int letztesMoeglichesFeldBeimReinfahrenberechnen()
+        {
+            int x = 45;
+
+            foreach (Spielfigur s in ZugehoerigeFiguren)
+            {
+                if (s.Position < x && s.Position > 40)
                 {
                     x = s.Position;
                 }
             }
-
-
+            x -= 1;
             return x;
         }
 
+        public void ziehbareFigurenBerechnen()
+        {
+            int x = 4;
+            bool again = false;
+            for (int i = 0; i < 4; i++)
+            {
+                foreach (Spielfigur s in ZugehoerigeFiguren)
+                {
+                    if (s.Position == 44 - i)
+                    {
+                        x--;
+                        again = true;
+                    }
+                }
+                if(again)
+                {
+                    again = false;
+                }
+                else
+                {
+                    i = 4;
+                }
 
+            }
+            ZiehbareFiguren = x;
 
+        }
     }
 
 }
