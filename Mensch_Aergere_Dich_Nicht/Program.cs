@@ -133,7 +133,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 eingabe = 4 - haus.FigurenImHaus;
             }
 
-            if (rausziehen == true && jaNein == true && istFeldFrei(print, haus, eingabe, gewuerfelt))      //Hier kommt man hinein, wenn man eine Figur aus dem Haus ziehen darf und will
+            if (rausziehen == true && jaNein == true)      //Hier kommt man hinein, wenn man eine Figur aus dem Haus ziehen darf und will
             {
                 List<Spielfigur> Figuren = print.GetAllSpielfiguren();
                 bool check = true;
@@ -229,7 +229,7 @@ namespace Mensch_Aergere_Dich_Nicht
                                 if (maximalZiehbareAnzahl >= gewuerfelt)
                                 {
                                     aktuelleFigur.Position += gewuerfelt;
-                                    aktuelleFigur.PrintPosition = aktuelleFigur.Position + gewuerfelt + ((haus.HausID - 1) * 4);
+                                    aktuelleFigur.PrintPosition = aktuelleFigur.Position + ((haus.HausID - 1) * 4);
                                 }
                                 else
                                 {
@@ -621,6 +621,7 @@ namespace Mensch_Aergere_Dich_Nicht
         {
             Console.Clear();
             Print p = new Print(haeuser);
+            Spieler? gewinner = null;
             p.PrintSpielfeld();
             int updaten = 0;
             bool win = false;
@@ -648,6 +649,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
                         {
                             win = true;
+                            gewinner = haeuser.ElementAt(abtauschen).ZugehoerigerSpieler;
                         }
                         abtauschen++;
                         break;
@@ -663,6 +665,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
                         {
                             win = true;
+                            gewinner = haeuser.ElementAt(abtauschen).ZugehoerigerSpieler;
                         }
                         abtauschen++;
                         break;
@@ -677,6 +680,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
                         {
                             win = true;
+                            gewinner = haeuser.ElementAt(abtauschen).ZugehoerigerSpieler;
                         }
                         abtauschen++;
                         break;
@@ -691,6 +695,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
                         {
                             win = true;
+                            gewinner = haeuser.ElementAt(abtauschen).ZugehoerigerSpieler;
                         }
                         abtauschen = 0;
                         Console.WriteLine("Wollen Sie das Spiel speichern? [y/n]");
@@ -713,6 +718,11 @@ namespace Mensch_Aergere_Dich_Nicht
                 
                 
             }
+            Console.WriteLine("\n\n\n\n\n");
+
+            Console.WriteLine("-------------------------------------\n\n");
+            Console.WriteLine($"Der Spieler {gewinner.Name} hat Gewonnen!!!!\n\n");
+            Console.WriteLine("-------------------------------------");
 
 
         }
