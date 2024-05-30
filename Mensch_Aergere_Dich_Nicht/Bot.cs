@@ -73,7 +73,7 @@
                         }
                         int maximaleAnz = naehesteFigurFeld - s.Position;
 
-                        if(maximaleAnz < wieWeitZiehen)
+                        if (maximaleAnz < wieWeitZiehen)
                         {
                             moeglicheFiguren.Remove(s);
                         }
@@ -111,9 +111,9 @@
                     bool feldFrei = true;
                     if (wieWeitZiehen == 6)
                     {
-                        foreach(Spielfigur s in hausDesBots.ZugehoerigeFiguren)
+                        foreach (Spielfigur s in hausDesBots.ZugehoerigeFiguren)
                         {
-                            if(s.Position == 1)
+                            if (s.Position == 1)
                             {
                                 feldFrei = false;
                             }
@@ -135,7 +135,7 @@
                                         {
                                             foreach (Spielfigur s in h.ZugehoerigeFiguren)
                                             {
-                                                if(s.PrintPosition == hausDesBots.ZugehoerigeFiguren.ElementAt(i).PrintPosition)
+                                                if (s.PrintPosition == hausDesBots.ZugehoerigeFiguren.ElementAt(i).PrintPosition)
                                                 {
                                                     s.Position = 0;
                                                     s.PrintPosition = 0;
@@ -148,9 +148,9 @@
                                 }
                             }
 
-                            
+
                         }
-                        
+
                     }
                 }
                 if (priority == 4)                                                                                                                                  //Gegner schlagen

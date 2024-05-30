@@ -1,3 +1,5 @@
+using System.ComponentModel.Design;
+
 namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Program
@@ -39,11 +41,11 @@ namespace Mensch_Aergere_Dich_Nicht
                         }
                         else
                         {
-                            if (haus.FigurenImHaus > 0 )
+                            if (haus.FigurenImHaus > 0)
                             {
 
-                                Console.WriteLine("Sie dürfen eine Figur aus dem haus ziehen!");        //noch nicht fertig; muss nicht immer der Fall sein, dass man eine Figur rausziehen darf.
                                 auswaehlen(haus, true, ziehe, print, haueser);
+                                print.PrintSpielfeld();
 
 
                             }
@@ -51,6 +53,7 @@ namespace Mensch_Aergere_Dich_Nicht
                             {
 
                                 auswaehlen(haus, false, ziehe, print, haueser);
+                                print.PrintSpielfeld();
 
                             }
                         }
@@ -63,7 +66,7 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         erneutWuerfeln = false;
                     }
-                        
+
 
                 }
                 if (botYesNo)
@@ -74,6 +77,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 else
                 {
                     auswaehlen(haus, false, ziehe, print, haueser);
+                    print.PrintSpielfeld();
                 }
 
                 //maximal drei mal würfeln und maximal drei mal 6 würfeln
@@ -96,12 +100,15 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         Bot x = haus.ZugehoerigerSpieler as Bot;
                         x.Spielfigurbewegen(haus, haueser, ziehe);
+                        wuerfeln(haus, print, haueser);
                     }
                     else
                     {
                         //haus.ZugehoerigeFiguren.ElementAt(1).PrintPosition = haus.StartingPrintPosition;
                         //haus.ZugehoerigeFiguren.ElementAt(1)._position = 1;
                         auswaehlen(haus, true, ziehe, print, haueser);
+                        print.PrintSpielfeld();
+                        wuerfeln(haus, print, haueser);
                     }
 
                 }
@@ -118,352 +125,441 @@ namespace Mensch_Aergere_Dich_Nicht
 
         private static void auswaehlen(Haus haus, bool rausziehen, int gewuerfelt, Print print, List<Haus> haeuser) //rausziehen bestimmt, ob man eine Figur rausziehen darf oder nicht
         {
-            bool jaNein = false;
-            int eingabe = 0;
-            if (!rausziehen)
+            bool falscheEingabe = true;
+            bool wiederholen;
+            while (falscheEingabe)
             {
-                Console.WriteLine($"Ziehe {gewuerfelt} Felder mit einer Figur!");
-                Console.WriteLine("Welche Figur möchten Sie ziehen? Verfügbar: [1, 2, 3, 4]");
-                eingabe = Convert.ToInt16(Console.ReadLine());
-            }
-            else
-            {
-                Console.WriteLine("Möchten Sie eine Figur aus dem Haus ziehen?");
-                jaNein = Convert.ToBoolean(Console.ReadLine());
-                eingabe = 4 - haus.FigurenImHaus;
-            }
-
-            if (rausziehen == true && jaNein == true)      //Hier kommt man hinein, wenn man eine Figur aus dem Haus ziehen darf und will
-            {
-                List<Spielfigur> Figuren = print.GetAllSpielfiguren();
-                bool check = true;
-                foreach (Spielfigur s in Figuren)
+                bool jaNein = false;
+                int eingabe = 0;
+                falscheEingabe = false;
+                try
                 {
-                    if (s.PrintPosition == haus.StartingPrintPosition)
+                    if (!rausziehen)
                     {
-                        check = false;
-                    }
-                }
-                if (check)
-                {
-                    haus.FigurenImHaus--;
-                    bool einmal = true;
-                    int i = 0;
-                    Spielfigur aktuelleFigur = null;
-
-                    foreach (Spielfigur s in haus.ZugehoerigeFiguren)
-                    {
-                        if (s.IsInHouse == true && einmal == true) //einmal sagt aus, dass man nur eine Figur aus dem Haus ziehen darf
+                        Console.WriteLine($"Ziehe {gewuerfelt} Felder mit einer Figur!");
+                        Console.WriteLine("Welche Figur möchten Sie ziehen? Verfügbar: [1, 2, 3, 4]");
+                        wiederholen = true;
+                        while (wiederholen)
                         {
-                            haus.ZugehoerigeFiguren.ElementAt(i).PrintPosition = haus.StartingPrintPosition;
-                            haus.ZugehoerigeFiguren.ElementAt(i).IsInHouse = false;
-                            haus.ZugehoerigeFiguren.ElementAt(i).Position = 1;
-                            einmal = false;
-                            aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(i);
-                        }
-                        i++;
-                    }
-                    foreach (Haus h in haeuser)
-                    {
-                        foreach (Spielfigur s in h.ZugehoerigeFiguren)
-                        {
-                            if (s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
+                            wiederholen = false;
+                            try
                             {
-                                s.PrintPosition = 0;
-                                s.Position = 0;
-                                s.IsInHouse = true;
-                                h.FigurenImHaus++;
+                                eingabe = Convert.ToInt16(Console.ReadLine());
+                            }
+                            catch (FormatException e)
+                            {
+                                Console.WriteLine("Bitte etwas eingeben");
+                                wiederholen = true;
+                            }
+                            catch(OverflowException e)
+                            {
+                                Console.WriteLine("Bitte weniger eingeben");
+                                wiederholen = true;
                             }
                         }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Diese Figur kann nicht gezogen werden.");
-                }
-
-
-            }
-            else if (rausziehen == false && jaNein == false)      //Hier kommt man hinein, wenn man eine Figur nur ziehen darf
-            {
-                int temp = eingabe - 1;
-
-                if (haus.ZugehoerigeFiguren.ElementAt(temp).IsInHouse == false)
-                {
-                    Spielfigur aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(temp);
-                    int letztesBefahrbaresFeld = haus.letztesBefahrbaresFeldBerechnen();
-                    if (aktuelleFigur.Position <= 44 && aktuelleFigur.Position >= 41)                    //Im Haus fahren
-                    {
-                        List<int> positionen = new List<int>();
-                        foreach (Spielfigur s in haus.ZugehoerigeFiguren)
+                        
+                        if (eingabe > 4 || eingabe < 1)
                         {
-                            if (s != aktuelleFigur)
-                            {
-                                positionen.Add(s.Position);
-                            }
-                        }
-                        if (aktuelleFigur.Position > letztesBefahrbaresFeld)
-                        {
-                            Console.WriteLine("Diese Figur kann nicht gezogen werden.");                                            // Man könnte es so machen, dass immer wenn der Benutzer eine ungueltige Eingabe taetigt, eine Exception geworfen wird und am Ende ueberprueft wird, ob eine Exception geworfen worden ist.
-                        }                                                                                                           //Wenn Ja darf der Benutzer nochmal auswaehlen
-                        else
-                        {
-                            if (positionen.Contains(aktuelleFigur.Position + 1))
-                            {
-                                Console.WriteLine("Diese Figur kann nicht gezogen werden.");
-                            }
-                            else
-                            {
-                                int maximalZiehbareAnzahl;
-                                int naehesteFigur = letztesBefahrbaresFeld;
-                                foreach (int i in positionen)
-                                {
-                                    if (i > aktuelleFigur.Position && i < naehesteFigur)
-                                    {
-                                        naehesteFigur = i;
-                                    }
-                                }
-
-                                maximalZiehbareAnzahl = naehesteFigur - aktuelleFigur.Position;
-
-                                if (maximalZiehbareAnzahl >= gewuerfelt)
-                                {
-                                    aktuelleFigur.Position += gewuerfelt;
-                                    aktuelleFigur.PrintPosition = aktuelleFigur.Position + ((haus.HausID - 1) * 4);
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Diese Figur kann nicht gezogen werden.");
-                                }
-                            }
+                            throw new UserFalscheEingabeException("Diese Figur gibt es nicht");
                         }
                     }
                     else
                     {
-                        bool check = true;
-                        
 
-                        if (aktuelleFigur.Position + gewuerfelt > 40)
+                        Console.WriteLine("Möchten Sie eine Figur aus dem Haus ziehen?[Ja oder Nein]");
+                        string? temp = Console.ReadLine();
+                        if (temp == "Ja" || temp == "ja")
                         {
-                            if (aktuelleFigur.Position + gewuerfelt <= haus.letztesMoeglichesFeldBeimReinfahrenberechnen())
+                            jaNein = true;
+                        }
+                        else if (temp == "Nein" || temp == "nein")
+                        {
+                            jaNein = false;
+                        }
+                        else
+                        {
+                            throw new UserFalscheEingabeException("Das ist keine gültige Eingabe");
+                        }
+
+
+                    }
+
+                    if (rausziehen == true && jaNein == true)      //Hier kommt man hinein, wenn man eine Figur aus dem Haus ziehen darf und will
+                    {
+                        List<Spielfigur> Figuren = print.GetAllSpielfiguren();
+                        bool check = true;
+                        foreach (Spielfigur s in Figuren)
+                        {
+                            if (s.PrintPosition == haus.StartingPrintPosition)
                             {
-                                aktuelleFigur.Position += gewuerfelt;
-                                aktuelleFigur.PrintPosition = 40 + (aktuelleFigur.Position % 40) + 4 * (haus.HausID - 1);
+                                check = false;
+                            }
+                        }
+                        if (check)
+                        {
+                            haus.FigurenImHaus--;
+                            bool einmal = true;
+                            int i = 0;
+                            Spielfigur? aktuelleFigur = null;
+
+                            foreach (Spielfigur s in haus.ZugehoerigeFiguren)
+                            {
+                                if (s.IsInHouse == true && einmal == true)
+                                {
+                                    haus.ZugehoerigeFiguren.ElementAt(i).PrintPosition = haus.StartingPrintPosition;
+                                    haus.ZugehoerigeFiguren.ElementAt(i).IsInHouse = false;
+                                    haus.ZugehoerigeFiguren.ElementAt(i).Position = 1;
+                                    einmal = false;
+                                    aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(i);
+                                }
+                                i++;
+                            }
+                            if (aktuelleFigur != null)
+                            {
+                                foreach (Haus h in haeuser)
+                                {
+                                    foreach (Spielfigur s in h.ZugehoerigeFiguren)
+                                    {
+                                        if (s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
+                                        {
+                                            s.PrintPosition = 0;
+                                            s.Position = 0;
+                                            s.IsInHouse = true;
+                                            h.FigurenImHaus++;
+                                        }
+                                    }
+                                }
                             }
                             else
                             {
+                                haus.FigurenImHaus++;
+                                throw new UserFalscheEingabeException("Es ist keine Figur mehr im Haus");
+                            }
+
+                        }
+                        else
+                        {
+                            throw new UserFalscheEingabeException("Es kann keine Figur aus dem Haus gezogen werden");
+                        }
+
+
+                    }
+                    else if (rausziehen == false && jaNein == false)      //Hier kommt man hinein, wenn man eine Figur nur ziehen darf
+                    {
+                        int temp = eingabe - 1;
+
+                        if (haus.ZugehoerigeFiguren.ElementAt(temp).IsInHouse == false)
+                        {
+                            Spielfigur aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(temp);
+                            int letztesBefahrbaresFeld = haus.letztesBefahrbaresFeldBerechnen();
+                            if (aktuelleFigur.Position <= 44 && aktuelleFigur.Position >= 41)                    //Im Haus fahren
+                            {
+                                List<int> positionen = new List<int>();
                                 foreach (Spielfigur s in haus.ZugehoerigeFiguren)
                                 {
-                                    if (s.Position == aktuelleFigur.Position % 40 && s != aktuelleFigur)
+                                    if (s != aktuelleFigur)
                                     {
-                                        check = false;
+                                        positionen.Add(s.Position);
                                     }
+                                }
+                                if (aktuelleFigur.Position > letztesBefahrbaresFeld)
+                                {
+                                    throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");                         
+                                }                                                                                                           //Wenn Ja darf der Benutzer nochmal auswaehlen
+                                else
+                                {
+                                    if (positionen.Contains(aktuelleFigur.Position + 1))
+                                    {
+                                        throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");
+                                    }
+                                    else
+                                    {
+                                        int maximalZiehbareAnzahl;
+                                        int naehesteFigur = letztesBefahrbaresFeld;
+                                        foreach (int i in positionen)
+                                        {
+                                            if (i > aktuelleFigur.Position && i < naehesteFigur)
+                                            {
+                                                naehesteFigur = i;
+                                            }
+                                        }
+
+                                        maximalZiehbareAnzahl = naehesteFigur - aktuelleFigur.Position;
+
+                                        if (maximalZiehbareAnzahl >= gewuerfelt)
+                                        {
+                                            aktuelleFigur.Position += gewuerfelt;
+                                            aktuelleFigur.PrintPosition = aktuelleFigur.Position + ((haus.HausID - 1) * 4);
+                                        }
+                                        else
+                                        {
+                                            throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");
+                                        }
+                                    }
+                                }
+                            }
+                            else                                                                                                            //Ins Haus fahren oder normal fahren
+                            {
+                                bool check = true;
+
+
+                                if (aktuelleFigur.Position + gewuerfelt > 40)
+                                {
+                                    if (aktuelleFigur.Position + gewuerfelt <= haus.letztesMoeglichesFeldBeimReinfahrenberechnen())
+                                    {
+                                        aktuelleFigur.Position += gewuerfelt;
+                                        aktuelleFigur.PrintPosition = 40 + (aktuelleFigur.Position % 40) + 4 * (haus.HausID - 1);
+                                    }
+                                    else
+                                    {
+                                        foreach (Spielfigur s in haus.ZugehoerigeFiguren)
+                                        {
+                                            if (s.Position == (aktuelleFigur.Position + gewuerfelt) % 40 && s != aktuelleFigur)
+                                            {
+                                                check = false;
+                                            }
+                                        }
+
+                                        if (check)
+                                        {
+                                            aktuelleFigur.Position += gewuerfelt;
+                                            if (aktuelleFigur.Position > 40)
+                                            {
+                                                aktuelleFigur.Position %= 40;
+                                            }
+                                            aktuelleFigur.PrintPosition += gewuerfelt;
+                                            if (aktuelleFigur.PrintPosition > 40)
+                                            {
+                                                aktuelleFigur.PrintPosition %= 40;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    foreach (Spielfigur s in haus.ZugehoerigeFiguren)
+                                    {
+                                        if (s.Position == (aktuelleFigur.Position + gewuerfelt) && s != aktuelleFigur)
+                                        {
+                                            check = false;
+                                        }
+                                    }
+                                    if (check)
+                                    {
+                                        aktuelleFigur.Position += gewuerfelt;
+                                        if (aktuelleFigur.Position > 40)
+                                        {
+                                            aktuelleFigur.Position %= 40;
+                                        }
+                                        aktuelleFigur.PrintPosition += gewuerfelt;
+                                        if (aktuelleFigur.PrintPosition > 40)
+                                        {
+                                            aktuelleFigur.PrintPosition %= 40;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");
+                                    }
+
+
                                 }
 
                                 if (check)
                                 {
-                                    aktuelleFigur.Position += gewuerfelt;
-                                    if(aktuelleFigur.Position > 40)
+                                    foreach (Haus h in haeuser)
                                     {
-                                        aktuelleFigur.Position %= 40;
-                                    }
-                                    aktuelleFigur.PrintPosition += gewuerfelt;
-                                    if (aktuelleFigur.PrintPosition > 40)
-                                    {
-                                        aktuelleFigur.PrintPosition %= 40;
+                                        foreach (Spielfigur s in h.ZugehoerigeFiguren)
+                                        {
+                                            if (s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
+                                            {
+                                                s.PrintPosition = 0;
+                                                s.Position = 0;
+                                                s.IsInHouse = true;
+                                                h.FigurenImHaus++;
+                                            }
+                                        }
                                     }
                                 }
-                                else
-                                {
-                                    Console.WriteLine("Diese Figur kann nicht gezogen werden.");
-                                }
+
+
                             }
                         }
                         else
                         {
-                            aktuelleFigur.Position += gewuerfelt;
-                            if (aktuelleFigur.Position > 40)
-                            {
-                                aktuelleFigur.Position %= 40;
-                            }
-                            aktuelleFigur.PrintPosition += gewuerfelt;
-                            if (aktuelleFigur.PrintPosition > 40)
-                            {
-                                aktuelleFigur.PrintPosition %= 40;
-                            }
-
-                        }
-
-                        if (check)
-                        {
-                            foreach (Haus h in haeuser)
-                            {
-                                foreach (Spielfigur s in h.ZugehoerigeFiguren)
-                                {
-                                    if (s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
-                                    {
-                                        s.PrintPosition = 0;
-                                        s.Position = 0;
-                                        s.IsInHouse = true;
-                                        h.FigurenImHaus++;
-                                    }
-                                }
-                            }
+                            throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");
                         }
 
 
                     }
-                }
-                else
-                {
-                    Console.WriteLine("Diese Figur kann nicht gezogen werden.");
-                }
-
-
-            }
-            //Man kommt hier hin wenn man eine 6 würfelt und rausziehen KÖNNTE, aber nicht will.
-            else
-            {
-                Console.WriteLine($"Ziehe {gewuerfelt} Felder mit einer Figur!");
-                Console.WriteLine("Welche Figur möchten Sie ziehen? Verfügbar: [1, 2, 3, 4]");
-                eingabe = Convert.ToUInt16(Console.ReadLine());
-                int temp = eingabe - 1;
-
-
-                if (haus.ZugehoerigeFiguren.ElementAt(temp).IsInHouse == false)
-                {
-                    Spielfigur aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(temp);
-                    int letztesBefahrbaresFeld = haus.letztesBefahrbaresFeldBerechnen();
-                    if (aktuelleFigur.Position <= 44 && aktuelleFigur.Position >= 41)                    //Im Haus fahren
-                    {
-                        List<int> positionen = new List<int>();
-                        foreach (Spielfigur s in haus.ZugehoerigeFiguren)
-                        {
-                            if (s != aktuelleFigur)
-                            {
-                                positionen.Add(s.Position);
-                            }
-                        }
-                        if (aktuelleFigur.Position > letztesBefahrbaresFeld)
-                        {
-                            Console.WriteLine("Diese Figur kann nicht gezogen werden.");                                            // Man könnte es so machen, dass immer wenn der Benutzer eine ungueltige Eingabe taetigt, eine Exception geworfen wird und am Ende ueberprueft wird, ob eine Exception geworfen worden ist.
-                        }                                                                                                           //Wenn Ja darf der Benutzer nochmal auswaehlen
-                        else
-                        {
-                            if (positionen.Contains(aktuelleFigur.Position + 1))
-                            {
-                                Console.WriteLine("Diese Figur kann nicht gezogen werden.");
-                            }
-                            else
-                            {
-                                int maximalZiehbareAnzahl;
-                                int naehesteFigur = letztesBefahrbaresFeld;
-                                foreach (int i in positionen)
-                                {
-                                    if (i > aktuelleFigur.Position && i < naehesteFigur)
-                                    {
-                                        naehesteFigur = i;
-                                    }
-                                }
-
-                                maximalZiehbareAnzahl = naehesteFigur - aktuelleFigur.Position;
-
-                                if (maximalZiehbareAnzahl >= gewuerfelt)
-                                {
-                                    aktuelleFigur.Position += gewuerfelt;
-                                    aktuelleFigur.PrintPosition = 40 + gewuerfelt + (haus.HausID * 4);
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Diese Figur kann nicht gezogen werden.");
-                                }
-                            }
-                        }
-                    }
+                    //Man kommt hier hin wenn man eine 6 würfelt und rausziehen KÖNNTE, aber nicht will.
                     else
                     {
-                        aktuelleFigur.Position += gewuerfelt;
-                        aktuelleFigur.PrintPosition += gewuerfelt;
-
-                        if (aktuelleFigur.Position > 40)
+                        Console.WriteLine($"Ziehe {gewuerfelt} Felder mit einer Figur!");
+                        Console.WriteLine("Welche Figur möchten Sie ziehen? Verfügbar: [1, 2, 3, 4]");
+                        eingabe = Convert.ToUInt16(Console.ReadLine());
+                        if (eingabe > 4 || eingabe < 1)
                         {
-                            if (aktuelleFigur.Position <= haus.letztesMoeglichesFeldBeimReinfahrenberechnen())
+                            throw new UserFalscheEingabeException("Diese Figur gibt es nicht");
+                        }
+                        int temp = eingabe - 1;
+
+
+                        if (haus.ZugehoerigeFiguren.ElementAt(temp).IsInHouse == false)
+                        {
+                            Spielfigur aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(temp);
+                            int letztesBefahrbaresFeld = haus.letztesBefahrbaresFeldBerechnen();
+                            if (aktuelleFigur.Position <= 44 && aktuelleFigur.Position >= 41)                    //Im Haus fahren
                             {
-                                aktuelleFigur.PrintPosition = 40 + (aktuelleFigur.Position % 40) + 4 * (haus.HausID - 1);
+                                List<int> positionen = new List<int>();
+                                foreach (Spielfigur s in haus.ZugehoerigeFiguren)
+                                {
+                                    if (s != aktuelleFigur)
+                                    {
+                                        positionen.Add(s.Position);
+                                    }
+                                }
+                                if (aktuelleFigur.Position > letztesBefahrbaresFeld)
+                                {
+                                    throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");                         // Man könnte es so machen, dass immer wenn der Benutzer eine ungueltige Eingabe taetigt, eine Exception geworfen wird und am Ende ueberprueft wird, ob eine Exception geworfen worden ist.
+                                }                                                                                                           //Wenn Ja darf der Benutzer nochmal auswaehlen
+                                else
+                                {
+                                    if (positionen.Contains(aktuelleFigur.Position + 1))
+                                    {
+                                        throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");
+                                    }
+                                    else
+                                    {
+                                        int maximalZiehbareAnzahl;
+                                        int naehesteFigur = letztesBefahrbaresFeld;
+                                        foreach (int i in positionen)
+                                        {
+                                            if (i > aktuelleFigur.Position && i < naehesteFigur)
+                                            {
+                                                naehesteFigur = i;
+                                            }
+                                        }
+
+                                        maximalZiehbareAnzahl = naehesteFigur - aktuelleFigur.Position;
+
+                                        if (maximalZiehbareAnzahl >= gewuerfelt)
+                                        {
+                                            aktuelleFigur.Position += gewuerfelt;
+                                            aktuelleFigur.PrintPosition = 40 + gewuerfelt + (haus.HausID * 4);
+                                        }
+                                        else
+                                        {
+                                            throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");
+                                        }
+                                    }
+                                }
                             }
                             else
                             {
-                                aktuelleFigur.Position %= 40;
-                                if (aktuelleFigur.PrintPosition > 40)
+                                bool check = true;
+
+
+                                if (aktuelleFigur.Position + gewuerfelt > 40)
                                 {
-                                    aktuelleFigur.PrintPosition %= 40;
+                                    if (aktuelleFigur.Position + gewuerfelt <= haus.letztesMoeglichesFeldBeimReinfahrenberechnen())
+                                    {
+                                        aktuelleFigur.Position += gewuerfelt;
+                                        aktuelleFigur.PrintPosition = 40 + (aktuelleFigur.Position % 40) + 4 * (haus.HausID - 1);
+                                    }
+                                    else
+                                    {
+                                        foreach (Spielfigur s in haus.ZugehoerigeFiguren)
+                                        {
+                                            if (s.Position == (aktuelleFigur.Position + gewuerfelt) % 40 && s != aktuelleFigur)
+                                            {
+                                                check = false;
+                                            }
+                                        }
+
+                                        if (check)
+                                        {
+                                            aktuelleFigur.Position += gewuerfelt;
+                                            if (aktuelleFigur.Position > 40)
+                                            {
+                                                aktuelleFigur.Position %= 40;
+                                            }
+                                            aktuelleFigur.PrintPosition += gewuerfelt;
+                                            if (aktuelleFigur.PrintPosition > 40)
+                                            {
+                                                aktuelleFigur.PrintPosition %= 40;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");
+                                        }
+                                    }
                                 }
+                                else
+                                {
+                                    foreach (Spielfigur s in haus.ZugehoerigeFiguren)
+                                    {
+                                        if (s.Position == (aktuelleFigur.Position + gewuerfelt) && s != aktuelleFigur)
+                                        {
+                                            check = false;
+                                        }
+                                    }
+                                    if (check)
+                                    {
+                                        aktuelleFigur.Position += gewuerfelt;
+                                        if (aktuelleFigur.Position > 40)
+                                        {
+                                            aktuelleFigur.Position %= 40;
+                                        }
+                                        aktuelleFigur.PrintPosition += gewuerfelt;
+                                        if (aktuelleFigur.PrintPosition > 40)
+                                        {
+                                            aktuelleFigur.PrintPosition %= 40;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");
+                                    }
+
+
+                                }
+
+                                if (check)
+                                {
+                                    foreach (Haus h in haeuser)
+                                    {
+                                        foreach (Spielfigur s in h.ZugehoerigeFiguren)
+                                        {
+                                            if (s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
+                                            {
+                                                s.PrintPosition = 0;
+                                                s.Position = 0;
+                                                s.IsInHouse = true;
+                                                h.FigurenImHaus++;
+                                            }
+                                        }
+                                    }
+                                }
+
                             }
                         }
 
-                        foreach (Haus h in haeuser)
-                        {
-                            foreach (Spielfigur s in h.ZugehoerigeFiguren)
-                            {
-                                if (s.PrintPosition == aktuelleFigur.PrintPosition && s != aktuelleFigur)
-                                {
-                                    s.PrintPosition = 0;
-                                    s.Position = 0;
-                                    s.IsInHouse = true;
-                                    h.FigurenImHaus++;
-                                }
-                            }
-                        }
-
                     }
                 }
-
-            }
-
-        }
-
-        private static bool istFeldFrei(Print print, Haus zieherHaus, int gezogeneFigur, int gewuerfelt) // idese methode funktioniert NICHT
-        {
-            List<Spielfigur> alleSpielfiguren = print.GetAllSpielfiguren();
-            Spielfigur gezogeneSpielfigur = zieherHaus.ZugehoerigeFiguren.ElementAt(gezogeneFigur);
-
-
-            if (gezogeneSpielfigur.PrintPosition == 0)
-            {
-                foreach (Spielfigur x in alleSpielfiguren)
+                catch (UserFalscheEingabeException e)
                 {
-                    if (x.Position == 1)
-                    {
-                        if (x.Farbe == gezogeneSpielfigur.Farbe)
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    }
+                    falscheEingabe = true;
+                    Console.WriteLine(e.Message);
                 }
             }
-            else
-            {
-                foreach (Spielfigur x in alleSpielfiguren)
-                {
-                    if (x.PrintPosition == (gezogeneSpielfigur.PrintPosition + gewuerfelt) % 40)
-                    {
-                        if (x.Farbe == gezogeneSpielfigur.Farbe)
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    }
-                }
+            
 
-            }
-            return true;
         }
 
         private static void Einführung()
@@ -520,7 +616,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
                 }
-            } while (spielerzahl != 1 &&spielerzahl != 2 && spielerzahl != 3 && spielerzahl != 4);
+            } while (spielerzahl != 1 && spielerzahl != 2 && spielerzahl != 3 && spielerzahl != 4);
 
             if (spielerzahl != 0)
             {
@@ -630,7 +726,7 @@ namespace Mensch_Aergere_Dich_Nicht
             string path = $"SaveFile_{timestamp}.txt";
             while (!win)
             {
-                
+
                 if (abtauschen < spieler.Count)
                 {
                     Console.WriteLine($"Der Spieler {spieler.ElementAt(abtauschen).Name} ist dran!");
@@ -715,8 +811,8 @@ namespace Mensch_Aergere_Dich_Nicht
                         p.PrintSpielfeld();
                         break;
                 }
-                
-                
+
+
             }
             Console.WriteLine("\n\n\n\n\n");
 
