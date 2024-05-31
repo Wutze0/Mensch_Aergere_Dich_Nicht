@@ -634,7 +634,7 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
                     }
-                } while (botAnzahl <= 0 || botAnzahl > (4 - spielerzahl));
+                } while (botAnzahl < 0 || botAnzahl > (4 - spielerzahl));
 
                 if (botAnzahl > 0)
                     bot = true;
