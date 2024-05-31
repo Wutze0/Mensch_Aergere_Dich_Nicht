@@ -607,7 +607,7 @@ namespace Mensch_Aergere_Dich_Nicht
             do
             {
                 Console.WriteLine("Bitte geben Sie die Anzahl der Spieler ein(1-4):");
-                string eingabe = Console.ReadLine();
+                string? eingabe = Console.ReadLine();
                 try
                 {
                     spielerzahl = Convert.ToInt32(eingabe);
@@ -634,12 +634,14 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
                     }
-                } while (botAnzahl < 0 || botAnzahl > (4 - spielerzahl));
+                } while (botAnzahl <= 0 || botAnzahl > (4 - spielerzahl));
 
                 if (botAnzahl > 0)
                     bot = true;
             }
-
+            
+            Console.Clear();
+            Console.WriteLine($"Es wird mit {spielerzahl} Spielern und {botAnzahl} Bots gespielt.");
             List<Spieler> spielerliste = new List<Spieler>();
             List<Haus> haeuser = new List<Haus>();
 
@@ -653,7 +655,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 while (check == true)
                 {
 
-                    string gewuenschteFarbe = Console.ReadLine();
+                    string? gewuenschteFarbe = Console.ReadLine();
                     Verfuegbare_Farben farbe = Verfuegbare_Farben.Rot;
                     if (Enum.TryParse(gewuenschteFarbe, out farbe))
                     {
@@ -682,8 +684,9 @@ namespace Mensch_Aergere_Dich_Nicht
                 Random r = new Random();
                 int farbeIndex = r.Next(0, 7); // 0 bis 7 weil es so viele Farben im Enum gibt.
                 Verfuegbare_Farben farbe = (Verfuegbare_Farben)farbeIndex; //somit kann man auf die korrekte Stelle des Enums zugreifen.
-                if (!getAvailableColors(haeuser).Contains(farbe.ToString()))
+                if (getAvailableColors(haeuser).Contains(farbe.ToString()))
                 {
+                    Console.WriteLine(farbe);
                     haeuser.Add(new Haus(farbe));
                     haeuser.ElementAt(i + spielerzahl).ZugehoerigerSpieler = new Bot();
                 }
@@ -708,7 +711,6 @@ namespace Mensch_Aergere_Dich_Nicht
                 Console.WriteLine($"Spieler {j + 1}: {s.Name} mit {haeuser.ElementAt(j).Farbe} als Farbe des Hauses.");
                 j++;
             }
-
 
             Spielablauf(haeuser, spielerliste, bot);
 
