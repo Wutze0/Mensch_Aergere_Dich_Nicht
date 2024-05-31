@@ -787,7 +787,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
                         {
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
-                            p.PrintSpielfeld();
+                            //p.PrintSpielfeld();
                         }
                         haeuser.ElementAt(abtauschen).ziehbareFigurenBerechnen();
                         if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
