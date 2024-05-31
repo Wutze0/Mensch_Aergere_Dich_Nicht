@@ -15,7 +15,7 @@ namespace Mensch_Aergere_Dich_Nicht
         public int StartingPrintPosition { get; set; }
         public List<Spielfigur> ZugehoerigeFiguren { get; set; } = new List<Spielfigur>();
 
-        public Spieler ZugehoerigerSpieler { get; set; }
+        public Spieler? ZugehoerigerSpieler { get; set; }
 
 
         public Haus(Verfuegbare_Farben farbe)
@@ -112,7 +112,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         again = true;
                     }
                 }
-                if(again)
+                if (again)
                 {
                     again = false;
                 }
