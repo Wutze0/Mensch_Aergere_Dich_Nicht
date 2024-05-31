@@ -438,7 +438,6 @@ namespace Mensch_Aergere_Dich_Nicht
         private static void EinleitungNeuesSpiel()
         {
             Console.Clear();
-            Console.WriteLine("Um ein Spiel zu speichern, einfach während des Spielablaufes 'Speicher' eingeben.");
             int spielerzahl = int.MinValue;
             bool bot = false;
             int botAnzahl = 0;
@@ -598,24 +597,34 @@ namespace Mensch_Aergere_Dich_Nicht
                         break;
 
                     case 3:
+                        
 
                         if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
                         {
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
                         }
+                        
                         abtauschen = 0;
-                        Console.WriteLine("Wollen Sie das Spiel speichern? [y/n]");
-                        char eingabe = '\0';
-                        char.TryParse(Console.ReadLine(), out eingabe);
 
-                        if (eingabe.Equals('y'))
+                        string a = GetAllSaveFiles();
+                        List<string> list = new List<string>();
+                        list = a.Split(new[] { '\n' }).ToList();
+                        if (list.Count <= 5)
                         {
-                            SpielSpeichern(spieler, haeuser, path);
+                            Console.WriteLine("Wollen Sie das Spiel speichern? [y/n]");
+                            char eingabe = '\0';
+                            char.TryParse(Console.ReadLine(), out eingabe);
+
+                            if (eingabe.Equals('y'))
+                            {
+                                SpielSpeichern(spieler, haeuser, path);
+                            }
+                            else if (eingabe.Equals('y'))
+                            {
+                                SpielSpeichern(spieler, haeuser, path);
+                            }
                         }
-                        else if(eingabe.Equals('y'))
-                        {
-                            SpielSpeichern(spieler, haeuser, path);
-                        }
+                        
                         break;
                 }
 
