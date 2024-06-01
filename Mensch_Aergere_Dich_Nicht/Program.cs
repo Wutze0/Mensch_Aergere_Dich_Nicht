@@ -606,10 +606,8 @@ namespace Mensch_Aergere_Dich_Nicht
                         
                         abtauschen = 0;
 
-                        string a = GetAllSaveFiles();
-                        List<string> list = new List<string>();
-                        list = a.Split(new[] { '\n' }).ToList();
-                        if (list.Count <= 5)
+                        FileInfo[] list = GetAllSaveFiles();
+                        if (list.Length <= 5)
                         {
                             Console.WriteLine("Wollen Sie das Spiel speichern? [y/n]");
                             char eingabe = '\0';
@@ -691,22 +689,33 @@ namespace Mensch_Aergere_Dich_Nicht
 
             Console.WriteLine($"Spielstand wurde in {path} gespeichert.");
         }
-        private static string GetAllSaveFiles()
+        private static FileInfo[] GetAllSaveFiles()
         {
             string c = Directory.GetCurrentDirectory();
             DirectoryInfo d = new DirectoryInfo(c); 
-            FileInfo[] Files = d.GetFiles("*.txt");//alle files die die Dateiendung .txt haben.
-            string s = string.Empty;
+            FileInfo[] files = d.GetFiles("*.txt");//alle files die die Dateiendung .txt haben.
 
-            foreach (FileInfo f in Files)
-            {
-                s += f.Name + '\n';
-            }
-            return s;
+            return files;
         }
         private static void LadeSpiel()
         {
-            Console.WriteLine(GetAllSaveFiles());
+            FileInfo[] f = GetAllSaveFiles();
+            int i = 1;
+
+            foreach( FileInfo fi in f )
+            {
+                Console.WriteLine($"{fi.Name}[{i}]");
+                i++;
+            }
+            try
+            {
+                Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
+                string eingabe = Console.ReadLine();
+            }
+            catch ( Exception ex )
+            {
+
+            }
         }
 
     }
