@@ -701,21 +701,31 @@ namespace Mensch_Aergere_Dich_Nicht
         {
             FileInfo[] f = GetAllSaveFiles();
             int i = 1;
+            bool check = true;
 
-            foreach( FileInfo fi in f )
+            do
             {
-                Console.WriteLine($"{fi.Name}[{i}]");
-                i++;
-            }
-            try
-            {
-                Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
-                string eingabe = Console.ReadLine();
-            }
-            catch ( Exception ex )
-            {
+                try
+                {
+                    foreach (FileInfo fi in f)
+                    {
+                        Console.WriteLine($"{fi.Name}[{i}]");
+                        i++;
+                    }
+                    Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
+                    string eingabe = Console.ReadLine();
 
-            }
+                }
+                
+                
+                catch (Exception ex)
+                {
+                    check = false;
+                }
+
+            } while (check == false);
+
+            
         }
 
     }
