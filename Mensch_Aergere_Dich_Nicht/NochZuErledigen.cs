@@ -3,7 +3,7 @@
     internal class NochZuErledigen
     {
         //3 mal würfeln funktioniert noch nicht     Dürfte gefixt sein
-        //Bot Farben                                
-        //Alles Benutzerfreundlicher gestalten      
+        //Bot Farben                                Fix
+        //Alles Benutzerfreundlicher gestalten      Verbessert
     }
 }

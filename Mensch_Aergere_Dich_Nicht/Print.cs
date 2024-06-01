@@ -53,7 +53,7 @@
                     if (_haueser.ElementAt(0).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t\t\t");
-                        _haueser.ElementAt(0).changeColour();
+                        _haueser.ElementAt(0).ChangeColour();
                         Console.Write("MMM    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
@@ -62,7 +62,7 @@
                     else if (_haueser.ElementAt(0).FigurenImHaus == 3)
                     {
                         Console.Write("\t\t\t\t");
-                        _haueser.ElementAt(0).changeColour();
+                        _haueser.ElementAt(0).ChangeColour();
                         Console.Write($"{block}{block}{block}    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
@@ -70,7 +70,7 @@
                     else if (_haueser.ElementAt(0).FigurenImHaus <= 2)
                     {
                         Console.Write("\t\t\t\t");
-                        _haueser.ElementAt(0).changeColour();
+                        _haueser.ElementAt(0).ChangeColour();
                         Console.Write($"{block}{block}{block}    {block}{block}{block}\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
@@ -81,7 +81,7 @@
                     if (_haueser.ElementAt(1).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t");
-                        _haueser.ElementAt(1).changeColour();
+                        _haueser.ElementAt(1).ChangeColour();
                         Console.Write("MMM    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
 
@@ -89,14 +89,14 @@
                     else if (_haueser.ElementAt(1).FigurenImHaus == 3)
                     {
                         Console.Write("\t\t");
-                        _haueser.ElementAt(1).changeColour();
+                        _haueser.ElementAt(1).ChangeColour();
                         Console.Write($"{block}{block}{block}    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                     else if (_haueser.ElementAt(1).FigurenImHaus <= 2)
                     {
                         Console.Write("\t\t");
-                        _haueser.ElementAt(1).changeColour();
+                        _haueser.ElementAt(1).ChangeColour();
                         Console.Write($"{block}{block}{block}    {block}{block}{block}\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
@@ -126,7 +126,7 @@
                     if (_haueser.ElementAt(0).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t\t\t");
-                        _haueser.ElementAt(0).changeColour();
+                        _haueser.ElementAt(0).ChangeColour();
                         Console.Write("MMM    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
@@ -135,7 +135,7 @@
                     else if (_haueser.ElementAt(0).FigurenImHaus == 1)
                     {
                         Console.Write("\t\t\t\t");
-                        _haueser.ElementAt(0).changeColour();
+                        _haueser.ElementAt(0).ChangeColour();
                         Console.Write($"{block}{block}{block}    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
@@ -143,7 +143,7 @@
                     else if (_haueser.ElementAt(0).FigurenImHaus == 0)
                     {
                         Console.Write("\t\t\t\t");
-                        _haueser.ElementAt(0).changeColour();
+                        _haueser.ElementAt(0).ChangeColour();
                         Console.Write($"{block}{block}{block}    {block}{block}{block}\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
@@ -154,7 +154,7 @@
                     if (_haueser.ElementAt(1).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t");
-                        _haueser.ElementAt(1).changeColour();
+                        _haueser.ElementAt(1).ChangeColour();
                         Console.Write("MMM    MMM\t");
                         Console.ForegroundColor = ConsoleColor.White;
 
@@ -162,14 +162,14 @@
                     else if (_haueser.ElementAt(1).FigurenImHaus == 1)
                     {
                         Console.Write("\t\t");
-                        _haueser.ElementAt(1).changeColour();
+                        _haueser.ElementAt(1).ChangeColour();
                         Console.Write($"{block}{block}{block}    MMM\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                     else if (_haueser.ElementAt(1).FigurenImHaus == 0)
                     {
                         Console.Write("\t\t");
-                        _haueser.ElementAt(1).changeColour();
+                        _haueser.ElementAt(1).ChangeColour();
                         Console.Write($"{block}{block}{block}    {block}{block}{block}\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
@@ -275,7 +275,7 @@
                     if (_haueser.ElementAt(2).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t\t\t");
-                        _haueser.ElementAt(2).changeColour();
+                        _haueser.ElementAt(2).ChangeColour();
                         Console.Write("MMM    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
@@ -284,7 +284,7 @@
                     else if (_haueser.ElementAt(2).FigurenImHaus == 3)
                     {
                         Console.Write("\t\t\t\t");
-                        _haueser.ElementAt(2).changeColour();
+                        _haueser.ElementAt(2).ChangeColour();
                         Console.Write($"{block}{block}{block}    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
@@ -292,7 +292,7 @@
                     else if (_haueser.ElementAt(2).FigurenImHaus <= 2)
                     {
                         Console.Write("\t\t\t\t");
-                        _haueser.ElementAt(2).changeColour();
+                        _haueser.ElementAt(2).ChangeColour();
                         Console.Write($"{block}{block}{block}    {block}{block}{block}\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
@@ -303,7 +303,7 @@
                     if (_haueser.ElementAt(3).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t");
-                        _haueser.ElementAt(3).changeColour();
+                        _haueser.ElementAt(3).ChangeColour();
                         Console.Write("MMM    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
 
@@ -311,14 +311,14 @@
                     else if (_haueser.ElementAt(3).FigurenImHaus == 3)
                     {
                         Console.Write("\t\t");
-                        _haueser.ElementAt(3).changeColour();
+                        _haueser.ElementAt(3).ChangeColour();
                         Console.Write($"{block}{block}{block}    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                     else if (_haueser.ElementAt(3).FigurenImHaus <= 2)
                     {
                         Console.Write("\t\t");
-                        _haueser.ElementAt(3).changeColour();
+                        _haueser.ElementAt(3).ChangeColour();
                         Console.Write($"{block}{block}{block}    {block}{block}{block}\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
@@ -347,7 +347,7 @@
                     if (_haueser.ElementAt(2).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t\t\t");
-                        _haueser.ElementAt(2).changeColour();
+                        _haueser.ElementAt(2).ChangeColour();
                         Console.Write("MMM    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
@@ -356,7 +356,7 @@
                     else if (_haueser.ElementAt(2).FigurenImHaus == 1)
                     {
                         Console.Write("\t\t\t\t");
-                        _haueser.ElementAt(2).changeColour();
+                        _haueser.ElementAt(2).ChangeColour();
                         Console.Write($"{block}{block}{block}    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
@@ -364,7 +364,7 @@
                     else if (_haueser.ElementAt(2).FigurenImHaus == 0)
                     {
                         Console.Write("\t\t\t\t");
-                        _haueser.ElementAt(2).changeColour();
+                        _haueser.ElementAt(2).ChangeColour();
                         Console.Write($"{block}{block}{block}    {block}{block}{block}\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(zeile);
@@ -375,7 +375,7 @@
                     if (_haueser.ElementAt(3).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t");
-                        _haueser.ElementAt(3).changeColour();
+                        _haueser.ElementAt(3).ChangeColour();
                         Console.Write("MMM    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
 
@@ -383,14 +383,14 @@
                     else if (_haueser.ElementAt(3).FigurenImHaus == 1)
                     {
                         Console.Write("\t\t");
-                        _haueser.ElementAt(3).changeColour();
+                        _haueser.ElementAt(3).ChangeColour();
                         Console.Write($"{block}{block}{block}    MMM\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                     else if (_haueser.ElementAt(3).FigurenImHaus == 0)
                     {
                         Console.Write("\t\t");
-                        _haueser.ElementAt(3).changeColour();
+                        _haueser.ElementAt(3).ChangeColour();
                         Console.Write($"{block}{block}{block}    {block}{block}{block}\t\t");
                         Console.ForegroundColor = ConsoleColor.White;
                     }

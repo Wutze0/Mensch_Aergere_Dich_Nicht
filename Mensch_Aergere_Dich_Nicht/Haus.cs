@@ -4,6 +4,7 @@ namespace Mensch_Aergere_Dich_Nicht
     {
         private int _anzSpielfiguren;
         public string Farbe { get; private set; }
+        public Verfuegbare_Farben Farbe2 { get; private set; }
         public int FigurenImHaus { get; set; } = 4;
         public int ZiehbareFiguren { get; set; } = 4;
         public int AktuellLetztesFelde { get; set; } = 44;
@@ -38,7 +39,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
         }
 
-        public void changeColour()
+        public void ChangeColour()
         {
 
             switch (Farbe)
@@ -57,7 +58,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
         }
-        public int letztesBefahrbaresFeldBerechnen()
+        public int LetztesBefahrbaresFeldBerechnen()
         {
             int letztesBefahrbaresFeld = 44;
             List<int> positionen = new List<int>();
@@ -83,7 +84,7 @@ namespace Mensch_Aergere_Dich_Nicht
             return letztesBefahrbaresFeld;
         }
 
-        public int letztesMoeglichesFeldBeimReinfahrenberechnen()
+        public int LetztesMoeglichesFeldBeimReinfahrenberechnen()
         {
             int x = 45;
 
@@ -98,7 +99,7 @@ namespace Mensch_Aergere_Dich_Nicht
             return x;
         }
 
-        public void ziehbareFigurenBerechnen()
+        public void ZiehbareFigurenBerechnen()
         {
             int x = 4;
             bool again = false;
@@ -124,6 +125,45 @@ namespace Mensch_Aergere_Dich_Nicht
             }
             ZiehbareFiguren = x;
 
+        }
+
+        public bool NichtsBewegbar(int wieWeitZiehen)
+        {
+            int groesstesBefahrbaresfeld;
+            int maximalZiehbareAnz;
+            int i = 0;
+            foreach (Spielfigur s in ZugehoerigeFiguren)
+            {
+                if (s.Position > 40)
+                {
+                    groesstesBefahrbaresfeld = 44;
+                    foreach (Spielfigur s2 in ZugehoerigeFiguren)
+                    {
+                        if (s2.Position > s.Position && s2.Position < groesstesBefahrbaresfeld)
+                        {
+                            groesstesBefahrbaresfeld = s2.Position;
+                        }
+                    }
+                    maximalZiehbareAnz = groesstesBefahrbaresfeld - s.Position;
+                    if (maximalZiehbareAnz >= wieWeitZiehen)
+                    {
+
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
+                else if (s.Position == 0 && wieWeitZiehen != 6)
+                {
+                    i++;
+                }
+            }
+            if (i == 4)
+            {
+                return true;
+            }
+            else { return false; }
         }
     }
 
