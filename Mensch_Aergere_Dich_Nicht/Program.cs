@@ -702,6 +702,7 @@ namespace Mensch_Aergere_Dich_Nicht
             FileInfo[] f = GetAllSaveFiles();
             int i = 1;
             bool check = true;
+            int eingabe = 0;
 
             do
             {
@@ -711,21 +712,37 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         Console.WriteLine($"{fi.Name}[{i}]");
                         i++;
+                        
                     }
                     Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
-                    string eingabe = Console.ReadLine();
+                    eingabe = Convert.ToInt32(Console.ReadLine())-1;
 
                 }
                 
                 
                 catch (Exception ex)
                 {
+                    Console.WriteLine("Falsche Eingabe, erneuter Versuch!");
+                    i = 1;
                     check = false;
                 }
 
             } while (check == false);
 
-            
+            FileStream fs = f.ElementAt(eingabe).OpenRead();
+            StreamReader sr = new StreamReader(fs);
+
+            string[] zeilen = sr.ReadToEnd().Split('\n');
+            string[] namen = {};
+            string[] farben = { };
+            int[] positionen = { };
+
+            for (int j = 1; i < zeilen.Length; i++) 
+            {
+                namen[j] = zeilen[j].Split('\t')[0];
+                farben[j] = zeilen[j].Split('\t')[1];
+            }
+
         }
 
     }
