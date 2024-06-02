@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Program
@@ -645,40 +647,50 @@ namespace Mensch_Aergere_Dich_Nicht
 
             List<Spieler> spielerliste = new List<Spieler>();
             List<Haus> haeuser = new List<Haus>();
+            Regex regex = new Regex(@"^[A-Za-zÄäÖöÜüß_\ \d]{2,16}$");
 
             for (int i = 0; i < spielerzahl; i++)
             {
                 Console.WriteLine($"Bitte den Namen des {i + 1}. Spielers eingeben:");
                 string name = Console.ReadLine();
-                Console.WriteLine($"\n{name}, Bitte geben Sie Ihre gewünschte Hausfarbe ein\n" +
-                    $"Verfügbar sind folgende:\n{getAvailableColors(haeuser)}");
-                bool check = true;
-                while (check == true)
+                if(regex.IsMatch(name))
                 {
-
-                    string? gewuenschteFarbe = Console.ReadLine();
-                    Verfuegbare_Farben farbe = Verfuegbare_Farben.Rot;
-                    if (Enum.TryParse(gewuenschteFarbe, out farbe))
+                    Console.WriteLine($"\n{name}, Bitte geben Sie Ihre gewünschte Hausfarbe ein\n" +
+                    $"Verfügbar sind folgende:\n{getAvailableColors(haeuser)}");
+                    bool check = true;
+                    while (check == true)
                     {
-                        if (getAvailableColors(haeuser).Contains(gewuenschteFarbe))
+
+                        string? gewuenschteFarbe = Console.ReadLine();
+                        Verfuegbare_Farben farbe = Verfuegbare_Farben.Rot;
+                        if (Enum.TryParse(gewuenschteFarbe, out farbe))
                         {
-                            Console.WriteLine($"Erfolgreich die Farbe {farbe} ausgewählt!");
-                            haeuser.Add(new Haus(farbe));
-                            check = false;
+                            if (getAvailableColors(haeuser).Contains(gewuenschteFarbe))
+                            {
+                                Console.WriteLine($"Erfolgreich die Farbe {farbe} ausgewählt!");
+                                haeuser.Add(new Haus(farbe));
+                                check = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Diese Farbe wird schon verwendet, bitte eine andere Farbe wählen");
+                            }
+
                         }
                         else
                         {
-                            Console.WriteLine("Diese Farbe wird schon verwendet, bitte eine andere Farbe wählen");
+                            Console.WriteLine("Diese Farbe existiert nicht, bitte eine andere Farbe wählen:");
                         }
-
                     }
-                    else
-                    {
-                        Console.WriteLine("Diese Farbe existiert nicht, bitte eine andere Farbe wählen:");
-                    }
+                    haeuser.ElementAt(i).ZugehoerigerSpieler = new Menschlicher_Spieler(name);
+                    spielerliste.Add(haeuser.ElementAt(i).ZugehoerigerSpieler);
                 }
-                haeuser.ElementAt(i).ZugehoerigerSpieler = new Menschlicher_Spieler(name);
-                spielerliste.Add(haeuser.ElementAt(i).ZugehoerigerSpieler);
+                else
+                {
+                    Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
+                    i--;
+                }
+                
             }
             for (int i = 0; i < botAnzahl; i++)
             {
