@@ -951,7 +951,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 farben[j - 1] = spalten[1];
                 string[] posArray = spalten[2].Split(';');
                 string[] printPosArray = spalten[3].Split(";");
-                for (int k = 0; k < 4; k++)
+                for (int k = 0; k < 4; k++) // 4, da jedes Haus 4 Figuren hat.
                 {
                     positionen[j - 1, k] = Convert.ToInt32(posArray[k]);
                     printPositionen[j - 1, k] = Convert.ToInt32(printPosArray[k]);
@@ -962,14 +962,13 @@ namespace Mensch_Aergere_Dich_Nicht
             List<Haus> haeuser = new List<Haus>();
             for (int j = 0; j < zeilen.Length - 2; j++)  //-2, da sonst 1 Spieler / Haus zu viel hinzugefügt wird.
             {
-                if (namen[j] == "Bot")
+                if(namen[j].Contains("bot"))
                 {
-                    spieler.Add(new Spieler(namen[j], true));
-                    Console.WriteLine("spielr dazu");
+                    spieler.Add(new Bot());
                 }
                 else
                 {
-                    spieler.Add(new Spieler(namen[j], false));
+                    spieler.Add(new Menschlicher_Spieler(namen[j]));
                 }
                 Enum.TryParse(farben[j], out Verfuegbare_Farben farbe);
                 Haus h = new Haus(farbe);
@@ -999,7 +998,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
         }
-
+        //Als Namen darf man NICHT "Bot" verwenden (nochmachen)
     }
 
 }
