@@ -1,5 +1,3 @@
-using System.ComponentModel.Design;
-
 namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Program
@@ -38,6 +36,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         {
                             Bot x = haus.ZugehoerigerSpieler as Bot;
                             x.Spielfigurbewegen(haus, haueser, ziehe);
+                            print.PrintSpielfeld();
                         }
                         else
                         {
@@ -100,6 +99,7 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         Bot x = haus.ZugehoerigerSpieler as Bot;
                         x.Spielfigurbewegen(haus, haueser, ziehe);
+                        print.PrintSpielfeld();
                         wuerfeln(haus, print, haueser);
                     }
                     else
@@ -134,6 +134,10 @@ namespace Mensch_Aergere_Dich_Nicht
                 falscheEingabe = false;
                 try
                 {
+                    if (haus.NichtsBewegbar(gewuerfelt))
+                    {
+                        throw new KeinZugMoeglichException("Es kann keine Figur gezogen werden");
+                    }
                     if (!rausziehen)
                     {
                         Console.WriteLine($"Ziehe {gewuerfelt} Felder mit einer Figur!");
@@ -151,13 +155,13 @@ namespace Mensch_Aergere_Dich_Nicht
                                 Console.WriteLine("Bitte etwas eingeben");
                                 wiederholen = true;
                             }
-                            catch(OverflowException e)
+                            catch (OverflowException e)
                             {
                                 Console.WriteLine("Bitte weniger eingeben");
                                 wiederholen = true;
                             }
                         }
-                        
+
                         if (eingabe > 4 || eingabe < 1)
                         {
                             throw new UserFalscheEingabeException("Diese Figur gibt es nicht");
@@ -251,7 +255,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (haus.ZugehoerigeFiguren.ElementAt(temp).IsInHouse == false)
                         {
                             Spielfigur aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(temp);
-                            int letztesBefahrbaresFeld = haus.letztesBefahrbaresFeldBerechnen();
+                            int letztesBefahrbaresFeld = haus.LetztesBefahrbaresFeldBerechnen();
                             if (aktuelleFigur.Position <= 44 && aktuelleFigur.Position >= 41)                    //Im Haus fahren
                             {
                                 List<int> positionen = new List<int>();
@@ -264,7 +268,7 @@ namespace Mensch_Aergere_Dich_Nicht
                                 }
                                 if (aktuelleFigur.Position > letztesBefahrbaresFeld)
                                 {
-                                    throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");                         
+                                    throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");
                                 }                                                                                                           //Wenn Ja darf der Benutzer nochmal auswaehlen
                                 else
                                 {
@@ -305,7 +309,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
                                 if (aktuelleFigur.Position + gewuerfelt > 40)
                                 {
-                                    if (aktuelleFigur.Position + gewuerfelt <= haus.letztesMoeglichesFeldBeimReinfahrenberechnen())
+                                    if (aktuelleFigur.Position + gewuerfelt <= haus.LetztesMoeglichesFeldBeimReinfahrenberechnen())
                                     {
                                         aktuelleFigur.Position += gewuerfelt;
                                         aktuelleFigur.PrintPosition = 40 + (aktuelleFigur.Position % 40) + 4 * (haus.HausID - 1);
@@ -412,7 +416,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (haus.ZugehoerigeFiguren.ElementAt(temp).IsInHouse == false)
                         {
                             Spielfigur aktuelleFigur = haus.ZugehoerigeFiguren.ElementAt(temp);
-                            int letztesBefahrbaresFeld = haus.letztesBefahrbaresFeldBerechnen();
+                            int letztesBefahrbaresFeld = haus.LetztesBefahrbaresFeldBerechnen();
                             if (aktuelleFigur.Position <= 44 && aktuelleFigur.Position >= 41)                    //Im Haus fahren
                             {
                                 List<int> positionen = new List<int>();
@@ -425,8 +429,8 @@ namespace Mensch_Aergere_Dich_Nicht
                                 }
                                 if (aktuelleFigur.Position > letztesBefahrbaresFeld)
                                 {
-                                    throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");                         // Man könnte es so machen, dass immer wenn der Benutzer eine ungueltige Eingabe taetigt, eine Exception geworfen wird und am Ende ueberprueft wird, ob eine Exception geworfen worden ist.
-                                }                                                                                                           //Wenn Ja darf der Benutzer nochmal auswaehlen
+                                    throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");
+                                }
                                 else
                                 {
                                     if (positionen.Contains(aktuelleFigur.Position + 1))
@@ -466,7 +470,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
                                 if (aktuelleFigur.Position + gewuerfelt > 40)
                                 {
-                                    if (aktuelleFigur.Position + gewuerfelt <= haus.letztesMoeglichesFeldBeimReinfahrenberechnen())
+                                    if (aktuelleFigur.Position + gewuerfelt <= haus.LetztesMoeglichesFeldBeimReinfahrenberechnen())
                                     {
                                         aktuelleFigur.Position += gewuerfelt;
                                         aktuelleFigur.PrintPosition = 40 + (aktuelleFigur.Position % 40) + 4 * (haus.HausID - 1);
@@ -552,13 +556,18 @@ namespace Mensch_Aergere_Dich_Nicht
 
                     }
                 }
+                catch (KeinZugMoeglichException e)
+                {
+                    Console.WriteLine(e.Message);
+                    Thread.Sleep(5000);
+                }
                 catch (UserFalscheEingabeException e)
                 {
                     falscheEingabe = true;
                     Console.WriteLine(e.Message);
                 }
             }
-            
+
 
         }
 
@@ -619,29 +628,21 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
             } while (spielerzahl != 1 && spielerzahl != 2 && spielerzahl != 3 && spielerzahl != 4);
 
-            if (spielerzahl != 0)
+            do
             {
-                do
+                Console.WriteLine($"Bitte geben Sie die Anzahl der Bots ein(0-{4 - spielerzahl}):");
+                string eingabe = Console.ReadLine();
+                try
                 {
-                    Console.WriteLine($"Bitte geben Sie die Anzahl der Bots ein(0-{4 - spielerzahl}):");
-                    string eingabe = Console.ReadLine();
-                    try
-                    {
-                        botAnzahl = Convert.ToInt32(eingabe);
+                    botAnzahl = Convert.ToInt32(eingabe);
 
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
-                    }
-                } while (botAnzahl < 0 || botAnzahl > (4 - spielerzahl));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
+                }
+            } while (botAnzahl < 0 || botAnzahl > (4 - spielerzahl));
 
-                if (botAnzahl > 0)
-                    bot = true;
-            }
-            
-            Console.Clear();
-            Console.WriteLine($"Es wird mit {spielerzahl} Spielern und {botAnzahl} Bots gespielt.");
             List<Spieler> spielerliste = new List<Spieler>();
             List<Haus> haeuser = new List<Haus>();
 
@@ -689,6 +690,7 @@ namespace Mensch_Aergere_Dich_Nicht
                     Console.WriteLine(farbe);
                     haeuser.Add(new Haus(farbe));
                     haeuser.ElementAt(i + spielerzahl).ZugehoerigerSpieler = new Bot();
+                    spielerliste.Add(haeuser.ElementAt(i + spielerzahl).ZugehoerigerSpieler);
                 }
                 else
                 {
@@ -706,17 +708,18 @@ namespace Mensch_Aergere_Dich_Nicht
             Console.Clear();
 
             int j = 0;
-            foreach (Menschlicher_Spieler s in spielerliste)
+            foreach (Spieler s in spielerliste)
             {
                 Console.WriteLine($"Spieler {j + 1}: {s.Name} mit {haeuser.ElementAt(j).Farbe} als Farbe des Hauses.");
                 j++;
             }
 
-            Spielablauf(haeuser, spielerliste, bot);
+            Thread.Sleep(3000);
+            Spielablauf(haeuser, spielerliste);
 
         }
 
-        private static void Spielablauf(List<Haus> haeuser, List<Spieler> spieler, bool bot)
+        private static void Spielablauf(List<Haus> haeuser, List<Spieler> spieler)
         {
             Console.Clear();
             Print p = new Print(haeuser);
@@ -743,7 +746,7 @@ namespace Mensch_Aergere_Dich_Nicht
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
                             p.PrintSpielfeld();
                         }
-                        haeuser.ElementAt(abtauschen).ziehbareFigurenBerechnen();
+                        haeuser.ElementAt(abtauschen).ZiehbareFigurenBerechnen();
                         if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
                         {
                             win = true;
@@ -759,7 +762,7 @@ namespace Mensch_Aergere_Dich_Nicht
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
                             p.PrintSpielfeld();
                         }
-                        haeuser.ElementAt(abtauschen).ziehbareFigurenBerechnen();
+                        haeuser.ElementAt(abtauschen).ZiehbareFigurenBerechnen();
                         if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
                         {
                             win = true;
@@ -774,7 +777,7 @@ namespace Mensch_Aergere_Dich_Nicht
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
                             p.PrintSpielfeld();
                         }
-                        haeuser.ElementAt(abtauschen).ziehbareFigurenBerechnen();
+                        haeuser.ElementAt(abtauschen).ZiehbareFigurenBerechnen();
                         if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
                         {
                             win = true;
@@ -789,7 +792,7 @@ namespace Mensch_Aergere_Dich_Nicht
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
                             //p.PrintSpielfeld();
                         }
-                        haeuser.ElementAt(abtauschen).ziehbareFigurenBerechnen();
+                        haeuser.ElementAt(abtauschen).ZiehbareFigurenBerechnen();
                         if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
                         {
                             win = true;
@@ -797,8 +800,8 @@ namespace Mensch_Aergere_Dich_Nicht
                         }
                         abtauschen = 0;
                         Console.WriteLine("Wollen Sie das Spiel speichern? [y/n]");
-                        char eingabe = '\0';
-                        char.TryParse(Console.ReadLine(), out eingabe);
+                        char eingabe = '/0';                                             
+                        char.TryParse(Console.ReadLine(), out eingabe);               
 
                         if (eingabe.Equals('y'))
                         {
