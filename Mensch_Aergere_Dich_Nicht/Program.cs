@@ -548,11 +548,11 @@ namespace Mensch_Aergere_Dich_Nicht
             }
 
 
-            Spielablauf(haeuser, spielerliste, bot);
+            Spielablauf(haeuser, spielerliste);
 
         }
 
-        private static void Spielablauf(List<Haus> haeuser, List<Spieler> spieler, bool bot)
+        private static void Spielablauf(List<Haus> haeuser, List<Spieler> spieler)
         {
             Print p = new Print(haeuser);
             int abtauschen = 0;
@@ -733,15 +733,56 @@ namespace Mensch_Aergere_Dich_Nicht
             StreamReader sr = new StreamReader(fs);
 
             string[] zeilen = sr.ReadToEnd().Split('\n');
-            string[] namen = {};
-            string[] farben = { };
-            int[] positionen = { };
+            string[] namen = new string[4];
+            string[] farben = new string[4];
+            int[,] positionen = new int[4, 4]; // 2D-Array für Positionen
 
-            for (int j = 1; i < zeilen.Length; i++) 
+            for (int j = 1; j < zeilen.Length - 1; j++)
             {
-                namen[j] = zeilen[j].Split('\t')[0];
-                farben[j] = zeilen[j].Split('\t')[1];
+                string[] spalten = zeilen[j].Split('\t');
+                namen[j - 1] = spalten[0];
+                farben[j - 1] = spalten[1];
+                string[] posArray = spalten[2].Split(';');
+                for (int k = 0; k < 4; k++)
+                {
+                    positionen[j - 1, k] = Convert.ToInt32(posArray[k]);
+                }
             }
+
+            List<Spieler> spieler = new List<Spieler>();
+            List<Haus> haeuser = new List<Haus>();
+            for (int j = 0; j < zeilen.Length - 1; j++)
+            {
+                if (namen[j] == "Bot")
+                {
+                    spieler.Add(new Spieler(namen[j], true));
+                }
+                else
+                {
+                    spieler.Add(new Spieler(namen[j], false));
+                }
+                Enum.TryParse(farben[j], out Verfuegbare_Farben farbe);
+                Haus h = new Haus(farbe);
+                h.ZugehoerigerSpieler = spieler.ElementAt(j);
+                for (int k = 0; k < 4; k++)
+                {
+                    h.ZugehoerigeFiguren.ElementAt(k).Position = positionen[j, k]; 
+                    h.ZugehoerigeFiguren.ElementAt(k).PrintPosition = positionen[j, k];
+                    if (h.ZugehoerigeFiguren.ElementAt(k).PrintPosition != 0)
+                        h.ZugehoerigeFiguren.ElementAt(k).IsInHouse = false;
+
+                }
+                haeuser.Add(h);
+            }
+
+            for (int j = 0; j < 4 - haeuser.Count; j++)
+            {
+                Haus h = new Haus(Verfuegbare_Farben.Weiss);
+                h.AuffuellHaus = true;
+                haeuser.Add(h);
+            }
+            Spielablauf(haeuser, spieler);
+
 
         }
 
