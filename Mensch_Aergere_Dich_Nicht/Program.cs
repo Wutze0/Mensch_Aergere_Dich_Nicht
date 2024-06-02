@@ -952,7 +952,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
             List<Spieler> spieler = new List<Spieler>();
             List<Haus> haeuser = new List<Haus>();
-            for (int j = 0; j < zeilen.Length - 1; j++)
+            for (int j = 0; j < zeilen.Length - 2; j++)  //-2, da sonst 1 Spieler / Haus zu viel hinzugefügt wird.
             {
                 if (namen[j] == "Bot")
                 {
@@ -971,13 +971,17 @@ namespace Mensch_Aergere_Dich_Nicht
                     h.ZugehoerigeFiguren.ElementAt(k).Position = positionen[j, k]; 
                     h.ZugehoerigeFiguren.ElementAt(k).PrintPosition = positionen[j, k];
                     if (h.ZugehoerigeFiguren.ElementAt(k).PrintPosition != 0)
+                    {
                         h.ZugehoerigeFiguren.ElementAt(k).IsInHouse = false;
+                        h.FigurenImHaus--;
+                    }
+                        
 
                 }
                 haeuser.Add(h);
             }
 
-            for (int j = 0; j < 4 - haeuser.Count; j++)
+            for (int j = 0; j < 4 - haeuser.Count+2; j++)
             {
                 Haus h = new Haus(Verfuegbare_Farben.Weiss);
                 h.AuffuellHaus = true;
