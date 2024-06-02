@@ -798,11 +798,16 @@ namespace Mensch_Aergere_Dich_Nicht
                             win = true;
                             gewinner = haeuser.ElementAt(abtauschen).ZugehoerigerSpieler;
                         }
+                        
                         abtauschen = 0;
-                        Console.WriteLine("Wollen Sie das Spiel speichern? [y/n]");
-                        char eingabe = '\0';                                             
-                        char.TryParse(Console.ReadLine(), out eingabe);               
+                        char eingabe = '\0';
 
+                        FileInfo[] list = GetAllSaveFiles();
+                        if (list.Length <= 5)
+                        {
+                            Console.WriteLine("Wollen Sie das Spiel speichern? [y/n]");
+                            char.TryParse(Console.ReadLine(), out eingabe);
+                        }
                         if (eingabe.Equals('y'))
                         {
                             SpielSpeichern(spieler, haeuser, path);
@@ -859,10 +864,9 @@ namespace Mensch_Aergere_Dich_Nicht
 
         public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser, string path)
         {
-
-
-            FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
-            StreamWriter sw = new StreamWriter(fs);
+           
+                FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
+                StreamWriter sw = new StreamWriter(fs);
 
             string header = "Spieler\tHausfarbe\tZugehörige Spielfiguren\n";
             sw.Write(header);
@@ -886,18 +890,102 @@ namespace Mensch_Aergere_Dich_Nicht
 
             Console.WriteLine($"Spielstand wurde in {path} gespeichert.");
         }
+        private static FileInfo[] GetAllSaveFiles()
+        {
+            string c = Directory.GetCurrentDirectory();
+            DirectoryInfo d = new DirectoryInfo(c); 
+            FileInfo[] files = d.GetFiles("*.txt");//alle files die die Dateiendung .txt haben.
 
+            return files;
+        }
         private static void LadeSpiel()
         {
-            DirectoryInfo d = new DirectoryInfo(""); //muss noch geändert werden
-            FileInfo[] Files = d.GetFiles("*.txt");
-            string s = string.Empty;
+            FileInfo[] f = GetAllSaveFiles();
+            int i = 1;
+            bool check = true;
+            int eingabe = 0;
 
-            foreach(FileInfo f in Files )
+            do
             {
-                s += f.Name;
+                try
+                {
+                    foreach (FileInfo fi in f)
+                    {
+                        Console.WriteLine($"{fi.Name}[{i}]");
+                        i++;
+                        
+                    }
+                    Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
+                    eingabe = Convert.ToInt32(Console.ReadLine())-1;
+
+                }
+                
+                
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Falsche Eingabe, erneuter Versuch!");
+                    i = 1;
+                    check = false;
+                }
+
+            } while (check == false);
+
+            FileStream fs = f.ElementAt(eingabe).OpenRead();
+            StreamReader sr = new StreamReader(fs);
+
+            string[] zeilen = sr.ReadToEnd().Split('\n');
+            string[] namen = new string[4];
+            string[] farben = new string[4];
+            int[,] positionen = new int[4, 4]; // 2D-Array für Positionen
+
+            for (int j = 1; j < zeilen.Length - 1; j++)
+            {
+                string[] spalten = zeilen[j].Split('\t');
+                namen[j - 1] = spalten[0];
+                farben[j - 1] = spalten[1];
+                string[] posArray = spalten[2].Split(';');
+                for (int k = 0; k < 4; k++)
+                {
+                    positionen[j - 1, k] = Convert.ToInt32(posArray[k]);
+                }
             }
-            Console.WriteLine(s);
+
+            List<Spieler> spieler = new List<Spieler>();
+            List<Haus> haeuser = new List<Haus>();
+            for (int j = 0; j < zeilen.Length - 1; j++)
+            {
+                if (namen[j] == "Bot")
+                {
+                    spieler.Add(new Spieler(namen[j], true));
+                    Console.WriteLine("spielr dazu");
+                }
+                else
+                {
+                    spieler.Add(new Spieler(namen[j], false));
+                }
+                Enum.TryParse(farben[j], out Verfuegbare_Farben farbe);
+                Haus h = new Haus(farbe);
+                h.ZugehoerigerSpieler = spieler.ElementAt(j);
+                for (int k = 0; k < 4; k++)
+                {
+                    h.ZugehoerigeFiguren.ElementAt(k).Position = positionen[j, k]; 
+                    h.ZugehoerigeFiguren.ElementAt(k).PrintPosition = positionen[j, k];
+                    if (h.ZugehoerigeFiguren.ElementAt(k).PrintPosition != 0)
+                        h.ZugehoerigeFiguren.ElementAt(k).IsInHouse = false;
+
+                }
+                haeuser.Add(h);
+            }
+
+            for (int j = 0; j < 4 - haeuser.Count; j++)
+            {
+                Haus h = new Haus(Verfuegbare_Farben.Weiss);
+                h.AuffuellHaus = true;
+                haeuser.Add(h);
+            }
+            Spielablauf(haeuser, spieler);
+
+
         }
 
     }
