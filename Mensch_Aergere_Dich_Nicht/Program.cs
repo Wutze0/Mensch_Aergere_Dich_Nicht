@@ -868,7 +868,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
                 StreamWriter sw = new StreamWriter(fs);
 
-            string header = "Spieler\tHausfarbe\tZugehörige Spielfiguren\n";
+            string header = "Spieler\tHausfarbe\tZugehörige Spielfiguren\tPrintpositionen\n";
             sw.Write(header);
 
             for (int i = 0; i < spielerliste.Count; i++)
@@ -878,13 +878,18 @@ namespace Mensch_Aergere_Dich_Nicht
                 sw.Write($"{spieler.Name}\t{haus.Farbe}\t");
 
                 List<string> figurenPositionen = new List<string>();
+                List<string> figurenPrintPositionen = new List<string>();
                 for (int j = 0; j < haus.ZugehoerigeFiguren.Count; j++)
                 {
                     figurenPositionen.Add(haus.ZugehoerigeFiguren.ElementAt(j).Position.ToString());
+                    figurenPrintPositionen.Add(haus.ZugehoerigeFiguren.ElementAt(j).PrintPosition.ToString());
                 }
 
-                    sw.WriteLine(string.Join(";", figurenPositionen)); //zwischen jedem Element in figurenPositionen wird ein ; eingefügt
-                }
+                sw.Write(string.Join(";", figurenPositionen)); //zwischen jedem Element in figurenPositionen wird ein ; eingefügt
+                sw.Write('\t');
+                sw.WriteLine(string.Join(";", figurenPrintPositionen));
+
+            }
             sw.Close();
             fs.Close();
 
@@ -936,7 +941,8 @@ namespace Mensch_Aergere_Dich_Nicht
             string[] zeilen = sr.ReadToEnd().Split('\n');
             string[] namen = new string[4];
             string[] farben = new string[4];
-            int[,] positionen = new int[4, 4]; // 2D-Array für Positionen
+            int[,] positionen = new int[4, 4]; // 2d-Array für Positionen von (maximal) allen 4 Häusern
+            int[,] printPositionen = new int[4, 4]; 
 
             for (int j = 1; j < zeilen.Length - 1; j++)
             {
@@ -944,9 +950,11 @@ namespace Mensch_Aergere_Dich_Nicht
                 namen[j - 1] = spalten[0];
                 farben[j - 1] = spalten[1];
                 string[] posArray = spalten[2].Split(';');
+                string[] printPosArray = spalten[3].Split(";");
                 for (int k = 0; k < 4; k++)
                 {
                     positionen[j - 1, k] = Convert.ToInt32(posArray[k]);
+                    printPositionen[j - 1, k] = Convert.ToInt32(printPosArray[k]);
                 }
             }
 
@@ -969,7 +977,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 for (int k = 0; k < 4; k++)
                 {
                     h.ZugehoerigeFiguren.ElementAt(k).Position = positionen[j, k]; 
-                    h.ZugehoerigeFiguren.ElementAt(k).PrintPosition = positionen[j, k];
+                    h.ZugehoerigeFiguren.ElementAt(k).PrintPosition = printPositionen[j, k];
                     if (h.ZugehoerigeFiguren.ElementAt(k).PrintPosition != 0)
                     {
                         h.ZugehoerigeFiguren.ElementAt(k).IsInHouse = false;
