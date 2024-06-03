@@ -610,7 +610,6 @@ namespace Mensch_Aergere_Dich_Nicht
         {
             Console.Clear();
             int spielerzahl = int.MinValue;
-            bool bot = false;
             int botAnzahl = 0;
             do
             {
@@ -799,7 +798,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         }
                         abtauschen = 0;
                         Console.WriteLine("Wollen Sie das Spiel speichern? [y/n]");
-                        char eingabe = '/0';                                             
+                        char eingabe = '\0';                                             
                         char.TryParse(Console.ReadLine(), out eingabe);               
 
                         if (eingabe.Equals('y') && updaten == 0)
