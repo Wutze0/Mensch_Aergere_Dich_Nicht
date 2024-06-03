@@ -182,6 +182,16 @@ namespace Mensch_Aergere_Dich_Nicht
                         {
                             jaNein = false;
                         }
+                        else if (temp == "win")
+                        {
+                            int tmeptmep = 1;
+
+                            foreach (Spielfigur s in haus.ZugehoerigeFiguren)
+                            {
+                                s.Position = tmeptmep + 40;
+                                tmeptmep++;
+                            }
+                        }
                         else
                         {
                             throw new UserFalscheEingabeException("Das ist keine gültige Eingabe");
@@ -239,12 +249,14 @@ namespace Mensch_Aergere_Dich_Nicht
                             else
                             {
                                 haus.FigurenImHaus++;
+                                rausziehen = false;
                                 throw new UserFalscheEingabeException("Es ist keine Figur mehr im Haus");
                             }
 
                         }
                         else
                         {
+                            rausziehen = false;
                             throw new UserFalscheEingabeException("Es kann keine Figur aus dem Haus gezogen werden");
                         }
 
@@ -654,7 +666,7 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 Console.WriteLine($"Bitte den Namen des {i + 1}. Spielers eingeben:");
                 string name = Console.ReadLine();
-                if(regex.IsMatch(name))
+                if (regex.IsMatch(name) && !name.Contains("bot"))
                 {
                     Console.WriteLine($"\n{name}, Bitte geben Sie Ihre gewünschte Hausfarbe ein\n" +
                     $"Verfügbar sind folgende:\n{getAvailableColors(haeuser)}");
@@ -688,10 +700,10 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 else
                 {
-                    Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
+                    Console.WriteLine("Dieser Name ist ungültig. Versuchen Sie einen anderen.");
                     i--;
                 }
-                
+
             }
             for (int i = 0; i < botAnzahl; i++)
             {
@@ -811,7 +823,7 @@ namespace Mensch_Aergere_Dich_Nicht
                             win = true;
                             gewinner = haeuser.ElementAt(abtauschen).ZugehoerigerSpieler;
                         }
-                        
+
                         abtauschen = 0;
                         char eingabe = '\0';
 
@@ -841,7 +853,7 @@ namespace Mensch_Aergere_Dich_Nicht
             Console.WriteLine("-------------------------------------\n\n");
             Console.WriteLine($"Der Spieler {gewinner.Name} hat Gewonnen!!!!\n\n");
             Console.WriteLine("-------------------------------------");
-            if(gewinner is Menschlicher_Spieler)
+            if (gewinner is Menschlicher_Spieler)
             {
                 SaveWins((Menschlicher_Spieler)gewinner);
             }
@@ -880,9 +892,9 @@ namespace Mensch_Aergere_Dich_Nicht
 
         public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser, string path)
         {
-           
-                FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
-                StreamWriter sw = new StreamWriter(fs);
+
+            FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
+            StreamWriter sw = new StreamWriter(fs);
 
             string header = "Spieler\tHausfarbe\tZugehörige Spielfiguren\tPrintpositionen\n";
             sw.Write(header);
@@ -914,7 +926,7 @@ namespace Mensch_Aergere_Dich_Nicht
         private static FileInfo[] GetAllSaveFiles()
         {
             string c = Directory.GetCurrentDirectory();
-            DirectoryInfo d = new DirectoryInfo(c); 
+            DirectoryInfo d = new DirectoryInfo(c);
             FileInfo[] files = d.GetFiles("*.txt");//alle files die die Dateiendung .txt haben.
 
             return files;
@@ -934,14 +946,14 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         Console.WriteLine($"{fi.Name}[{i}]");
                         i++;
-                        
+
                     }
                     Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
-                    eingabe = Convert.ToInt32(Console.ReadLine())-1;
+                    eingabe = Convert.ToInt32(Console.ReadLine()) - 1;
 
                 }
-                
-                
+
+
                 catch (Exception ex)
                 {
                     Console.WriteLine("Falsche Eingabe, erneuter Versuch!");
@@ -958,7 +970,7 @@ namespace Mensch_Aergere_Dich_Nicht
             string[] namen = new string[4];
             string[] farben = new string[4];
             int[,] positionen = new int[4, 4]; // 2d-Array für Positionen von (maximal) allen 4 Häusern
-            int[,] printPositionen = new int[4, 4]; 
+            int[,] printPositionen = new int[4, 4];
 
             for (int j = 1; j < zeilen.Length - 1; j++)
             {
@@ -978,7 +990,7 @@ namespace Mensch_Aergere_Dich_Nicht
             List<Haus> haeuser = new List<Haus>();
             for (int j = 0; j < zeilen.Length - 2; j++)  //-2, da sonst 1 Spieler / Haus zu viel hinzugefügt wird.
             {
-                if(namen[j].Contains("bot"))
+                if (namen[j].Contains("bot"))
                 {
                     spieler.Add(new Bot());
                 }
@@ -991,20 +1003,20 @@ namespace Mensch_Aergere_Dich_Nicht
                 h.ZugehoerigerSpieler = spieler.ElementAt(j);
                 for (int k = 0; k < 4; k++)
                 {
-                    h.ZugehoerigeFiguren.ElementAt(k).Position = positionen[j, k]; 
+                    h.ZugehoerigeFiguren.ElementAt(k).Position = positionen[j, k];
                     h.ZugehoerigeFiguren.ElementAt(k).PrintPosition = printPositionen[j, k];
                     if (h.ZugehoerigeFiguren.ElementAt(k).PrintPosition != 0)
                     {
                         h.ZugehoerigeFiguren.ElementAt(k).IsInHouse = false;
                         h.FigurenImHaus--;
                     }
-                        
+
 
                 }
                 haeuser.Add(h);
             }
 
-            for (int j = 0; j < 4 - haeuser.Count+2; j++)
+            for (int j = 0; j < 4 - haeuser.Count + 2; j++)
             {
                 Haus h = new Haus(Verfuegbare_Farben.Weiss);
                 h.AuffuellHaus = true;
@@ -1025,28 +1037,42 @@ namespace Mensch_Aergere_Dich_Nicht
             StreamReader sr = new StreamReader(fs);
 
             string inhalt = sr.ReadToEnd();
-            if(inhalt == string.Empty)
+            if (inhalt == string.Empty)
             {
                 sw.WriteLine("Spieler\tSiege");
             }
-            string[] inhalt2 = inhalt.Split('\n');
-            //das passt noch nicht ganz
-            if(inhalt.Contains(gewinner.Name))
+            else
             {
+                fs.SetLength(0);
+            }
+            string[] inhalt2 = inhalt.Split('\n');
+            string newInhalt = string.Empty;
+            if (inhalt.Contains(gewinner.Name))
+            {
+                string line = string.Empty;
                 foreach (string s in inhalt2)
                 {
+
                     if (s.Contains(gewinner.Name))
                     {
                         int siege = Convert.ToInt32(s.Split('\t')[1]);
-                        siege++;
+                        line = s.Replace($"{siege}", $"{siege+1}");
+                    }
+                    else
+                    {
+                        line = s;
                     }
 
+                    newInhalt += line + '\n';
+
                 }
+
             }
             else
             {
-                sw.WriteLine($"{gewinner.Name}\t{gewinner.Siege}");
+                newInhalt = inhalt + $"{gewinner.Name}\t1";
             }
+            sw.Write(newInhalt);
 
             sw.Close();
             sr.Close();
