@@ -597,6 +597,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     case 1: EinleitungNeuesSpiel(); break;
                     case 2: LadeSpiel(); break;
+                    //case 3: SaveWins(); break;
                     default: Console.WriteLine("Falsche Eingabe... erneuter Versuch: "); break;
 
                 }
@@ -840,7 +841,10 @@ namespace Mensch_Aergere_Dich_Nicht
             Console.WriteLine("-------------------------------------\n\n");
             Console.WriteLine($"Der Spieler {gewinner.Name} hat Gewonnen!!!!\n\n");
             Console.WriteLine("-------------------------------------");
-
+            if(gewinner is Menschlicher_Spieler)
+            {
+                SaveWins((Menschlicher_Spieler)gewinner);
+            }
 
         }
         private static string getAvailableColors(List<Haus> haeuser)
@@ -1011,6 +1015,43 @@ namespace Mensch_Aergere_Dich_Nicht
 
         }
         //Als Namen darf man NICHT "Bot" verwenden (nochmachen)
+        public static void SaveWins(Menschlicher_Spieler gewinner)
+        {
+            string d = Directory.GetCurrentDirectory();
+            string path = d + @"/PlayerWins";
+            Directory.CreateDirectory(path);
+            FileStream fs = new FileStream(path + "/PlayerWins.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            StreamWriter sw = new StreamWriter(fs);
+            StreamReader sr = new StreamReader(fs);
+
+            string inhalt = sr.ReadToEnd();
+            if(inhalt == string.Empty)
+            {
+                sw.WriteLine("Spieler\tSiege");
+            }
+            string[] inhalt2 = inhalt.Split('\n');
+            //das passt noch nicht ganz
+            if(inhalt.Contains(gewinner.Name))
+            {
+                foreach (string s in inhalt2)
+                {
+                    if (s.Contains(gewinner.Name))
+                    {
+                        int siege = Convert.ToInt32(s.Split('\t')[1]);
+                        siege++;
+                    }
+
+                }
+            }
+            else
+            {
+                sw.WriteLine($"{gewinner.Name}\t{gewinner.Siege}");
+            }
+
+            sw.Close();
+            sr.Close();
+            fs.Close();
+        }
     }
 
 }
