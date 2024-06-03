@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Program
@@ -246,13 +248,15 @@ namespace Mensch_Aergere_Dich_Nicht
                             else
                             {
                                 haus.FigurenImHaus++;
+                                rausziehen = false;
                                 throw new UserFalscheEingabeException("Es ist keine Figur mehr im Haus");
                             }
 
                         }
                         else
                         {
-                            throw new UserFalscheEingabeException("Es kann keine Figur aus dem Haus gezogen werden");       
+                            rausziehen = false;
+                            throw new UserFalscheEingabeException("Es kann keine Figur aus dem Haus gezogen werden");
                         }
 
 
@@ -450,6 +454,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     case 1: EinleitungNeuesSpiel(); break;
                     case 2: LadeSpiel(); break;
+                    //case 3: SaveWins(); break;
                     default: Console.WriteLine("Falsche Eingabe... erneuter Versuch: "); break;
 
                 }
@@ -499,42 +504,52 @@ namespace Mensch_Aergere_Dich_Nicht
 
             List<Spieler> spielerliste = new List<Spieler>();
             List<Haus> haeuser = new List<Haus>();
+            Regex regex = new Regex(@"^[A-Za-zÄäÖöÜüß_\ \d]{2,16}$");
 
             for (int i = 0; i < spielerzahl; i++)                                                       //Erstellung der menschlichen Spieler
             {
                 Console.WriteLine($"Bitte den Namen des {i + 1}. Spielers eingeben:");
                 string name = Console.ReadLine();
-                Console.WriteLine($"\n{name}, Bitte geben Sie Ihre gewünschte Hausfarbe ein\n" +        //Auswahl der Hausfarbe
-                    $"Verfügbar sind folgende:\n{getAvailableColors(haeuser)}");
-                bool check = true;
-                while (check == true)
+                if (regex.IsMatch(name) && !name.Contains("bot"))
                 {
-
-                    string? gewuenschteFarbe = Console.ReadLine();
-                    Verfuegbare_Farben farbe = Verfuegbare_Farben.Rot;
-                    if (Enum.TryParse(gewuenschteFarbe, out farbe))
+                    Console.WriteLine($"\n{name}, Bitte geben Sie Ihre gewünschte Hausfarbe ein\n" +
+                    $"Verfügbar sind folgende:\n{getAvailableColors(haeuser)}");
+                    bool check = true;
+                    while (check == true)
                     {
-                        if (getAvailableColors(haeuser).Contains(gewuenschteFarbe))
+
+                        string? gewuenschteFarbe = Console.ReadLine();
+                        Verfuegbare_Farben farbe = Verfuegbare_Farben.Rot;
+                        if (Enum.TryParse(gewuenschteFarbe, out farbe))
                         {
-                            Console.WriteLine($"Erfolgreich die Farbe {farbe} ausgewählt!");
-                            haeuser.Add(new Haus(farbe));
-                            check = false;
+                            if (getAvailableColors(haeuser).Contains(gewuenschteFarbe))
+                            {
+                                Console.WriteLine($"Erfolgreich die Farbe {farbe} ausgewählt!");
+                                haeuser.Add(new Haus(farbe));
+                                check = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Diese Farbe wird schon verwendet, bitte eine andere Farbe wählen");
+                            }
+
                         }
                         else
                         {
-                            Console.WriteLine("Diese Farbe wird schon verwendet, bitte eine andere Farbe wählen");
+                            Console.WriteLine("Diese Farbe existiert nicht, bitte eine andere Farbe wählen:");
                         }
-
                     }
-                    else
-                    {
-                        Console.WriteLine("Diese Farbe existiert nicht, bitte eine andere Farbe wählen:");
-                    }
+                    haeuser.ElementAt(i).ZugehoerigerSpieler = new Menschlicher_Spieler(name);
+                    spielerliste.Add(haeuser.ElementAt(i).ZugehoerigerSpieler);
                 }
-                haeuser.ElementAt(i).ZugehoerigerSpieler = new Menschlicher_Spieler(name);
-                spielerliste.Add(haeuser.ElementAt(i).ZugehoerigerSpieler);
+                else
+                {
+                    Console.WriteLine("Dieser Name ist ungültig. Versuchen Sie einen anderen.");
+                    i--;
+                }
+
             }
-            for (int i = 0; i < botAnzahl; i++)                                                         //Erstellung der Bots
+            for (int i = 0; i < botAnzahl; i++)
             {
                 Random r = new Random();
                 int farbeIndex = r.Next(0, 7); // 0 bis 7 weil es so viele Farben im Enum gibt.
@@ -682,7 +697,10 @@ namespace Mensch_Aergere_Dich_Nicht
             Console.WriteLine("-------------------------------------\n\n");
             Console.WriteLine($"Der Spieler {gewinner.Name} hat Gewonnen!!!!\n\n");
             Console.WriteLine("-------------------------------------");
-
+            if (gewinner is Menschlicher_Spieler)
+            {
+                SaveWins((Menschlicher_Spieler)gewinner);
+            }
 
         }
         private static string getAvailableColors(List<Haus> haeuser)                                        //Diese Funktion berechnet, welche Farben noch verfügbar sind
@@ -717,9 +735,9 @@ namespace Mensch_Aergere_Dich_Nicht
 
         public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser, string path)
         {
-           
-                FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
-                StreamWriter sw = new StreamWriter(fs);
+
+            FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
+            StreamWriter sw = new StreamWriter(fs);
 
             string header = "Spieler\tHausfarbe\tZugehörige Spielfiguren\tPrintpositionen\n";
             sw.Write(header);
@@ -751,7 +769,7 @@ namespace Mensch_Aergere_Dich_Nicht
         private static FileInfo[] GetAllSaveFiles()
         {
             string c = Directory.GetCurrentDirectory();
-            DirectoryInfo d = new DirectoryInfo(c); 
+            DirectoryInfo d = new DirectoryInfo(c);
             FileInfo[] files = d.GetFiles("*.txt");//alle files die die Dateiendung .txt haben.
 
             return files;
@@ -771,10 +789,10 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         Console.WriteLine($"{fi.Name}[{i}]");
                         i++;
-                        
+
                     }
                     Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
-                    eingabe = Convert.ToInt32(Console.ReadLine())-1;
+                    eingabe = Convert.ToInt32(Console.ReadLine()) - 1;
 
                 }
                 
@@ -795,7 +813,7 @@ namespace Mensch_Aergere_Dich_Nicht
             string[] namen = new string[4];
             string[] farben = new string[4];
             int[,] positionen = new int[4, 4]; // 2d-Array für Positionen von (maximal) allen 4 Häusern
-            int[,] printPositionen = new int[4, 4]; 
+            int[,] printPositionen = new int[4, 4];
 
             for (int j = 1; j < zeilen.Length - 1; j++)
             {
@@ -815,7 +833,7 @@ namespace Mensch_Aergere_Dich_Nicht
             List<Haus> haeuser = new List<Haus>();
             for (int j = 0; j < zeilen.Length - 2; j++)  //-2, da sonst 1 Spieler / Haus zu viel hinzugefügt wird.
             {
-                if(namen[j].Contains("bot"))
+                if (namen[j].Contains("bot"))
                 {
                     spieler.Add(new Bot());
                 }
@@ -828,20 +846,20 @@ namespace Mensch_Aergere_Dich_Nicht
                 h.ZugehoerigerSpieler = spieler.ElementAt(j);
                 for (int k = 0; k < 4; k++)
                 {
-                    h.ZugehoerigeFiguren.ElementAt(k).Position = positionen[j, k]; 
+                    h.ZugehoerigeFiguren.ElementAt(k).Position = positionen[j, k];
                     h.ZugehoerigeFiguren.ElementAt(k).PrintPosition = printPositionen[j, k];
                     if (h.ZugehoerigeFiguren.ElementAt(k).PrintPosition != 0)
                     {
                         h.ZugehoerigeFiguren.ElementAt(k).IsInHouse = false;
                         h.FigurenImHaus--;
                     }
-                        
+
 
                 }
                 haeuser.Add(h);
             }
 
-            for (int j = 0; j < 4 - haeuser.Count+2; j++)
+            for (int j = 0; j < 4 - haeuser.Count + 2; j++)
             {
                 Haus h = new Haus(Verfuegbare_Farben.Weiss);
                 h.AuffuellHaus = true;
@@ -852,6 +870,57 @@ namespace Mensch_Aergere_Dich_Nicht
 
         }
         //Als Namen darf man NICHT "Bot" verwenden (nochmachen)
+        public static void SaveWins(Menschlicher_Spieler gewinner)
+        {
+            string d = Directory.GetCurrentDirectory();
+            string path = d + @"/PlayerWins";
+            Directory.CreateDirectory(path);
+            FileStream fs = new FileStream(path + "/PlayerWins.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            StreamWriter sw = new StreamWriter(fs);
+            StreamReader sr = new StreamReader(fs);
+
+            string inhalt = sr.ReadToEnd();
+            if (inhalt == string.Empty)
+            {
+                sw.WriteLine("Spieler\tSiege");
+            }
+            else
+            {
+                fs.SetLength(0);
+            }
+            string[] inhalt2 = inhalt.Split('\n');
+            string newInhalt = string.Empty;
+            if (inhalt.Contains(gewinner.Name))
+            {
+                string line = string.Empty;
+                foreach (string s in inhalt2)
+                {
+
+                    if (s.Contains(gewinner.Name))
+                    {
+                        int siege = Convert.ToInt32(s.Split('\t')[1]);
+                        line = s.Replace($"{siege}", $"{siege+1}");
+                    }
+                    else
+                    {
+                        line = s;
+                    }
+
+                    newInhalt += line + '\n';
+
+                }
+
+            }
+            else
+            {
+                newInhalt = inhalt + $"{gewinner.Name}\t1";
+            }
+            sw.Write(newInhalt);
+
+            sw.Close();
+            sr.Close();
+            fs.Close();
+        }
     }
 
 }

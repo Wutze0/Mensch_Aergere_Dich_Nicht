@@ -33,11 +33,11 @@
                 if (priority == 2)                                                                                                                                   //Im Haus fahren
                 {
                     List<Spielfigur> moeglicheFiguren = new List<Spielfigur>();
-                    foreach(Spielfigur s in hausDesBots.ZugehoerigeFiguren)
+                    foreach (Spielfigur s in hausDesBots.ZugehoerigeFiguren)
                     {
                         moeglicheFiguren.Add(s);
                     }
-                    
+
                     List<Spielfigur> zuEntfernen = new List<Spielfigur>();
                     int letztesBefahrbaresFeld = hausDesBots.LetztesBefahrbaresFeldBerechnen();
                     Spielfigur? zuBewegen = null;
@@ -52,7 +52,7 @@
                     {
                         if (s.Position <= 40 || s.Position > letztesBefahrbaresFeld)
                         {
-                           zuEntfernen.Add(s);
+                            zuEntfernen.Add(s);
                         }
                     }
                     foreach (Spielfigur s in moeglicheFiguren)
@@ -85,7 +85,7 @@
                         }
                     }
 
-                    foreach(Spielfigur s in zuEntfernen)
+                    foreach (Spielfigur s in zuEntfernen)
                     {
                         moeglicheFiguren.Remove(s);
                     }
