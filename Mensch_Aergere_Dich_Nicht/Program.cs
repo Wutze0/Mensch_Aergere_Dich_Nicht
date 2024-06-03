@@ -779,7 +779,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 
                 
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Console.WriteLine("Falsche Eingabe, erneuter Versuch!");
                     i = 1;
