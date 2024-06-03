@@ -271,7 +271,7 @@
             {
                 if (i % 2 == 0)
                 {
-                    //Ausgabe gelbes Haus
+                   
                     if (_haueser.ElementAt(2).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t\t\t");
@@ -299,7 +299,7 @@
                     }
 
 
-                    //Ausgabe rotes Haus
+                    
                     if (_haueser.ElementAt(3).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t");
@@ -343,7 +343,7 @@
             {
                 if (i % 2 == 0)
                 {
-                    //Ausgabe gelbes Haus
+                    
                     if (_haueser.ElementAt(2).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t\t\t");
@@ -371,7 +371,7 @@
                     }
 
 
-                    //Ausgabe rotes Haus
+                   
                     if (_haueser.ElementAt(3).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t");
@@ -494,7 +494,6 @@
                         }
                     }
                 }
-                int printcounter = 0;
                 int check;
 
                 Console.Write(langeZeileMitSpieler);
@@ -523,7 +522,7 @@
                 }
             }
         }
-        public List<Spielfigur> GetAllSpielfiguren()
+        public List<Spielfigur> GetAllSpielfiguren()                                                    //Diese Methode gibt alle Spielfiguren in einer Liste zurück
         {
             List<Spielfigur> allSpielfiguren = new List<Spielfigur>();
             foreach (Haus h in _haueser)

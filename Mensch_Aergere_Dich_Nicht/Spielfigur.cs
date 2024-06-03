@@ -4,9 +4,9 @@
     {
         public int ID { get; set; }
         public string Farbe { get; private set; }
-        public int Position { get; set; } = 0;
-        public int PrintPosition { get; set; } = 0;      //Printposition standardmäßig 0
-        public bool IsInHouse { get; set; } = true;
+        public int Position { get; set; } = 0;              //Speichert wo die Spielfigur sich relativ zum Haus befindet
+        public int PrintPosition { get; set; } = 0;         //Printposition standardmäßig 0. Speichert, wo sich die Spielfigur relativ zur Ausgabe befindet
+        public bool IsInHouse { get; set; } = true;         //Speichert, ob die Figur schon rausgezogen wurde oder nicht
 
         public Spielfigur(int id, string farbe, int position)
         {
