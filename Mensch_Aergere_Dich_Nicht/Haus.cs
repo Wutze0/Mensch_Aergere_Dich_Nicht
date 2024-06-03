@@ -127,7 +127,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
         }
 
-        public bool NichtsBewegbar(int wieWeitZiehen)
+        public bool NichtsBewegbar(int wieWeitZiehen)                                               //Diese Methode gibt true zurück, wenn keine Figur bewegt werden kann. Figuren im Haus zählen auch als unbewegbar
         {
             int groesstesBefahrbaresfeld;
             int maximalZiehbareAnz;
@@ -154,7 +154,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         i++;
                     }
                 }
-                else if (s.Position == 0 && wieWeitZiehen != 6)
+                else if (s.Position == 0)
                 {
                     i++;
                 }
