@@ -2,26 +2,24 @@ namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Haus
     {
-        private int _anzSpielfiguren;
         public string Farbe { get; private set; }
         public Verfuegbare_Farben Farbe2 { get; private set; }
-        public int FigurenImHaus { get; set; } = 4;
-        public int ZiehbareFiguren { get; set; } = 4;
-        public int AktuellLetztesFelde { get; set; } = 44;
+        public int FigurenImHaus { get; set; } = 4;                     //Wie viele Figuren noch am Start sind
+        public int ZiehbareFiguren { get; set; } = 4;                   //Wie viele Figuren theoretisch noch bewegt werden können
 
         public int HausID { get; private set; }                         //Die HausID dient hauptsächlich dazu, die Printpositionen innerhalb des Hauses zu bestimmen, geht von 1 - 4
-        public static int NumberOfHouses { get; private set; } = 0;
+        public static int NumberOfHouses { get; private set; } = 0;     //Statische Variable um den Häusern IDs zu geben
 
-        public bool AuffuellHaus { get; set; } = false;
-        public int StartingPrintPosition { get; set; }
-        public List<Spielfigur> ZugehoerigeFiguren { get; set; } = new List<Spielfigur>();
+        public bool AuffuellHaus { get; set; } = false;                 //Speichert, ob das Haus einen zugehörigen Spieler hat oder nicht. Dient dazu, dass die Ausgabe funktioniert
+        public int StartingPrintPosition { get; set; }                  //Speichert, wo die Figuren beim Rausziehen hingesetzt werden sollen
+        public List<Spielfigur> ZugehoerigeFiguren { get; set; } = new List<Spielfigur>();      //Speichert alle Figuren, die zu diesem Haus gehören
 
-        public Spieler? ZugehoerigerSpieler { get; set; }
+        public Spieler? ZugehoerigerSpieler { get; set; }               //Speichert den Spieler des Hauses
 
 
         public Haus(Verfuegbare_Farben farbe)
         {
-            Farbe = farbe.ToString();
+            Farbe = farbe.ToString();                                   
             switch (NumberOfHouses)
             {
                 case 0: StartingPrintPosition = 33; break;
@@ -31,7 +29,6 @@ namespace Mensch_Aergere_Dich_Nicht
             }
             NumberOfHouses++;
             HausID = NumberOfHouses;
-            _anzSpielfiguren = 4;
             for (int i = 1; i <= 4; i++)
             {
                 ZugehoerigeFiguren.Add(new Spielfigur(i, farbe.ToString(), 0));
@@ -39,7 +36,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
         }
 
-        public void ChangeColour()
+        public void ChangeColour()                                                              //Diese Methode ändert die Konsolenfarbe auf die des Hauses. Dies ist dazu da, um die zugehörigen Häuser oder die Figuren auszugeben
         {
 
             switch (Farbe)
@@ -58,7 +55,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
         }
-        public int LetztesBefahrbaresFeldBerechnen()
+        public int LetztesBefahrbaresFeldBerechnen()                                            //Diese Methode berechnet das letzte Freie Feld, dass eine Figur theoretisch beziehen könnte
         {
             int letztesBefahrbaresFeld = 44;
             List<int> positionen = new List<int>();
@@ -84,7 +81,7 @@ namespace Mensch_Aergere_Dich_Nicht
             return letztesBefahrbaresFeld;
         }
 
-        public int LetztesMoeglichesFeldBeimReinfahrenberechnen()
+        public int LetztesMoeglichesFeldBeimReinfahrenberechnen()                               //Diese Methode berechnet das weitmöglichste Feld, welches man beim Reinfahren erreichen kann
         {
             int x = 45;
 
@@ -99,7 +96,7 @@ namespace Mensch_Aergere_Dich_Nicht
             return x;
         }
 
-        public void ZiehbareFigurenBerechnen()
+        public void ZiehbareFigurenBerechnen()                                                  //Diese Methode berechnet, wie viele Figuren noch nicht ganz am Ende angelangt sind
         {
             int x = 4;
             bool again = false;
@@ -127,7 +124,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
         }
 
-        public bool NichtsBewegbar(int wieWeitZiehen)
+        public bool NichtsBewegbar(int wieWeitZiehen)                                               //Diese Methode gibt true zurück, wenn keine Figur bewegt werden kann. Figuren im Haus zählen auch als unbewegbar
         {
             int groesstesBefahrbaresfeld;
             int maximalZiehbareAnz;
@@ -154,7 +151,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         i++;
                     }
                 }
-                else if (s.Position == 0 && wieWeitZiehen != 6)
+                else if (s.Position == 0)
                 {
                     i++;
                 }
