@@ -8,7 +8,7 @@
         }
 
 
-        public void Spielfigurbewegen(Haus hausDesBots, List<Haus> alleHaueser, int wieWeitZiehen)
+        public void Spielfigurbewegen(Haus hausDesBots, List<Haus> alleHaueser, int wieWeitZiehen)                              //Diese Methode berechnet mithilfe von Prioritäten, welche Figur gezogen werden soll
         {
             bool movefound = false;
             int priority = 1;
@@ -242,7 +242,7 @@
                 }
                 priority++;
             }
-            Thread.Sleep(5000);
+            
         }
 
 
