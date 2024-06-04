@@ -163,6 +163,17 @@ namespace Mensch_Aergere_Dich_Nicht
                         {
                             jaNein = false;
                         }
+                        else if(temp == "win")
+                        {
+                            int temptemp = 41;
+                            Console.WriteLine("faosd");
+                            foreach(Spielfigur s in haus.ZugehoerigeFiguren)
+                            {
+                                s.Position = temptemp;
+                                temptemp++;
+                            }
+                            break;
+                        }
                         else
                         {
                             throw new UserFalscheEingabeException("Das ist keine gültige Eingabe");
@@ -464,7 +475,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
                     }
                 }
-                catch (Exception e)
+                catch (UserFalscheEingabeException e)
                 {
                     Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
                 }
@@ -479,7 +490,7 @@ namespace Mensch_Aergere_Dich_Nicht
             int botAnzahl = 0;
             do
             {
-                Console.WriteLine("Bitte geben Sie die Anzahl der Spieler ein(1-4):");
+                Console.WriteLine("Bitte geben Sie die Anzahl der Spieler ein(0-4):");
                 string? eingabe = Console.ReadLine();
                 try
                 {
