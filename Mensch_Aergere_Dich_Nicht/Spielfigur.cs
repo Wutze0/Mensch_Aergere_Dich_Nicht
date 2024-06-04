@@ -15,7 +15,7 @@
             Position = position;
         }
 
-        public void PrintFigur()
+        public void PrintFigur() //Schreibt die Figur auf die Konsole mit der entsprechenden Farbe.
         {
             switch (Farbe)
             {
@@ -30,7 +30,7 @@
 
             }
 
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.White; //Farbe wieder zurücksetzen
         }
     }
 }

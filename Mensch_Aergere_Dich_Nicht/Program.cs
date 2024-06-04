@@ -68,12 +68,7 @@ namespace Mensch_Aergere_Dich_Nicht
                     }
 
 
-                }
-                if(sechsCounter == 3)
-                {
-                    ziehe = r.Next(1, 7);
-                    Console.WriteLine($"{ziehe} gewuerfelt!");
-                }
+                }                                                                                   
                 if (botYesNo)
                 {
                     Thread.Sleep(3000);
@@ -143,9 +138,9 @@ namespace Mensch_Aergere_Dich_Nicht
                 falscheEingabe = false;
                 try
                 {
-                    if (haus.NichtsBewegbar(gewuerfelt))                                    
+                    if (haus.NichtsBewegbar(gewuerfelt))
                     {
-                        if(haus.FigurenImHaus > 0 && gewuerfelt == 6)                                                           //Sollte die Nichts Bewegbar Methode erkennen, dass keine Figur gezogen werden kann, wird noch gefragt ob vielleicht eine Figur aus dem haus ziehen könnte, wenn ja ist ein Zug möglich und es wird keine Exception geworfen
+                        if (haus.FigurenImHaus > 0 && gewuerfelt == 6)                                                           //Sollte die Nichts Bewegbar Methode erkennen, dass keine Figur gezogen werden kann, wird noch gefragt ob vielleicht eine Figur aus dem haus ziehen könnte, wenn ja ist ein Zug möglich und es wird keine Exception geworfen
                         {
 
                         }
@@ -153,10 +148,10 @@ namespace Mensch_Aergere_Dich_Nicht
                         {
                             throw new KeinZugMoeglichException("Es kann keine Figur gezogen werden");                           //Wenn tatsächlich keine Figur gezogen werden kann, wird eine Exception geworfen
                         }
-                        
+
                     }
-                    
-                    if(rausziehen)                                                                                              //Wenn der Benutzer eine Figur aus dem Haus ziehen könnte, wird er gefragt ob er das auch will
+
+                    if (rausziehen)                                                                                              //Wenn der Benutzer eine Figur aus dem Haus ziehen könnte, wird er gefragt ob er das auch will
                     {
                         Console.WriteLine("Möchten Sie eine Figur aus dem Haus ziehen?[Ja oder Nein]");
                         string? temp = Console.ReadLine();
@@ -174,12 +169,12 @@ namespace Mensch_Aergere_Dich_Nicht
                         }
                     }
 
-                    if(!rausziehen || !jaNein)                                                                                  //Diese if wird betreten, wenn der Spieler entweder nicht rausziehen kann oder nicht will
+                    if (!rausziehen || !jaNein)                                                                                  //Diese if wird betreten, wenn der Spieler entweder nicht rausziehen kann oder nicht will
                     {
                         if (rausziehen && haus.ZiehbareFiguren == haus.FigurenImHaus)                                           //Wenn der Spieler eine Figur rausziehen könnte und keine andere ziehen kann, wird diese Exception geworfen
                         {
                             throw new UserFalscheEingabeException("Es muss eine Figur aus dem Haus gezogen werden");
-                        }                                                                               
+                        }
                         Console.WriteLine($"Ziehe {gewuerfelt} Felder mit einer Figur!");
                         Console.WriteLine("Welche Figur möchten Sie ziehen? Verfügbar: [1, 2, 3, 4]");
                         wiederholen = true;
@@ -211,7 +206,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
                     if (rausziehen == true && jaNein == true)      //Hier kommt man hinein, wenn man eine Figur aus dem Haus ziehen darf und will
                     {
-                        List<Spielfigur> Figuren = print.GetAllSpielfiguren();                                                          
+                        List<Spielfigur> Figuren = print.GetAllSpielfiguren();
                         bool check = true;
                         foreach (Spielfigur s in Figuren)
                         {
@@ -427,7 +422,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 catch (KeinZugMoeglichException e)
                 {
-                    Console.WriteLine(e.Message);                                       
+                    Console.WriteLine(e.Message);
                     Thread.Sleep(5000);
                 }
                 catch (UserFalscheEingabeException e)
@@ -449,30 +444,30 @@ namespace Mensch_Aergere_Dich_Nicht
                   "\n" +
                   "\n" +
                   "\n[1]Neues Spiel" +
-                  "\n[2]Spiel laden" +
-                  "\n[3]Spiel löschen" +
+                  "\n[2]Spielstand laden" +
+                  "\n[3]Spielstand löschen" +
                   "\n"
                   );
 
                 string eingabe = string.Empty;
                 eingabe = Console.ReadLine();
 
-                //try
-                //{
-                int modus = Convert.ToInt32(eingabe);
-                switch (modus)
+                try
                 {
-                    case 1: EinleitungNeuesSpiel(); break;
-                    case 2: LadeSpiel(); break;
-                    //case 3: SaveWins(); break;
-                    default: Console.WriteLine("Falsche Eingabe... erneuter Versuch: "); break;
+                    int modus = Convert.ToInt32(eingabe);
+                    switch (modus)
+                    {
+                        case 1: EinleitungNeuesSpiel(); break;
+                        case 2: LadeSpiel(); break;
+                        case 3: LoescheSpielstand(); break;
+                        default: Console.WriteLine("Falsche Eingabe... erneuter Versuch: "); break;
 
+                    }
                 }
-                //}
-                /*catch (Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
-                }*/
+                }
 
             }
 
@@ -509,85 +504,92 @@ namespace Mensch_Aergere_Dich_Nicht
                 catch (Exception)
                 {
                     Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
+                    botAnzahl = -1; //Damit erneut abgefragt wird
                 }
-            } while (botAnzahl < 0 || botAnzahl > (4 - spielerzahl));
+            } while (botAnzahl < 0 || botAnzahl > (4 - spielerzahl)); //Wenn keine Exception geworfen wird UND die Botanzahl in diesem Bereich liegt, dann gültig.
 
             List<Spieler> spielerliste = new List<Spieler>();
             List<Haus> haeuser = new List<Haus>();
-            Regex regex = new Regex(@"^[A-Za-zÄäÖöÜüß_\ \d]{2,16}$");
+            Regex regex = new Regex(@"^[A-Za-zÄäÖöÜüß_\ \d]{2,16}$"); //Regex für Spielername. 2-16 Zeichen mit _ und [ ] und Zahlen
 
             for (int i = 0; i < spielerzahl; i++)                                                       //Erstellung der menschlichen Spieler
             {
                 Console.WriteLine($"Bitte den Namen des {i + 1}. Spielers eingeben:");
                 string name = Console.ReadLine();
-                if (regex.IsMatch(name) && !name.Contains("bot"))
+
+
+                if (regex.IsMatch(name) && !name.Contains("bot") && name != "Spieler" && name != "Siege") //Man darf den Namen bot nicht haben, da es sonst zu Verwirrung kommen könnte (mehrere gleiche Namen)
                 {
+                    if (IsPlayerRegistered(name)) //Falls der Spieler schon mal gewonnen hat, dann soll er diese Nachricht bekommen:
+                    {
+                        Console.WriteLine($"Willkommen zurück {name}! Sie haben zurzeit {GetWins(name)} Siege");
+                    }
                     Console.WriteLine($"\n{name}, Bitte geben Sie Ihre gewünschte Hausfarbe ein\n" +
-                    $"Verfügbar sind folgende:\n{getAvailableColors(haeuser)}");
+                    $"Verfügbar sind folgende:\n{getAvailableColors(haeuser)}"); //Listet alle verwendete Farben der Häuser
                     bool check = true;
                     while (check == true)
                     {
 
                         string? gewuenschteFarbe = Console.ReadLine();
-                        Verfuegbare_Farben farbe = Verfuegbare_Farben.Rot;
-                        if (Enum.TryParse(gewuenschteFarbe, out farbe))
+                        Verfuegbare_Farben farbe = Verfuegbare_Farben.Rot; //Platzhalter-Farbe
+                        if (Enum.TryParse(gewuenschteFarbe, out farbe))//Versuchen, ob die gewünschte Farbe im Enum enthalten ist.
                         {
-                            if (getAvailableColors(haeuser).Contains(gewuenschteFarbe))
+                            if (getAvailableColors(haeuser).Contains(gewuenschteFarbe)) //Wenn die gewünschte Farbe verfügbar ist, dann gültig.
                             {
                                 Console.WriteLine($"Erfolgreich die Farbe {farbe} ausgewählt!");
                                 haeuser.Add(new Haus(farbe));
                                 check = false;
                             }
-                            else
+                            else //Sonst das:
                             {
                                 Console.WriteLine("Diese Farbe wird schon verwendet, bitte eine andere Farbe wählen");
                             }
 
                         }
-                        else
+                        else //Wenn nicht im Enum enthalten:
                         {
                             Console.WriteLine("Diese Farbe existiert nicht, bitte eine andere Farbe wählen:");
                         }
                     }
-                    haeuser.ElementAt(i).ZugehoerigerSpieler = new Menschlicher_Spieler(name);
-                    spielerliste.Add(haeuser.ElementAt(i).ZugehoerigerSpieler);
+                    haeuser.ElementAt(i).ZugehoerigerSpieler = new Menschlicher_Spieler(name); //Wenn alles passt, dann wird ein neuer Menschlicher Spieler erstellt.
+                    spielerliste.Add(haeuser.ElementAt(i).ZugehoerigerSpieler); //Und er wird zur Spielerliste hinzugefügt.
                 }
-                else
+                else //Wenn Name ungültig (Regex):
                 {
                     Console.WriteLine("Dieser Name ist ungültig. Versuchen Sie einen anderen.");
                     i--;
                 }
 
             }
-            for (int i = 0; i < botAnzahl; i++)
+            for (int i = 0; i < botAnzahl; i++)//Erstellung der Bots:
             {
                 Random r = new Random();
                 int farbeIndex = r.Next(0, 7); // 0 bis 7 weil es so viele Farben im Enum gibt.
-                Verfuegbare_Farben farbe = (Verfuegbare_Farben)farbeIndex; //somit kann man auf die korrekte Stelle des Enums zugreifen.        
-                if (getAvailableColors(haeuser).Contains(farbe.ToString()))
+                Verfuegbare_Farben farbe = (Verfuegbare_Farben)farbeIndex; //somit kann man auf die korrekte Stelle des Enums zugreifen.
+                if (getAvailableColors(haeuser).Contains(farbe.ToString()))//Wenn Farbe verwendbar, dann normaler Ablauf:
                 {
                     Console.WriteLine(farbe);
                     haeuser.Add(new Haus(farbe));
                     haeuser.ElementAt(i + spielerzahl).ZugehoerigerSpieler = new Bot();
                     spielerliste.Add(haeuser.ElementAt(i + spielerzahl).ZugehoerigerSpieler);
                 }
-                else
+                else //Sonst wird nochmal eine Zufallszahl generiert.
                 {
                     i--;
                 }
 
             }
-            for (int i = haeuser.Count; i < 4; i++)                                                                                         //Die leeren Haueser mit Pseudo bots auffuelen
+            for (int i = haeuser.Count; i < 4; i++) //Platzhalter-Häuser (Wenn weniger Spieler als 4)                                                                                     //Die leeren Haueser mit Pseudo bots auffuelen
             {
-                Haus x = new Haus(Verfuegbare_Farben.Weiss);
-                x.AuffuellHaus = true;
+                Haus x = new Haus(Verfuegbare_Farben.Weiss); //Weiss ist die Platzhalter Farbe
+                x.AuffuellHaus = true; //Damit das Programm (wichtiger Print) weiß, dass es kein "normales" Haus ist.
                 haeuser.Add(x);
             }
             Thread.Sleep(1000);
             Console.Clear();
 
             int j = 0;
-            foreach (Spieler s in spielerliste)                                                                                             //Ausgabe der Spielernamen mit zugehöriger Hausfarbe
+            foreach (Spieler s in spielerliste)   //Anzeige der Spielernamen mit der ausgewählten Farbe.                                                                                          //Ausgabe der Spielernamen mit zugehöriger Hausfarbe
             {
                 Console.WriteLine($"Spieler {j + 1}: {s.Name} mit {haeuser.ElementAt(j).Farbe} als Farbe des Hauses.");
                 j++;
@@ -603,14 +605,14 @@ namespace Mensch_Aergere_Dich_Nicht
             Console.Clear();
             Print p = new Print(haeuser);
             Spieler? gewinner = null;
-            p.PrintSpielfeld();
+            p.PrintSpielfeld(); //Erste Ausgabe des Spielfelds
             bool win = false;
-            int abtauschen = 0;
-            string timestamp = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
-            string path = $"SaveFile_{timestamp}.txt";
-            while (!win)
+            int abtauschen = 0; //Die Züge werden damit abgetauscht.
+            string timestamp = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss"); //Timestamp für die Speicherung
+            string path = $"SaveFile_{timestamp}.txt"; //der Pfad des Save Files (falls erstellt)
+            while (!win) //Solange kein Spieler gewonnen hat.
             {
-                                                                                                                        //Hier kommen die Spieler nacheinander zum Zug
+                //Hier kommen die Spieler nacheinander zum Zug
                 if (abtauschen < spieler.Count)
                 {
                     Console.WriteLine($"Der Spieler {spieler.ElementAt(abtauschen).Name} ist dran!");
@@ -677,37 +679,33 @@ namespace Mensch_Aergere_Dich_Nicht
                             win = true;
                             gewinner = haeuser.ElementAt(abtauschen).ZugehoerigerSpieler;
                         }
-                        
+
                         abtauschen = 0;
                         char eingabe = '\0';
 
-                        FileInfo[] list = GetAllSaveFiles();                                                //Nachdem der 4. Spieler gezogen ist, wird gefragt ob das Spiel gespeichert werden soll
-                        if (list.Length <= 5)
+                        FileInfo[] list = GetAllSaveFiles();                                                //Nachdem der letzte Spieler gezogen ist, wird gefragt ob das Spiel gespeichert werden soll
+                        if (list.Length <= 5) //Man darf nur 5 Save Files insgesamt haben
                         {
-                            Console.WriteLine("Wollen Sie das Spiel speichern? [y/n]");
+                            Console.WriteLine("Wollen Sie das Spiel speichern? [y]");
                             char.TryParse(Console.ReadLine(), out eingabe);
                         }
-                        if (eingabe.Equals('Y'))
+                        if (eingabe.Equals('Y') || eingabe.Equals('y'))
                         {
                             SpielSpeichern(spieler, haeuser, path);
                         }
-                        else if (eingabe.Equals('y'))
-                        {
-                            SpielSpeichern(spieler, haeuser, path);
-                        }
-                        Console.WriteLine("Aktuelles Spielfeld:");                                          //Zuletzt wird nochmal das aktuelle Spielfeld ausgegeben
-                        p.PrintSpielfeld();
+                        Console.WriteLine("Aktuelles Spielfeld:");
+                        p.PrintSpielfeld(); //Spielfeld ausgeben (nur hier, da in der wuerfeln Methode schon das Feld ausgegeben wird.
                         break;
                 }
 
 
             }
-            Console.WriteLine("\n\n\n\n\n");
+            Console.WriteLine("\n\n\n\n\n"); //Man kommt hier hin, wenn jemand gewonnen hat.
 
             Console.WriteLine("-------------------------------------\n\n");
             Console.WriteLine($"Der Spieler {gewinner.Name} hat Gewonnen!!!!\n\n");
             Console.WriteLine("-------------------------------------");
-            if (gewinner is Menschlicher_Spieler)
+            if (gewinner is Menschlicher_Spieler) //Der Sieg sollte nur gespeichert werden, wenn der Sieger menschlich ist.
             {
                 SaveWins((Menschlicher_Spieler)gewinner);
             }
@@ -719,7 +717,7 @@ namespace Mensch_Aergere_Dich_Nicht
             List<Verfuegbare_Farben> verwendeteFarben = new List<Verfuegbare_Farben>();
             int i = 0;
 
-            foreach (Haus h in haeuser)
+            foreach (Haus h in haeuser) //Hier werden alle bereits verwendeten Farben ermmittelt.
             {
                 Verfuegbare_Farben farbe = 0;
                 Enum.TryParse(h.Farbe.ToString(), out farbe);
@@ -727,40 +725,40 @@ namespace Mensch_Aergere_Dich_Nicht
                 i++;
             }
 
-            foreach (Verfuegbare_Farben farbe in Enum.GetValues(typeof(Verfuegbare_Farben)))
+            foreach (Verfuegbare_Farben farbe in Enum.GetValues(typeof(Verfuegbare_Farben))) // Diese foreach geht durch jede Farbe einmal durch (außer weiß, da diese reserviert ist)
             {
-                if (!verwendeteFarben.Contains(farbe) && farbe != Verfuegbare_Farben.Weiss)
+                if (!verwendeteFarben.Contains(farbe) && farbe != Verfuegbare_Farben.Weiss) //Wenn die aktuelle Farbe nicht verwendet wird UND NICHT weiß ist, dann ist sie verfügbar
                 {
                     liste.Add(farbe);
                 }
             }
             string alleFarben = string.Empty;
-            foreach (Verfuegbare_Farben f in liste)
+            foreach (Verfuegbare_Farben f in liste) //Hier wird einfach der string zusammengebaut.
             {
                 alleFarben += f.ToString() + "\n";
             }
 
-            return alleFarben;
+            return alleFarben; //return alle verfügbaren Farben.
         }
 
-        public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser, string path)
+        private static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser, string path)
         {
 
             FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
             StreamWriter sw = new StreamWriter(fs);
 
             string header = "Spieler\tHausfarbe\tZugehörige Spielfiguren\tPrintpositionen\n";
-            sw.Write(header);
+            sw.Write(header); //Den Header ins File schreiben.
 
-            for (int i = 0; i < spielerliste.Count; i++)
+            for (int i = 0; i < spielerliste.Count; i++) //Für jeden Spieler die Daten speichern.
             {
                 Spieler spieler = spielerliste.ElementAt(i);
                 Haus haus = haeuser.ElementAt(i);
-                sw.Write($"{spieler.Name}\t{haus.Farbe}\t");
+                sw.Write($"{spieler.Name}\t{haus.Farbe}\t"); //Schreiben des Spielernamens und Hausfarbe.
 
-                List<string> figurenPositionen = new List<string>();
-                List<string> figurenPrintPositionen = new List<string>();
-                for (int j = 0; j < haus.ZugehoerigeFiguren.Count; j++)
+                List<string> figurenPositionen = new List<string>(); //Liste für die Positionen der Figuren
+                List<string> figurenPrintPositionen = new List<string>(); //Liste für die PrintPositionen der Figuren, wichtig für Print Klasse.
+                for (int j = 0; j < haus.ZugehoerigeFiguren.Count; j++) //Durch alle Figuren durchiterieren
                 {
                     figurenPositionen.Add(haus.ZugehoerigeFiguren.ElementAt(j).Position.ToString());
                     figurenPrintPositionen.Add(haus.ZugehoerigeFiguren.ElementAt(j).PrintPosition.ToString());
@@ -768,7 +766,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
                 sw.Write(string.Join(";", figurenPositionen)); //zwischen jedem Element in figurenPositionen wird ein ; eingefügt
                 sw.Write('\t');
-                sw.WriteLine(string.Join(";", figurenPrintPositionen));
+                sw.WriteLine(string.Join(";", figurenPrintPositionen)); //hier auch
 
             }
             sw.Close();
@@ -778,13 +776,237 @@ namespace Mensch_Aergere_Dich_Nicht
         }
         private static FileInfo[] GetAllSaveFiles()
         {
-            string c = Directory.GetCurrentDirectory();
+            string c = Directory.GetCurrentDirectory(); //Holt das aktuelle Verzeichnis
             DirectoryInfo d = new DirectoryInfo(c);
             FileInfo[] files = d.GetFiles("*.txt");//alle files die die Dateiendung .txt haben.
 
             return files;
         }
         private static void LadeSpiel()
+        {
+            FileStream fs = null;
+            FileInfo[] f = GetAllSaveFiles();
+            int i = 1;
+            bool check = true;
+            int eingabe = 0;
+
+            do//Auflistung der Save Files + Auswählen
+            {
+                try
+                {
+                    if (f.Length > 0)
+                        Console.WriteLine("\nWieder zum Hauptmenü zurückkehren[0]");
+                    foreach (FileInfo fi in f)
+                    {
+
+                        Console.WriteLine($"{fi.Name}[{i}]");
+                        i++;
+
+                    }
+                    if (f.Length > 0)
+                    {
+                        Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
+                        eingabe = Convert.ToInt32(Console.ReadLine()) - 1;
+                        if (eingabe == -1)
+                        {
+                            Console.Clear();
+                            Einführung();
+                        }
+                        fs = f.ElementAt(eingabe).OpenRead();
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nEs gibt keine Save Files!\n");
+                        check = true;
+                    }
+                }
+                catch (ArgumentOutOfRangeException e)
+                {
+                    Console.WriteLine("\nDieser Index ist ungültig!!! Erneuter Versuch.\n");
+                    i = 1;
+                    check = false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("\nFalsche Eingabe, erneuter Versuch!\n");
+                    i = 1;
+                    check = false;
+                }
+
+            } while (check == false);
+            if (fs != null)
+            {
+                StreamReader sr = new StreamReader(fs);
+
+                string[] zeilen = sr.ReadToEnd().Split('\n');
+                string[] namen = new string[4];
+                string[] farben = new string[4];
+                int[,] positionen = new int[4, 4]; // 2d-Array für Positionen von (maximal) allen 4 Häusern
+                int[,] printPositionen = new int[4, 4]; //auch 2d array
+
+                for (int j = 1; j < zeilen.Length - 1; j++)//Durch jede Zeile gehen (außer Header und Ende, das Ende ist immer \n)
+                {
+                    string[] spalten = zeilen[j].Split('\t'); //aufteilen in Spalten
+                    namen[j - 1] = spalten[0];
+                    farben[j - 1] = spalten[1];
+                    string[] posArray = spalten[2].Split(';');
+                    string[] printPosArray = spalten[3].Split(";");
+                    for (int k = 0; k < 4; k++) // 4, da jedes Haus 4 Figuren hat.
+                    {
+                        positionen[j - 1, k] = Convert.ToInt32(posArray[k]);
+                        printPositionen[j - 1, k] = Convert.ToInt32(printPosArray[k]);
+                    }
+                }
+
+                List<Spieler> spieler = new List<Spieler>();
+                List<Haus> haeuser = new List<Haus>();
+                for (int j = 0; j < zeilen.Length - 2; j++)  //-2, da sonst 1 Spieler / Haus zu viel hinzugefügt wird. Erstellung der Spieler, Häuser und Spielfiguren
+                {
+                    if (namen[j].Contains("bot")) //Wenn der Name bot enthält, wird ein Bot erstellt.
+                    {
+                        spieler.Add(new Bot());
+                    }
+                    else
+                    {
+                        spieler.Add(new Menschlicher_Spieler(namen[j]));
+                    }
+                    Enum.TryParse(farben[j], out Verfuegbare_Farben farbe);
+                    Haus h = new Haus(farbe);
+                    h.ZugehoerigerSpieler = spieler.ElementAt(j);
+                    for (int k = 0; k < 4; k++) //Weil es 4 Spielfiguren pro Haus gibt.
+                    {
+                        h.ZugehoerigeFiguren.ElementAt(k).Position = positionen[j, k];
+                        h.ZugehoerigeFiguren.ElementAt(k).PrintPosition = printPositionen[j, k];
+                        if (h.ZugehoerigeFiguren.ElementAt(k).PrintPosition != 0) //Wenn es eine andere PrintPosition als 0 hat, dann ist die Spielfigur nicht im Haus.
+                        {
+                            h.ZugehoerigeFiguren.ElementAt(k).IsInHouse = false;
+                            h.FigurenImHaus--;
+                        }
+
+
+                    }
+                    haeuser.Add(h);
+                }
+
+                for (int j = 0; j < 4 - haeuser.Count + 2; j++) //Erstellen der Häuser mit den bekommenen Daten 
+                {
+                    Haus h = new Haus(Verfuegbare_Farben.Weiss);
+                    h.AuffuellHaus = true;
+                    haeuser.Add(h);
+                }
+                sr.Close();
+                fs.Close();
+                Spielablauf(haeuser, spieler); //Mit den gerade Erstellten Spielern und Häusern das Spiel "starten"
+            }
+
+
+
+        }
+        private static void SaveWins(Menschlicher_Spieler gewinner)
+        {
+            string d = Directory.GetCurrentDirectory();
+            string path = d + @"/PlayerWins";
+            Directory.CreateDirectory(path); //Kreieren eines neuen Verzeichnisses, für die Speicherung der Siege aller Spieler.
+            FileStream fs = new FileStream(path + "/PlayerWins.txt", FileMode.OpenOrCreate, FileAccess.Read);
+            StreamReader sr = new StreamReader(fs);
+            string inhalt = sr.ReadToEnd(); //Kurzerhand den derzeitigen Inhalt der File zu speichern.
+            sr.Close();
+            fs.Close();
+
+            FileStream fs2 = new FileStream(path + "/PlayerWins.txt", FileMode.Open, FileAccess.Write); //Einen neuen Filestream erstellen, da sonst ein "Stream not writable" Fehler kommt.
+            StreamWriter sw = new StreamWriter(fs2);
+
+            if (inhalt == string.Empty) //Falls das File leer ist, dann den Header schreiben:
+            {
+                sw.WriteLine("Spieler\tSiege");
+            }
+            else //Wenn es einen Inhalt hat, dann leere das File.
+            {
+                fs2.SetLength(0);
+            }
+            string[] inhalt2 = inhalt.Split('\n'); //Alle Zeilen des Files
+            string newInhalt = string.Empty;
+            if (inhalt.Contains(gewinner.Name)) //Wenn der Inhalt den Namen des Gewinners schon beinhaltet, dann werden die Siege um 1 erhöht:
+            {
+                string line = string.Empty;
+                foreach (string s in inhalt2)
+                {
+
+                    if (s.Contains(gewinner.Name)) //Falls man in der gewünschten Zeile ist (wo der Gewinner verzeichnet ist)
+                    {
+                        int siege = Convert.ToInt32(s.Split('\t')[1]); //die alten Siege ermitteln
+                        line = s.Replace($"{siege}", $"{siege + 1}"); //Die alten Siege werden mit den neuen Siegen (alte Siege + 1) ersetzt
+                    }
+                    else //Sonst bleibt die Zeile gleich.
+                    {
+                        line = s;
+                    }
+
+                    newInhalt += line + '\n';
+
+                }
+
+            }
+            else// Wenn der Sieger noch nicht im File ist, dann wird eine neue Zeile mit seinen Daten angelegt
+            {
+                newInhalt = inhalt + $"{gewinner.Name}\t1";
+            }
+            sw.Write(newInhalt);//Das File wird neu beschrieben.
+
+            sw.Close();
+            fs2.Close();
+        }
+        private static bool IsPlayerRegistered(string name)
+        {
+
+            string d = Directory.GetCurrentDirectory();
+            string path = d + @"/PlayerWins";
+            FileStream fs = null;
+            StreamReader sr = null;
+            try
+            {
+                fs = new FileStream(path + "/PlayerWins.txt", FileMode.Open, FileAccess.Read);
+                sr = new StreamReader(fs);
+            }
+            catch (FileNotFoundException e) //Falls diese Exception geworfen wird, dann existiert das File noch nicht (kein Spieler hat jemals gewonnen)
+            {
+                return false;
+            }
+
+            string inhalt = sr.ReadToEnd();
+            if (inhalt.Contains(name)) //Wenn der Inhalt des Files den Gewinner-Namen beinhaltet, dann ist der Spieler bereits "registriert"
+            {
+                sr.Close();
+                fs.Close();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        private static int GetWins(string name)
+        {
+            string d = Directory.GetCurrentDirectory();
+            string path = d + @"/PlayerWins";
+            FileStream fs = new FileStream(path + "/PlayerWins.txt", FileMode.Open, FileAccess.Read);
+            StreamReader sr = new StreamReader(fs);
+
+            string inhalt = sr.ReadToEnd();
+            string[] inhalt2 = inhalt.Split('\n');
+
+            foreach (string s in inhalt2)
+            {
+                if (s.Contains(name)) //Wenn die aktuelle Zeile den Namen beinhaltet, dann return die Anzahl der Siege
+                {
+                    return Convert.ToInt32(s.Split('\t')[1]); //[1] = Siege
+                }
+            }
+            //Man kommt hier aber nie hin.
+            return 0;
+        }
+        private static void LoescheSpielstand()
         {
             FileInfo[] f = GetAllSaveFiles();
             int i = 1;
@@ -795,19 +1017,29 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 try
                 {
+                    if (f.Length > 0)
+                        Console.WriteLine("\nWieder zum Hauptmenü zurückkehren[0]");
                     foreach (FileInfo fi in f)
                     {
                         Console.WriteLine($"{fi.Name}[{i}]");
                         i++;
 
                     }
-                    Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
-                    eingabe = Convert.ToInt32(Console.ReadLine()) - 1;
+                    if (f.Length > 0)
+                    {
+                        Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
+                        eingabe = Convert.ToInt32(Console.ReadLine()) - 1;
+                        if (eingabe == -1)
+                        {
+                            Console.Clear();
+                            Einführung();
+                        }
+                    }
+
+
 
                 }
-                
-                
-                catch (Exception)
+                catch (Exception ex)
                 {
                     Console.WriteLine("Falsche Eingabe, erneuter Versuch!");
                     i = 1;
@@ -815,121 +1047,19 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
 
             } while (check == false);
-
-            FileStream fs = f.ElementAt(eingabe).OpenRead();
-            StreamReader sr = new StreamReader(fs);
-
-            string[] zeilen = sr.ReadToEnd().Split('\n');
-            string[] namen = new string[4];
-            string[] farben = new string[4];
-            int[,] positionen = new int[4, 4]; // 2d-Array für Positionen von (maximal) allen 4 Häusern
-            int[,] printPositionen = new int[4, 4];
-
-            for (int j = 1; j < zeilen.Length - 1; j++)
+            try
             {
-                string[] spalten = zeilen[j].Split('\t');
-                namen[j - 1] = spalten[0];
-                farben[j - 1] = spalten[1];
-                string[] posArray = spalten[2].Split(';');
-                string[] printPosArray = spalten[3].Split(";");
-                for (int k = 0; k < 4; k++) // 4, da jedes Haus 4 Figuren hat.
-                {
-                    positionen[j - 1, k] = Convert.ToInt32(posArray[k]);
-                    printPositionen[j - 1, k] = Convert.ToInt32(printPosArray[k]);
-                }
+                File.Delete(f.ElementAt(eingabe).Name);
+                Console.WriteLine($"Spielstand {f.ElementAt(eingabe).Name} erfolgreich gelöscht! Sie haben nun wieder Platz für {5 - f.Length + 1} Save Files!");
+                Thread.Sleep(4000);
+                Console.Clear();
+            }
+            catch (ArgumentOutOfRangeException ex) //Wenn es keine Files gibt / ungültiger Index.
+            {
+                Console.WriteLine("\nDieser Index ist nicht gültig oder es gibt keine Save Files!\n");
+
             }
 
-            List<Spieler> spieler = new List<Spieler>();
-            List<Haus> haeuser = new List<Haus>();
-            for (int j = 0; j < zeilen.Length - 2; j++)  //-2, da sonst 1 Spieler / Haus zu viel hinzugefügt wird.
-            {
-                if (namen[j].Contains("bot"))
-                {
-                    spieler.Add(new Bot());
-                }
-                else
-                {
-                    spieler.Add(new Menschlicher_Spieler(namen[j]));
-                }
-                Enum.TryParse(farben[j], out Verfuegbare_Farben farbe);
-                Haus h = new Haus(farbe);
-                h.ZugehoerigerSpieler = spieler.ElementAt(j);
-                for (int k = 0; k < 4; k++)
-                {
-                    h.ZugehoerigeFiguren.ElementAt(k).Position = positionen[j, k];
-                    h.ZugehoerigeFiguren.ElementAt(k).PrintPosition = printPositionen[j, k];
-                    if (h.ZugehoerigeFiguren.ElementAt(k).PrintPosition != 0)
-                    {
-                        h.ZugehoerigeFiguren.ElementAt(k).IsInHouse = false;
-                        h.FigurenImHaus--;
-                    }
-
-
-                }
-                haeuser.Add(h);
-            }
-
-            for (int j = 0; j < 4 - haeuser.Count + 2; j++)
-            {
-                Haus h = new Haus(Verfuegbare_Farben.Weiss);
-                h.AuffuellHaus = true;
-                haeuser.Add(h);
-            }
-            Spielablauf(haeuser, spieler);
-
-
-        }
-        //Als Namen darf man NICHT "Bot" verwenden (nochmachen)
-        private static void SaveWins(Menschlicher_Spieler gewinner)
-        {
-            string d = Directory.GetCurrentDirectory();
-            string path = d + @"/PlayerWins";
-            Directory.CreateDirectory(path);
-            FileStream fs = new FileStream(path + "/PlayerWins.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            StreamWriter sw = new StreamWriter(fs);
-            StreamReader sr = new StreamReader(fs);
-
-            string inhalt = sr.ReadToEnd();
-            if (inhalt == string.Empty)
-            {
-                sw.WriteLine("Spieler\tSiege");
-            }
-            else
-            {
-                fs.SetLength(0);
-            }
-            string[] inhalt2 = inhalt.Split('\n');
-            string newInhalt = string.Empty;
-            if (inhalt.Contains(gewinner.Name))
-            {
-                string line = string.Empty;
-                foreach (string s in inhalt2)
-                {
-
-                    if (s.Contains(gewinner.Name))
-                    {
-                        int siege = Convert.ToInt32(s.Split('\t')[1]);
-                        line = s.Replace($"{siege}", $"{siege+1}");
-                    }
-                    else
-                    {
-                        line = s;
-                    }
-
-                    newInhalt += line + '\n';
-
-                }
-
-            }
-            else
-            {
-                newInhalt = inhalt + $"{gewinner.Name}\t1";
-            }
-            sw.Write(newInhalt);
-
-            sw.Close();
-            sr.Close();
-            fs.Close();
         }
     }
 
