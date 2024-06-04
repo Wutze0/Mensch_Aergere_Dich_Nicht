@@ -870,7 +870,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
         }
         //Als Namen darf man NICHT "Bot" verwenden (nochmachen)
-        public static void SaveWins(Menschlicher_Spieler gewinner)
+        private static void SaveWins(Menschlicher_Spieler gewinner)
         {
             string d = Directory.GetCurrentDirectory();
             string path = d + @"/PlayerWins";
