@@ -64,7 +64,7 @@
                     }
                     foreach (Spielfigur s in moeglicheFiguren)
                     {
-                        int naehesteFigurFeld = letztesBefahrbaresFeld;
+                        int naehesteFigurFeld = letztesBefahrbaresFeld + 1;
 
                         for (int i = 0; i < 4; i++)
                         {
@@ -78,6 +78,7 @@
 
                         }
                         int maximaleAnz = naehesteFigurFeld - s.Position;
+                        maximaleAnz--;
 
                         if (maximaleAnz < wieWeitZiehen)
                         {

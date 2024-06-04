@@ -736,7 +736,7 @@ namespace Mensch_Aergere_Dich_Nicht
             return alleFarben; //return alle verfügbaren Farben.
         }
 
-        public static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser, string path)
+        private static void SpielSpeichern(List<Spieler> spielerliste, List<Haus> haeuser, string path)
         {
 
             FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
@@ -888,7 +888,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
         }
-        public static void SaveWins(Menschlicher_Spieler gewinner)
+        private static void SaveWins(Menschlicher_Spieler gewinner)
         {
             string d = Directory.GetCurrentDirectory();
             string path = d + @"/PlayerWins";
@@ -942,7 +942,7 @@ namespace Mensch_Aergere_Dich_Nicht
             sw.Close();
             fs2.Close();
         }
-        public static bool IsPlayerRegistered(string name)
+        private static bool IsPlayerRegistered(string name)
         {
 
             string d = Directory.GetCurrentDirectory();
@@ -972,7 +972,7 @@ namespace Mensch_Aergere_Dich_Nicht
             }
             
         }
-        public static int GetWins(string name)
+        private static int GetWins(string name)
         {
             string d = Directory.GetCurrentDirectory();
             string path = d + @"/PlayerWins";
@@ -992,7 +992,7 @@ namespace Mensch_Aergere_Dich_Nicht
             //Man kommt hier aber nie hin.
             return 0;
         }
-        public static void LoescheSpielstand()
+        private static void LoescheSpielstand()
         {
             FileInfo[] f = GetAllSaveFiles();
             int i = 1;

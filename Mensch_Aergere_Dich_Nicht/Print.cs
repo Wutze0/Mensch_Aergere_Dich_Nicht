@@ -476,8 +476,8 @@
                 Console.Write('\n');
             }
 
-            void PrintLangeZeileMitSpieler(List<Haus> _haueser, List<int> felder, int sechstesFeld = 227)                                           //Diese Methode gibt eine "lange" Zeile aus, in der sich Spieler befinden könnten  
-            {
+            void PrintLangeZeileMitSpieler(List<Haus> _haueser, List<int> felder, int sechstesFeld = 227)                                           //Diese Methode gibt eine "lange" Zeile aus, in der sich Spieler befinden könnten, in der Langen Zeile ist das Feld ganz in der Mitte komplett leer. wenn bei dieser Methode kein  
+            {                                                                                                                                       //sechstes Feld mitgegebn wird, wird dieser Variable der Wert 227 zugewiesen. Dieser hat keine besondere Bedeutung. Es ist einfach ein Wert der bestimmt groß genug ist, um nicht mehr innerhalb der benutzbaren Felder zu liegen
                 felder.Insert(5, sechstesFeld);
                 List<Spielfigur> figurenInZeile = new List<Spielfigur>();
                 string langeZeileMitSpieler = "\t\t        ";
