@@ -656,11 +656,11 @@ namespace Mensch_Aergere_Dich_Nicht
                     Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
                     botAnzahl = -1; //Damit erneut abgefragt wird
                 }
-            } while (botAnzahl < 0 || botAnzahl > (4 - spielerzahl));
+            } while (botAnzahl < 0 || botAnzahl > (4 - spielerzahl)); //Wenn keine Exception geworfen wird UND die Botanzahl in diesem Bereich liegt, dann gültig.
 
             List<Spieler> spielerliste = new List<Spieler>();
             List<Haus> haeuser = new List<Haus>();
-            Regex regex = new Regex(@"^[A-Za-zÄäÖöÜüß_\ \d]{2,16}$");
+            Regex regex = new Regex(@"^[A-Za-zÄäÖöÜüß_\ \d]{2,16}$"); //Regex für Spielername. 2-16 Zeichen mit _ und [ ] und Zahlen
 
             for (int i = 0; i < spielerzahl; i++)
             {
@@ -668,70 +668,70 @@ namespace Mensch_Aergere_Dich_Nicht
                 string name = Console.ReadLine();
 
 
-                if (regex.IsMatch(name) && !name.Contains("bot"))
+                if (regex.IsMatch(name) && !name.Contains("bot")) //Man darf den Namen bot nicht haben, da es sonst zu Verwirrung kommen könnte (mehrere gleiche Namen)
                 {
-                    if (IsPlayerRegistered(name))
+                    if (IsPlayerRegistered(name)) //Falls der Spieler schon mal gewonnen hat, dann soll er diese Nachricht bekommen:
                     {
                         Console.WriteLine($"Willkommen zurück {name}! Sie haben zurzeit {GetWins(name)} Siege");
                     }
                     Console.WriteLine($"\n{name}, Bitte geben Sie Ihre gewünschte Hausfarbe ein\n" +
-                    $"Verfügbar sind folgende:\n{getAvailableColors(haeuser)}");
+                    $"Verfügbar sind folgende:\n{getAvailableColors(haeuser)}"); //Listet alle verwendete Farben der Häuser
                     bool check = true;
                     while (check == true)
                     {
 
                         string? gewuenschteFarbe = Console.ReadLine();
-                        Verfuegbare_Farben farbe = Verfuegbare_Farben.Rot;
-                        if (Enum.TryParse(gewuenschteFarbe, out farbe))
+                        Verfuegbare_Farben farbe = Verfuegbare_Farben.Rot; //Platzhalter-Farbe
+                        if (Enum.TryParse(gewuenschteFarbe, out farbe))//Versuchen, ob die gewünschte Farbe im Enum enthalten ist.
                         {
-                            if (getAvailableColors(haeuser).Contains(gewuenschteFarbe))
+                            if (getAvailableColors(haeuser).Contains(gewuenschteFarbe)) //Wenn die gewünschte Farbe verfügbar ist, dann gültig.
                             {
                                 Console.WriteLine($"Erfolgreich die Farbe {farbe} ausgewählt!");
                                 haeuser.Add(new Haus(farbe));
                                 check = false;
                             }
-                            else
+                            else //Sonst das:
                             {
                                 Console.WriteLine("Diese Farbe wird schon verwendet, bitte eine andere Farbe wählen");
                             }
 
                         }
-                        else
+                        else //Wenn nicht im Enum enthalten:
                         {
                             Console.WriteLine("Diese Farbe existiert nicht, bitte eine andere Farbe wählen:");
                         }
                     }
-                    haeuser.ElementAt(i).ZugehoerigerSpieler = new Menschlicher_Spieler(name);
-                    spielerliste.Add(haeuser.ElementAt(i).ZugehoerigerSpieler);
+                    haeuser.ElementAt(i).ZugehoerigerSpieler = new Menschlicher_Spieler(name); //Wenn alles passt, dann wird ein neuer Menschlicher Spieler erstellt.
+                    spielerliste.Add(haeuser.ElementAt(i).ZugehoerigerSpieler); //Und er wird zur Spielerliste hinzugefügt.
                 }
-                else
+                else //Wenn Name ungültig (Regex):
                 {
-                    Console.WriteLine("Dieser Name ist ungültig. Versuchen Sie einen anderen.");
+                    Console.WriteLine("Dieser Name ist ungültig. Versuchen Sie einen anderen."); 
                     i--;
                 }
 
             }
-            for (int i = 0; i < botAnzahl; i++)
+            for (int i = 0; i < botAnzahl; i++)//Erstellung der Bots:
             {
                 Random r = new Random();
                 int farbeIndex = r.Next(0, 7); // 0 bis 7 weil es so viele Farben im Enum gibt.
                 Verfuegbare_Farben farbe = (Verfuegbare_Farben)farbeIndex; //somit kann man auf die korrekte Stelle des Enums zugreifen.
-                if (getAvailableColors(haeuser).Contains(farbe.ToString()))
+                if (getAvailableColors(haeuser).Contains(farbe.ToString()))//Wenn Farbe verwendbar, dann normaler Ablauf:
                 {
                     Console.WriteLine(farbe);
                     haeuser.Add(new Haus(farbe));
                     haeuser.ElementAt(i + spielerzahl).ZugehoerigerSpieler = new Bot();
                     spielerliste.Add(haeuser.ElementAt(i + spielerzahl).ZugehoerigerSpieler);
                 }
-                else
+                else //Sonst wird nochmal eine Zufallszahl generiert.
                 {
                     i--;
                 }
 
             }
-            for (int i = haeuser.Count; i < 4; i++)                                                                                         //Die leeren Haueser mit Pseudo bots auffuelen
+            for (int i = haeuser.Count; i < 4; i++) //Platzhalter-Häuser (Wenn weniger Spieler als 4)                                                                                     //Die leeren Haueser mit Pseudo bots auffuelen
             {
-                Haus x = new Haus(Verfuegbare_Farben.Weiss);
+                Haus x = new Haus(Verfuegbare_Farben.Weiss); //Weiss ist die Platzhalter Farbe
                 x.AuffuellHaus = true;
                 haeuser.Add(x);
             }
