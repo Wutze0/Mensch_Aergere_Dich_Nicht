@@ -166,7 +166,6 @@ namespace Mensch_Aergere_Dich_Nicht
                         else if(temp == "win")
                         {
                             int temptemp = 41;
-                            Console.WriteLine("faosd");
                             foreach(Spielfigur s in haus.ZugehoerigeFiguren)
                             {
                                 s.Position = temptemp;
@@ -956,13 +955,13 @@ namespace Mensch_Aergere_Dich_Nicht
                     newInhalt += line + '\n';
 
                 }
-
             }
             else// Wenn der Sieger noch nicht im File ist, dann wird eine neue Zeile mit seinen Daten angelegt
             {
                 newInhalt = inhalt + $"{gewinner.Name}\t1";
             }
-            sw.Write(newInhalt);//Das File wird neu beschrieben.
+            newInhalt = newInhalt.TrimEnd('\n');
+            sw.WriteLine(newInhalt);//Das File wird neu beschrieben.
 
             sw.Close();
             fs2.Close();
@@ -993,6 +992,8 @@ namespace Mensch_Aergere_Dich_Nicht
             }
             else
             {
+                sr.Close();
+                fs.Close();
                 return false;
             }
 
@@ -1011,6 +1012,8 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 if (s.Contains(name)) //Wenn die aktuelle Zeile den Namen beinhaltet, dann return die Anzahl der Siege
                 {
+                    sr.Close();
+                    fs.Close();
                     return Convert.ToInt32(s.Split('\t')[1]); //[1] = Siege
                 }
             }
