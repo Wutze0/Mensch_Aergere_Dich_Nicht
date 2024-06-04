@@ -23,7 +23,7 @@ namespace Mensch_Aergere_Dich_Nicht
             if (haus.FigurenImHaus < haus.ZiehbareFiguren) //normaler Spielablauf, ziehbareFiguren speichert die Anzahl der Figuren, die sich noch bewegen könnte und somit nicht am Ende angelangt sind
             {
                 int sechsCounter = 0;
-                while (erneutWuerfeln == true && sechsCounter <= 3) //Logik für, wenn jemand eine 6 würfelt //Man darf nur maximal drei mal hintereinander eine 6 würfeln
+                while (erneutWuerfeln == true && sechsCounter < 3) //Logik für, wenn jemand eine 6 würfelt //Man darf nur maximal drei mal hintereinander eine 6 würfeln
                 {
                     ziehe = r.Next(1, 7);
                     Console.WriteLine($"{ziehe} gewuerfelt!");
@@ -33,10 +33,11 @@ namespace Mensch_Aergere_Dich_Nicht
                         erneutWuerfeln = true;
                         if (botYesNo)                                                               //Wenn der Spieler ein Bot ist, dann wird eine andere Funktion aufgerufen
                         {
+                            Thread.Sleep(3000);
                             Bot x = haus.ZugehoerigerSpieler as Bot;
                             x.Spielfigurbewegen(haus, haueser, ziehe);
                             print.PrintSpielfeld();                                                 //Nach jedem Zug wird das Spielfeld nochmal ausgegeben
-                            Thread.Sleep(5000);
+                            Thread.Sleep(3000);
                         }
                         else
                         {
@@ -67,13 +68,19 @@ namespace Mensch_Aergere_Dich_Nicht
                     }
 
 
-                }                                                                                   
+                }
+                if(sechsCounter == 3)
+                {
+                    ziehe = r.Next(1, 7);
+                    Console.WriteLine($"{ziehe} gewuerfelt!");
+                }
                 if (botYesNo)
                 {
+                    Thread.Sleep(3000);
                     Bot x = haus.ZugehoerigerSpieler as Bot;
                     x.Spielfigurbewegen(haus, haueser, ziehe);
                     print.PrintSpielfeld();
-                    Thread.Sleep(5000);
+                    Thread.Sleep(3000);
                 }
                 else
                 {
@@ -98,10 +105,12 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     if (botYesNo)
                     {
+                        Thread.Sleep(3000);
                         Bot x = haus.ZugehoerigerSpieler as Bot;
                         x.Spielfigurbewegen(haus, haueser, ziehe);
                         print.PrintSpielfeld();
                         wuerfeln(haus, print, haueser);
+                        Thread.Sleep(3000);
                     }
                     else
                     {
@@ -115,6 +124,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     Console.WriteLine("Leider keine 6 gewuerfelt\n");
                     Thread.Sleep(3000);
+                    print.PrintSpielfeld();
                 }
 
 
@@ -205,7 +215,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         bool check = true;
                         foreach (Spielfigur s in Figuren)
                         {
-                            if (s.PrintPosition == haus.StartingPrintPosition)                                                  //Hier wird ueberprueft ob eine eigene Figur am Startfeld steht, wenn ja ist der Zug nämlich ungültig
+                            if (s.PrintPosition == haus.StartingPrintPosition && s.Farbe == haus.Farbe)                                                  //Hier wird ueberprueft ob eine eigene Figur am Startfeld steht, wenn ja ist der Zug nämlich ungültig
                             {
                                 check = false;
                             }
@@ -485,7 +495,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
                 }
-            } while (spielerzahl != 1 && spielerzahl != 2 && spielerzahl != 3 && spielerzahl != 4);
+            } while (spielerzahl != 0 && spielerzahl != 1 && spielerzahl != 2 && spielerzahl != 3 && spielerzahl != 4);
 
             do
             {

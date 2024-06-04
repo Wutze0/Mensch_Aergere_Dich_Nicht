@@ -25,6 +25,7 @@
                                 movefound = true;
                                 s.Position += wieWeitZiehen;
                                 s.PrintPosition = s.Position + ((hausDesBots.HausID - 1) * 4);
+                                Console.WriteLine($"{Name} zieht mit F{s.ID} ins Ziel");
                             }
                         }
 
@@ -118,6 +119,7 @@
 
                         zuBewegen.Position += wieWeitZiehen;
                         zuBewegen.PrintPosition = zuBewegen.Position + ((hausDesBots.HausID - 1) * 4);
+                        Console.WriteLine($"{Name} zieht mit F{zuBewegen.ID} im Ziel");
                         movefound = true;
                     }
 
@@ -146,6 +148,7 @@
                                     hausDesBots.ZugehoerigeFiguren.ElementAt(i).Position = 1;
                                     hausDesBots.ZugehoerigeFiguren.ElementAt(i).PrintPosition = hausDesBots.StartingPrintPosition;
                                     hausDesBots.ZugehoerigeFiguren.ElementAt(i).IsInHouse = false;
+                                    Console.WriteLine($"{Name} zieht mit F{hausDesBots.ZugehoerigeFiguren.ElementAt(i).ID} aus dem Haus");
                                     foreach (Haus h in alleHaueser)
                                     {
                                         if (h != hausDesBots)
@@ -199,6 +202,7 @@
                                         sGeg.PrintPosition = 0;
                                         sGeg.IsInHouse = true;
                                         alleHaueser.ElementAt(i).FigurenImHaus++;
+                                        Console.WriteLine($"{Name} schlaegt mit F{s.ID} die Figur F{sGeg.ID} des Spieler {alleHaueser.ElementAt(i).Farbe}");
                                     }
                                 }
                             }
@@ -234,6 +238,7 @@
                                 {
                                     s.PrintPosition %= 40;
                                 }
+                                Console.WriteLine($"{Name} zieht mit F{s.ID}");
                             }
                         }
                     }

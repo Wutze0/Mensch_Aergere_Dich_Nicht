@@ -412,7 +412,7 @@
             PrintZeileMitSpieler(23, 22, 21);
             Console.WriteLine("\t\t\t\t\t\t\t#        |        |        #");
             Console.WriteLine("");
-            Console.WriteLine("\t\t\t\t\t\t\t##############################");
+            Console.WriteLine("\t\t\t\t\t\t\t############################");
 
 
             Console.Write('\n');
