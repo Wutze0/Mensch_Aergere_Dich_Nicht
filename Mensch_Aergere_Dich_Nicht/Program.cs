@@ -459,7 +459,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
                 }
                 }
-                catch (Exception e)
+                catch (UserFalscheEingabeException e)
                 {
                     Console.WriteLine("Falsche Eingabe... Erneuter Versuch:");
                 }
@@ -789,8 +789,11 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 try
                 {
+                    if(f.Length > 0) 
+                    Console.WriteLine("\nWieder zum Hauptmenü zurückkehren[0]");
                     foreach (FileInfo fi in f)
                     {
+
                         Console.WriteLine($"{fi.Name}[{i}]");
                         i++;
 
@@ -799,22 +802,28 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
                         eingabe = Convert.ToInt32(Console.ReadLine()) - 1;
+                        if (eingabe == -1)
+                        {
+                            Console.Clear();
+                            Einführung();
+                        }
                         fs = f.ElementAt(eingabe).OpenRead();
                     }
                     else
                     {
-                        Console.WriteLine("Es gibt keine Save Files!");
+                        Console.WriteLine("\nEs gibt keine Save Files!\n");
                         check = true;
                     }
                 }
                 catch (ArgumentOutOfRangeException e)
                 {
-                    Console.WriteLine("Dieser Index ist ungültig!!! Abbruch.");
-                    break;
+                    Console.WriteLine("\nDieser Index ist ungültig!!! Erneuter Versuch.\n");
+                    i = 1;
+                    check = false;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Falsche Eingabe, erneuter Versuch!");
+                    Console.WriteLine("\nFalsche Eingabe, erneuter Versuch!\n");
                     i = 1;
                     check = false;
                 }
@@ -1003,6 +1012,8 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 try
                 {
+                    if(f.Length > 0)
+                    Console.WriteLine("\nWieder zum Hauptmenü zurückkehren[0]");
                     foreach (FileInfo fi in f)
                     {
                         Console.WriteLine($"{fi.Name}[{i}]");
@@ -1013,6 +1024,11 @@ namespace Mensch_Aergere_Dich_Nicht
                     {
                         Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
                         eingabe = Convert.ToInt32(Console.ReadLine()) - 1;
+                        if(eingabe == -1)
+                        {
+                            Console.Clear();
+                            Einführung();
+                        }
                     }
 
                     
@@ -1030,12 +1046,13 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 File.Delete(f.ElementAt(eingabe).Name);
                 Console.WriteLine($"Spielstand {f.ElementAt(eingabe).Name} erfolgreich gelöscht! Sie haben nun wieder Platz für {5 - f.Length + 1} Save Files!");
-                Thread.Sleep(2000);
+                Thread.Sleep(4000);
+                Console.Clear();
             }
             catch(ArgumentOutOfRangeException ex) //Wenn es keine Files gibt / ungültiger Index.
             {
-                Console.WriteLine("Dieser Index ist nicht gültig!!!\n");
-               
+                Console.WriteLine("\nDieser Index ist nicht gültig oder es gibt keine Save Files!\n");
+
             }
 
         }
