@@ -49,8 +49,8 @@
             {
                 if (i % 2 == 0)
                 {
-                    //Ausgabe blaues Haus
-                    if (_haueser.ElementAt(0).FigurenImHaus == 4)
+                    //Ausgabe Haus oben links                                                           //In diesen Blocken wird ermittelt, wie viele Figuren sich noch im Haus befinden. Ein Feld mit MMM wird ausgegeben, wenn sich dort noch eine Figur befindet. Wenn sich dort keine Figur mehr befindet, werden 3 Blöcke ausgegeben
+                    if (_haueser.ElementAt(0).FigurenImHaus == 4)                                       //Die erste Figur wird oben links weggenommen, die zweite oben rechts, die dritte unten links und die vierte unten rechts. Sollte eine Figur geschlagen werden, wird zuerst das Feld unten rechts, dann das Feld unten links, dann oben rechts, dann oben links aufgefuellt
                     {
                         Console.Write("\t\t\t\t");
                         _haueser.ElementAt(0).ChangeColour();
@@ -77,7 +77,7 @@
                     }
 
 
-                    //Ausgabe gruenes Haus
+                    //Ausgabe Haus oben rechts
                     if (_haueser.ElementAt(1).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t");
@@ -122,7 +122,7 @@
             {
                 if (i % 2 == 0)
                 {
-                    //Ausgabe blaues Haus
+                    //Ausgabe Haus oben links 2.Teil
                     if (_haueser.ElementAt(0).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t\t\t");
@@ -150,7 +150,7 @@
                     }
 
 
-                    //Ausgabe gruenes Haus
+                    //Ausgabe Haus oben rechts 2.Teil
                     if (_haueser.ElementAt(1).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t");
@@ -193,7 +193,7 @@
             Console.WriteLine("");
 
 
-            Console.WriteLine(distanceLongRow + "#####################################--------X........X--------#####################################");
+            Console.WriteLine(distanceLongRow + "#####################################--------X........X--------#####################################");                //Jetzt beginnt die Ausgabe des mittleren Spielfelds
             Console.WriteLine(" ");
             zeile = "#        |        |        |        |        X        X        |        |        |        |        #";
 
@@ -271,7 +271,7 @@
             {
                 if (i % 2 == 0)
                 {
-                    //Ausgabe gelbes Haus
+                   
                     if (_haueser.ElementAt(2).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t\t\t");
@@ -299,7 +299,7 @@
                     }
 
 
-                    //Ausgabe rotes Haus
+                    
                     if (_haueser.ElementAt(3).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t");
@@ -343,7 +343,7 @@
             {
                 if (i % 2 == 0)
                 {
-                    //Ausgabe gelbes Haus
+                    
                     if (_haueser.ElementAt(2).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t\t\t");
@@ -371,7 +371,7 @@
                     }
 
 
-                    //Ausgabe rotes Haus
+                   
                     if (_haueser.ElementAt(3).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t");
@@ -419,7 +419,7 @@
             Console.WriteLine(rahmen);
 
 
-            void PrintZeileMitSpieler(int erstesFeld, int zweitesFeld, int drittesFeld)
+            void PrintZeileMitSpieler(int erstesFeld, int zweitesFeld, int drittesFeld)                                 //Diese Methode gibt eine "kurze" Zeile aus, in der sich Spieler befinden können
             {
                 List<Spielfigur> figurenInZeile = new List<Spielfigur>();
                 string zeileMitSpieler = "\t\t\t\t\t\t\t    ";
@@ -436,7 +436,7 @@
                 int check;
                 Console.Write(zeileMitSpieler);
 
-                check = figurenInZeile.FindIndex(i => i.PrintPosition == erstesFeld);            //Es wird der Index des Elements zurueckgegeben, dessen Membervariable PrintPosition == 1 ist
+                check = figurenInZeile.FindIndex(i => i.PrintPosition == erstesFeld);            //Es wird der Index des Elements zurueckgegeben, dessen Membervariable PrintPosition == erstesFeld ist
                 if (check == -1)
                 {
                     Console.Write("         ");
@@ -476,8 +476,8 @@
                 Console.Write('\n');
             }
 
-            void PrintLangeZeileMitSpieler(List<Haus> _haueser, List<int> felder, int sechstesFeld = 227)
-            {
+            void PrintLangeZeileMitSpieler(List<Haus> _haueser, List<int> felder, int sechstesFeld = 227)                                           //Diese Methode gibt eine "lange" Zeile aus, in der sich Spieler befinden könnten, in der Langen Zeile ist das Feld ganz in der Mitte komplett leer. wenn bei dieser Methode kein  
+            {                                                                                                                                       //sechstes Feld mitgegebn wird, wird dieser Variable der Wert 227 zugewiesen. Dieser hat keine besondere Bedeutung. Es ist einfach ein Wert der bestimmt groß genug ist, um nicht mehr innerhalb der benutzbaren Felder zu liegen
                 felder.Insert(5, sechstesFeld);
                 List<Spielfigur> figurenInZeile = new List<Spielfigur>();
                 string langeZeileMitSpieler = "\t\t        ";
@@ -494,7 +494,6 @@
                         }
                     }
                 }
-                int printcounter = 0;
                 int check;
 
                 Console.Write(langeZeileMitSpieler);
@@ -523,7 +522,7 @@
                 }
             }
         }
-        public List<Spielfigur> GetAllSpielfiguren()
+        public List<Spielfigur> GetAllSpielfiguren()                                                    //Diese Methode gibt alle Spielfiguren in einer Liste zurück
         {
             List<Spielfigur> allSpielfiguren = new List<Spielfigur>();
             foreach (Haus h in _haueser)
@@ -535,7 +534,7 @@
             }
             return allSpielfiguren;
         }
-        //für gewinnüberprüfung eventuell: jedes haus hat ja 4 felder wo eine figur reingehen muss, also für jedes haus einen positionsArray machen.
+        
 
 
     }

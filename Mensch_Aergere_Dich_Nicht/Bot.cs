@@ -8,7 +8,7 @@
         }
 
 
-        public void Spielfigurbewegen(Haus hausDesBots, List<Haus> alleHaueser, int wieWeitZiehen)
+        public void Spielfigurbewegen(Haus hausDesBots, List<Haus> alleHaueser, int wieWeitZiehen)                              //Diese Methode berechnet mithilfe von Prioritäten, welche Figur gezogen werden soll
         {
             bool movefound = false;
             int priority = 1;
@@ -33,11 +33,11 @@
                 if (priority == 2)                                                                                                                                   //Im Haus fahren
                 {
                     List<Spielfigur> moeglicheFiguren = new List<Spielfigur>();
-                    foreach(Spielfigur s in hausDesBots.ZugehoerigeFiguren)
+                    foreach (Spielfigur s in hausDesBots.ZugehoerigeFiguren)
                     {
                         moeglicheFiguren.Add(s);
                     }
-                    
+
                     List<Spielfigur> zuEntfernen = new List<Spielfigur>();
                     int letztesBefahrbaresFeld = hausDesBots.LetztesBefahrbaresFeldBerechnen();
                     Spielfigur? zuBewegen = null;
@@ -52,7 +52,7 @@
                     {
                         if (s.Position <= 40 || s.Position > letztesBefahrbaresFeld)
                         {
-                           zuEntfernen.Add(s);
+                            zuEntfernen.Add(s);
                         }
                     }
                     foreach (Spielfigur s in moeglicheFiguren)
@@ -64,7 +64,7 @@
                     }
                     foreach (Spielfigur s in moeglicheFiguren)
                     {
-                        int naehesteFigurFeld = letztesBefahrbaresFeld;
+                        int naehesteFigurFeld = letztesBefahrbaresFeld + 1;
 
                         for (int i = 0; i < 4; i++)
                         {
@@ -78,6 +78,7 @@
 
                         }
                         int maximaleAnz = naehesteFigurFeld - s.Position;
+                        maximaleAnz--;
 
                         if (maximaleAnz < wieWeitZiehen)
                         {
@@ -85,7 +86,7 @@
                         }
                     }
 
-                    foreach(Spielfigur s in zuEntfernen)
+                    foreach (Spielfigur s in zuEntfernen)
                     {
                         moeglicheFiguren.Remove(s);
                     }
@@ -242,7 +243,7 @@
                 }
                 priority++;
             }
-            Thread.Sleep(5000);
+            
         }
 
 
