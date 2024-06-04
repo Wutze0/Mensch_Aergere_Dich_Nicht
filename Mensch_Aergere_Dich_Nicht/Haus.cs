@@ -19,7 +19,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
         public Haus(Verfuegbare_Farben farbe)
         {
-            Farbe = farbe.ToString();                                   
+            Farbe = farbe.ToString();
             switch (NumberOfHouses)
             {
                 case 0: StartingPrintPosition = 33; break;
