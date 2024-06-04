@@ -602,8 +602,8 @@ namespace Mensch_Aergere_Dich_Nicht
                 string eingabe = string.Empty;
                 eingabe = Console.ReadLine();
 
-                //try
-                //{
+                try
+                {
                 int modus = Convert.ToInt32(eingabe);
                 switch (modus)
                 {
@@ -613,11 +613,11 @@ namespace Mensch_Aergere_Dich_Nicht
                     default: Console.WriteLine("Falsche Eingabe... erneuter Versuch: "); break;
 
                 }
-                //}
-                /*catch (Exception e)
+                }
+                catch (Exception e)
                 {
-                    Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
-                }*/
+                    Console.WriteLine("Falsche Eingabe... Erneuter Versuch:");
+                }
 
             }
 
@@ -626,7 +626,6 @@ namespace Mensch_Aergere_Dich_Nicht
         {
             Console.Clear();
             int spielerzahl = int.MinValue;
-            bool bot = false;
             int botAnzahl = 0;
             do
             {
@@ -655,6 +654,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 catch (Exception e)
                 {
                     Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
+                    botAnzahl = -1; //Damit erneut abgefragt wird
                 }
             } while (botAnzahl < 0 || botAnzahl > (4 - spielerzahl));
 
@@ -775,7 +775,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
                         {
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
-                            p.PrintSpielfeld();
+                            //p.PrintSpielfeld();
                         }
                         haeuser.ElementAt(abtauschen).ZiehbareFigurenBerechnen();
                         if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
@@ -791,7 +791,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
                         {
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
-                            p.PrintSpielfeld();
+                            //p.PrintSpielfeld();
                         }
                         haeuser.ElementAt(abtauschen).ZiehbareFigurenBerechnen();
                         if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
@@ -806,7 +806,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
                         {
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
-                            p.PrintSpielfeld();
+                            //p.PrintSpielfeld();
                         }
                         haeuser.ElementAt(abtauschen).ZiehbareFigurenBerechnen();
                         if (haeuser.ElementAt(abtauschen).ZiehbareFiguren == 0)
@@ -840,10 +840,6 @@ namespace Mensch_Aergere_Dich_Nicht
                             char.TryParse(Console.ReadLine(), out eingabe);
                         }
                         if (eingabe.Equals('y'))
-                        {
-                            SpielSpeichern(spieler, haeuser, path);
-                        }
-                        else if (eingabe.Equals('y'))
                         {
                             SpielSpeichern(spieler, haeuser, path);
                         }
@@ -1032,6 +1028,8 @@ namespace Mensch_Aergere_Dich_Nicht
                     h.AuffuellHaus = true;
                     haeuser.Add(h);
                 }
+                sr.Close();
+                fs.Close();
                 Spielablauf(haeuser, spieler);
             }
 
@@ -1044,18 +1042,22 @@ namespace Mensch_Aergere_Dich_Nicht
             string d = Directory.GetCurrentDirectory();
             string path = d + @"/PlayerWins";
             Directory.CreateDirectory(path);
-            FileStream fs = new FileStream(path + "/PlayerWins.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            StreamWriter sw = new StreamWriter(fs);
+            FileStream fs = new FileStream(path + "/PlayerWins.txt", FileMode.OpenOrCreate, FileAccess.Read);
             StreamReader sr = new StreamReader(fs);
-
             string inhalt = sr.ReadToEnd();
+            sr.Close();
+            fs.Close();
+
+            FileStream fs2 = new FileStream(path + "/PlayerWins.txt", FileMode.Open, FileAccess.Write);
+            StreamWriter sw = new StreamWriter(fs2);
+
             if (inhalt == string.Empty)
             {
                 sw.WriteLine("Spieler\tSiege");
             }
             else
             {
-                fs.SetLength(0);
+                fs2.SetLength(0);
             }
             string[] inhalt2 = inhalt.Split('\n');
             string newInhalt = string.Empty;
@@ -1087,8 +1089,7 @@ namespace Mensch_Aergere_Dich_Nicht
             sw.Write(newInhalt);
 
             sw.Close();
-            sr.Close();
-            fs.Close();
+            fs2.Close();
         }
         public static bool IsPlayerRegistered(string name)
         {
@@ -1111,10 +1112,15 @@ namespace Mensch_Aergere_Dich_Nicht
             string inhalt = sr.ReadToEnd();
             if (inhalt.Contains(name))
             {
+                sr.Close();
+                fs.Close();
                 return true;
             }
-
-            return true;
+            else
+            {
+                return false;
+            }
+            
         }
         public static int GetWins(string name)
         {
@@ -1170,6 +1176,7 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 File.Delete(f.ElementAt(eingabe).Name);
                 Console.WriteLine($"Spielstand {f.ElementAt(eingabe).Name} erfolgreich gelöscht! Sie haben nun wieder Platz für {5 - f.Length + 1} Save Files!");
+                Thread.Sleep(3000);
             }
             catch(ArgumentOutOfRangeException ex)
             {
