@@ -90,7 +90,10 @@
                         moeglicheFiguren.Remove(s);
                     }
 
-                    if (moeglicheFiguren.Count() > 0)
+                    if (moeglicheFiguren.
+
+
+                        () > 0)
                     {
                         if (moeglicheFiguren.Count() > 1)
                         {
@@ -242,7 +245,7 @@
                 }
                 priority++;
             }
-            
+
         }
 
 

@@ -36,7 +36,7 @@ namespace Mensch_Aergere_Dich_Nicht
                             Bot x = haus.ZugehoerigerSpieler as Bot;
                             x.Spielfigurbewegen(haus, haueser, ziehe);
                             print.PrintSpielfeld();                                                 //Nach jedem Zug wird das Spielfeld nochmal ausgegeben
-                            Thread.Sleep(5000);
+                            Thread.Sleep(3000);
                         }
                         else
                         {
@@ -67,13 +67,13 @@ namespace Mensch_Aergere_Dich_Nicht
                     }
 
 
-                }                                                                                   
+                }
                 if (botYesNo)
                 {
                     Bot x = haus.ZugehoerigerSpieler as Bot;
                     x.Spielfigurbewegen(haus, haueser, ziehe);
                     print.PrintSpielfeld();
-                    Thread.Sleep(5000);
+                    Thread.Sleep(3000);
                 }
                 else
                 {
@@ -114,7 +114,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 else
                 {
                     Console.WriteLine("Leider keine 6 gewuerfelt\n");
-                    Thread.Sleep(3000);
+                    Thread.Sleep(2000);
                 }
 
 
@@ -133,9 +133,9 @@ namespace Mensch_Aergere_Dich_Nicht
                 falscheEingabe = false;
                 try
                 {
-                    if (haus.NichtsBewegbar(gewuerfelt))                                    
+                    if (haus.NichtsBewegbar(gewuerfelt))
                     {
-                        if(haus.FigurenImHaus > 0 && gewuerfelt == 6)                                                           //Sollte die Nichts Bewegbar Methode erkennen, dass keine Figur gezogen werden kann, wird noch gefragt ob vielleicht eine Figur aus dem haus ziehen könnte, wenn ja ist ein Zug möglich und es wird keine Exception geworfen
+                        if (haus.FigurenImHaus > 0 && gewuerfelt == 6)                                                           //Sollte die Nichts Bewegbar Methode erkennen, dass keine Figur gezogen werden kann, wird noch gefragt ob vielleicht eine Figur aus dem haus ziehen könnte, wenn ja ist ein Zug möglich und es wird keine Exception geworfen
                         {
 
                         }
@@ -143,10 +143,10 @@ namespace Mensch_Aergere_Dich_Nicht
                         {
                             throw new KeinZugMoeglichException("Es kann keine Figur gezogen werden");                           //Wenn tatsächlich keine Figur gezogen werden kann, wird eine Exception geworfen
                         }
-                        
+
                     }
-                    
-                    if(rausziehen)                                                                                              //Wenn der Benutzer eine Figur aus dem Haus ziehen könnte, wird er gefragt ob er das auch will
+
+                    if (rausziehen)                                                                                              //Wenn der Benutzer eine Figur aus dem Haus ziehen könnte, wird er gefragt ob er das auch will
                     {
                         Console.WriteLine("Möchten Sie eine Figur aus dem Haus ziehen?[Ja oder Nein]");
                         string? temp = Console.ReadLine();
@@ -164,12 +164,12 @@ namespace Mensch_Aergere_Dich_Nicht
                         }
                     }
 
-                    if(!rausziehen || !jaNein)                                                                                  //Diese if wird betreten, wenn der Spieler entweder nicht rausziehen kann oder nicht will
+                    if (!rausziehen || !jaNein)                                                                                  //Diese if wird betreten, wenn der Spieler entweder nicht rausziehen kann oder nicht will
                     {
                         if (rausziehen && haus.ZiehbareFiguren == haus.FigurenImHaus)                                           //Wenn der Spieler eine Figur rausziehen könnte und keine andere ziehen kann, wird diese Exception geworfen
                         {
                             throw new UserFalscheEingabeException("Es muss eine Figur aus dem Haus gezogen werden");
-                        }                                                                               
+                        }
                         Console.WriteLine($"Ziehe {gewuerfelt} Felder mit einer Figur!");
                         Console.WriteLine("Welche Figur möchten Sie ziehen? Verfügbar: [1, 2, 3, 4]");
                         wiederholen = true;
@@ -201,7 +201,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
                     if (rausziehen == true && jaNein == true)      //Hier kommt man hinein, wenn man eine Figur aus dem Haus ziehen darf und will
                     {
-                        List<Spielfigur> Figuren = print.GetAllSpielfiguren();                                                          
+                        List<Spielfigur> Figuren = print.GetAllSpielfiguren();
                         bool check = true;
                         foreach (Spielfigur s in Figuren)
                         {
@@ -417,7 +417,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 catch (KeinZugMoeglichException e)
                 {
-                    Console.WriteLine(e.Message);                                       
+                    Console.WriteLine(e.Message);
                     Thread.Sleep(5000);
                 }
                 catch (UserFalscheEingabeException e)
@@ -449,15 +449,15 @@ namespace Mensch_Aergere_Dich_Nicht
 
                 try
                 {
-                int modus = Convert.ToInt32(eingabe);
-                switch (modus)
-                {
-                    case 1: EinleitungNeuesSpiel(); break;
-                    case 2: LadeSpiel(); break;
-                    case 3: LoescheSpielstand(); break;
-                    default: Console.WriteLine("Falsche Eingabe... erneuter Versuch: "); break;
+                    int modus = Convert.ToInt32(eingabe);
+                    switch (modus)
+                    {
+                        case 1: EinleitungNeuesSpiel(); break;
+                        case 2: LadeSpiel(); break;
+                        case 3: LoescheSpielstand(); break;
+                        default: Console.WriteLine("Falsche Eingabe... erneuter Versuch: "); break;
 
-                }
+                    }
                 }
                 catch (Exception e)
                 {
@@ -551,7 +551,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 else //Wenn Name ungültig (Regex):
                 {
-                    Console.WriteLine("Dieser Name ist ungültig. Versuchen Sie einen anderen."); 
+                    Console.WriteLine("Dieser Name ist ungültig. Versuchen Sie einen anderen.");
                     i--;
                 }
 
@@ -607,7 +607,7 @@ namespace Mensch_Aergere_Dich_Nicht
             string path = $"SaveFile_{timestamp}.txt"; //der Pfad des Save Files (falls erstellt)
             while (!win) //Solange kein Spieler gewonnen hat.
             {
-                                                                                                                        //Hier kommen die Spieler nacheinander zum Zug
+                //Hier kommen die Spieler nacheinander zum Zug
                 if (abtauschen < spieler.Count)
                 {
                     Console.WriteLine($"Der Spieler {spieler.ElementAt(abtauschen).Name} ist dran!");
@@ -674,17 +674,17 @@ namespace Mensch_Aergere_Dich_Nicht
                             win = true;
                             gewinner = haeuser.ElementAt(abtauschen).ZugehoerigerSpieler;
                         }
-                        
+
                         abtauschen = 0;
                         char eingabe = '\0';
 
                         FileInfo[] list = GetAllSaveFiles();                                                //Nachdem der letzte Spieler gezogen ist, wird gefragt ob das Spiel gespeichert werden soll
                         if (list.Length <= 5) //Man darf nur 5 Save Files insgesamt haben
                         {
-                            Console.WriteLine("Wollen Sie das Spiel speichern? [y/n]");
+                            Console.WriteLine("Wollen Sie das Spiel speichern? [y]");
                             char.TryParse(Console.ReadLine(), out eingabe);
                         }
-                        if (eingabe.Equals('Y'))
+                        if (eingabe.Equals('Y') || eingabe.Equals('y'))
                         {
                             SpielSpeichern(spieler, haeuser, path);
                         }
@@ -795,13 +795,21 @@ namespace Mensch_Aergere_Dich_Nicht
                         i++;
 
                     }
-                    Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
-                    eingabe = Convert.ToInt32(Console.ReadLine()) - 1;
-                    fs = f.ElementAt(eingabe).OpenRead();
+                    if (f.Length > 0)
+                    {
+                        Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
+                        eingabe = Convert.ToInt32(Console.ReadLine()) - 1;
+                        fs = f.ElementAt(eingabe).OpenRead();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Es gibt keine Save Files!");
+                        check = true;
+                    }
                 }
                 catch (ArgumentOutOfRangeException e)
                 {
-                    Console.WriteLine("Es gibt noch keine Save Files! Abbruch.");
+                    Console.WriteLine("Dieser Index ist ungültig!!! Abbruch.");
                     break;
                 }
                 catch (Exception ex)
@@ -962,7 +970,7 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 return false;
             }
-            
+
         }
         public static int GetWins(string name)
         {
@@ -1001,8 +1009,13 @@ namespace Mensch_Aergere_Dich_Nicht
                         i++;
 
                     }
-                    Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
-                    eingabe = Convert.ToInt32(Console.ReadLine()) - 1;
+                    if (f.Length > 0)
+                    {
+                        Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
+                        eingabe = Convert.ToInt32(Console.ReadLine()) - 1;
+                    }
+
+
 
                 }
                 catch (Exception ex)
@@ -1017,15 +1030,13 @@ namespace Mensch_Aergere_Dich_Nicht
             {
                 File.Delete(f.ElementAt(eingabe).Name);
                 Console.WriteLine($"Spielstand {f.ElementAt(eingabe).Name} erfolgreich gelöscht! Sie haben nun wieder Platz für {5 - f.Length + 1} Save Files!");
-                Thread.Sleep(3000);
+                Thread.Sleep(2000);
             }
-            catch(ArgumentOutOfRangeException ex) //Wenn es keine Files gibt.
+            catch (ArgumentOutOfRangeException ex) //Wenn es keine Files gibt / ungültiger Index.
             {
-                Console.WriteLine("Es gibt keine Save Files zum Löschen!\n");
-               
-            }
+                Console.WriteLine("Dieser Index ist nicht gültig!!!\n");
 
-            Console.Clear();
+            }
 
         }
     }

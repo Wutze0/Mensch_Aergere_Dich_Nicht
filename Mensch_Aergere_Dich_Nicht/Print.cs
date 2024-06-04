@@ -271,7 +271,7 @@
             {
                 if (i % 2 == 0)
                 {
-                   
+
                     if (_haueser.ElementAt(2).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t\t\t");
@@ -299,7 +299,7 @@
                     }
 
 
-                    
+
                     if (_haueser.ElementAt(3).FigurenImHaus == 4)
                     {
                         Console.Write("\t\t");
@@ -343,7 +343,7 @@
             {
                 if (i % 2 == 0)
                 {
-                    
+
                     if (_haueser.ElementAt(2).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t\t\t");
@@ -371,7 +371,7 @@
                     }
 
 
-                   
+
                     if (_haueser.ElementAt(3).FigurenImHaus >= 2)
                     {
                         Console.Write("\t\t");
@@ -534,7 +534,7 @@
             }
             return allSpielfiguren;
         }
-        
+
 
 
     }

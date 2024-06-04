@@ -19,7 +19,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
         public Haus(Verfuegbare_Farben farbe)
         {
-            Farbe = farbe.ToString();                                   
+            Farbe = farbe.ToString();
             switch (NumberOfHouses)
             {
                 case 0: StartingPrintPosition = 33; break;
@@ -31,7 +31,7 @@ namespace Mensch_Aergere_Dich_Nicht
             HausID = NumberOfHouses;
             for (int i = 1; i <= 4; i++)
             {
-                ZugehoerigeFiguren.Add(new Spielfigur(i, farbe.ToString(), 0));
+                ZugehoerigeFiguren.Add(new Spielfigur(i, farbe.ToString(), 0)); //Erstellen der 4 Spielfiguren
             }
 
         }
