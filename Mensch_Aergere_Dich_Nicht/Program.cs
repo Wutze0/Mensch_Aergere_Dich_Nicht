@@ -474,7 +474,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
                     }
                 }
-                catch (UserFalscheEingabeException e)
+                catch (Exception)
                 {
                     Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
                 }
@@ -532,7 +532,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     if (IsPlayerRegistered(name)) //Falls der Spieler schon mal gewonnen hat, dann soll er diese Nachricht bekommen:
                     {
-                        Console.WriteLine($"Willkommen zurück {name}! Sie haben zurzeit {GetWins(name)} Siege");
+                        Console.WriteLine($"\nWillkommen zurück {name}! Sie haben zurzeit {GetWins(name)} Siege.");
                     }
                     Console.WriteLine($"\n{name}, Bitte geben Sie Ihre gewünschte Hausfarbe ein\n" +
                     $"Verfügbar sind folgende:\n{getAvailableColors(haeuser)}"); //Listet alle verwendete Farben der Häuser
@@ -578,7 +578,6 @@ namespace Mensch_Aergere_Dich_Nicht
                 Verfuegbare_Farben farbe = (Verfuegbare_Farben)farbeIndex; //somit kann man auf die korrekte Stelle des Enums zugreifen.
                 if (getAvailableColors(haeuser).Contains(farbe.ToString()))//Wenn Farbe verwendbar, dann normaler Ablauf:
                 {
-                    Console.WriteLine(farbe);
                     haeuser.Add(new Haus(farbe));
                     haeuser.ElementAt(i + spielerzahl).ZugehoerigerSpieler = new Bot();
                     spielerliste.Add(haeuser.ElementAt(i + spielerzahl).ZugehoerigerSpieler);
@@ -830,13 +829,13 @@ namespace Mensch_Aergere_Dich_Nicht
                         check = true;
                     }
                 }
-                catch (ArgumentOutOfRangeException e)
+                catch (ArgumentOutOfRangeException)
                 {
                     Console.WriteLine("\nDieser Index ist ungültig!!! Erneuter Versuch.\n");
                     i = 1;
                     check = false;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Console.WriteLine("\nFalsche Eingabe, erneuter Versuch!\n");
                     i = 1;
@@ -978,7 +977,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 fs = new FileStream(path + "/PlayerWins.txt", FileMode.Open, FileAccess.Read);
                 sr = new StreamReader(fs);
             }
-            catch (FileNotFoundException e) //Falls diese Exception geworfen wird, dann existiert das File noch nicht (kein Spieler hat jemals gewonnen)
+            catch (FileNotFoundException) //Falls diese Exception geworfen wird, dann existiert das File noch nicht (kein Spieler hat jemals gewonnen)
             {
                 return false;
             }
@@ -1053,7 +1052,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Console.WriteLine("Falsche Eingabe, erneuter Versuch!");
                     i = 1;
@@ -1068,7 +1067,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 Thread.Sleep(4000);
                 Console.Clear();
             }
-            catch (ArgumentOutOfRangeException ex) //Wenn es keine Files gibt / ungültiger Index.
+            catch (ArgumentOutOfRangeException) //Wenn es keine Files gibt / ungültiger Index.
             {
                 Console.WriteLine("\nDieser Index ist nicht gültig oder es gibt keine Save Files!\n");
 
