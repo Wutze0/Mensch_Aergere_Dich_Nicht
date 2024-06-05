@@ -544,7 +544,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         Verfuegbare_Farben farbe = Verfuegbare_Farben.Rot; //Platzhalter-Farbe
                         if (Enum.TryParse(gewuenschteFarbe, out farbe))//Versuchen, ob die gewünschte Farbe im Enum enthalten ist.
                         {
-                            if (getAvailableColors(haeuser).Contains(gewuenschteFarbe)) //Wenn die gewünschte Farbe verfügbar ist, dann gültig.
+                            if (getAvailableColors(haeuser).Contains(farbe.ToString())) //Wenn die gewünschte Farbe verfügbar ist, dann gültig.
                             {
                                 Console.WriteLine($"Erfolgreich die Farbe {farbe} ausgewählt!");
                                 haeuser.Add(new Haus(farbe));
