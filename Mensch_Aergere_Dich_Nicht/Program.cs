@@ -1,5 +1,4 @@
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
 namespace Mensch_Aergere_Dich_Nicht
@@ -524,113 +523,169 @@ namespace Mensch_Aergere_Dich_Nicht
             List<Haus> haeuser = new List<Haus>();
             Regex regex = new Regex(@"^[A-Za-zÄäÖöÜüß_\ \d]{2,16}$"); //Regex für Spielername. 2-16 Zeichen mit _ und [ ] und Zahlen
 
+
+
+            string d = Directory.GetCurrentDirectory();                                                                                     //Wenn noch nicht vorhanden Erstellung des Spielerfiles und Header hineinschreiben
+            string path = d + @"/Spielerdaten";
+            Directory.CreateDirectory(path);
+            path += "/Spielerdaten.txt";
+            FileStream fsR = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
+
+            if (fsR.Length == 0)
+            {
+                fsR.Close();
+                FileStream fsW = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+                StreamWriter sw = new StreamWriter(fsW);
+                sw.WriteLine("Name\tEmail\tPasswort");
+                sw.Close();
+                fsW.Close();
+            }
+            else
+            {
+                fsR.Close();
+            }
+
+
+
             for (int i = 0; i < spielerzahl; i++)                                                       //Erstellung der menschlichen Spieler
             {
-                Console.WriteLine("Wollen Sie sich [1] Anmelden, [2] Registrieren oder [3] als Gast Spielen?");
-                bool wiederholen = false;
-                int auswahl = 0;
+              
+                bool auswahlwiederholen = false;
                 do
                 {
-                    try
+                    Console.WriteLine("Wollen Sie sich [1] Anmelden, [2] Registrieren oder [3] als Gast Spielen?");
+                    bool wiederholen = false;
+                    int auswahl = 0;
+                    do
                     {
-                        auswahl = Convert.ToInt32(Console.ReadLine());
-                    }
-                    catch (FormatException)
-                    {
-                        Console.WriteLine("Bitte etwas eingeben");
-                        wiederholen = true;
-                    }
-                    catch (OverflowException)
-                    {
-                        Console.WriteLine("Bitte weniger eingeben");
-                        wiederholen = true;
-                    }
-
-                    if(auswahl > 3 || auswahl < 1)
-                    {
-                        wiederholen = true;
-                    }
-                } while (wiederholen);
-
-                string d = Directory.GetCurrentDirectory();                                                                                     //Wenn noch nicht vorhanden Erstellung des Spielerfiles und Header hineinschreiben
-                string path = d + @"/Spielerdaten";
-                Directory.CreateDirectory(path);
-                path += "/Spielerdaten.txt";
-                FileStream fsR = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
-
-                if(fsR.Length == 0)
-                {
-                    fsR.Close();
-                    FileStream fsW = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
-                    StreamWriter sw = new StreamWriter(fsW);
-                    sw.WriteLine("Name\tEmail\tPasswort");
-                    sw.Close();
-                    fsW.Close();
-                }
-                else
-                {
-                    fsR.Close();
-                }
-
-                switch (auswahl)
-                {
-                    case 1: break;
-                    case 2:
-                        string passwort;
-                        string passwort2;
-                        string nutzername;
-                        string email;
-                        Regex r = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
-                        do
+                        try
                         {
-                            Console.WriteLine("Bitte geben Sie ihre Email-Adresse ein:");
-                            email = Console.ReadLine();
-                        }while (!r.IsMatch(email));
-                        
-
-                        Console.WriteLine("Bitte geben Sie ihren Benutzernamen ein:");
-                        nutzername = Console.ReadLine();
-                        
-                        StreamReader sr = new StreamReader(fsR);
-                        string inhalt = sr.ReadToEnd();
-                        string[] lines = inhalt.Split('\n');
-                        bool bereitsverwendeterNutzername = false;
-
-
-                        for(int k = 1; k < lines.Count(); k++)
+                            auswahl = Convert.ToInt32(Console.ReadLine());
+                        }
+                        catch (FormatException)
                         {
-                            if(nutzername == lines[k].Split(";")[0])
-                            {
-                                bereitsverwendeterNutzername = true;
-                                if (bereitsverwendeterNutzername)
-                                {
-                                    throw new UserFalscheEingabeException("Dieser Benutzername wird bereits verwendet");
-                                }
-                            }
+                            Console.WriteLine("Bitte etwas eingeben");
+                            wiederholen = true;
+                        }
+                        catch (OverflowException)
+                        {
+                            Console.WriteLine("Bitte weniger eingeben");
+                            wiederholen = true;
                         }
 
-                        do
+                        if (auswahl > 3 || auswahl < 1)
                         {
-                            Console.WriteLine("Bitte geben Sie ein Passwort ein");
-                            passwort = Passsworteinlesen();
-                            Console.WriteLine();
+                            Console.WriteLine("Bitte eine gültige Eingabe machen");
+                            wiederholen = true;
+                        }
+                    } while (wiederholen);
 
-                            Console.WriteLine("Bitte bestätigen Sie ihr Passwort (nochmal eingeben)");
-                            passwort2 = Passsworteinlesen();
-                            Console.WriteLine();
-                                
-                            if(passwort != passwort2)
+
+                    switch (auswahl)
+                    {
+                        case 1: break;
+                        case 2:
+                            bool abbruch = false;
+                            string passwort = string.Empty;
+                            string passwort2;
+                            string nutzername = string.Empty;
+                            string email = string.Empty;
+                            try
                             {
-                                Console.WriteLine("Das Passwort stimmt nicht ueberein");
-                            }
+                                Console.WriteLine("Zum abbrechen nichts eingeben und enter drücken");
                                 
-                        } while (passwort != passwort2);
+                                Regex r = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+                                do
+                                {
+                                    Console.WriteLine("Bitte geben Sie ihre Email-Adresse ein:");
+                                    email = Console.ReadLine();
+                                } while (!r.IsMatch(email) && email != "");
 
-                        Console.WriteLine("");
+                                if (email == "")
+                                {
+                                    throw new AbbruchException();
+                                }
 
-                        break;
+                                bool falscheEingabe = false;
+                                do
+                                {
+                                    try
+                                    {
 
-                }
+                                        Console.WriteLine("Bitte geben Sie ihren Benutzernamen ein:");
+                                        nutzername = Console.ReadLine();
+
+                                        if (nutzername == null)
+                                        {
+                                            throw new AbbruchException();
+                                        }
+                                        fsR = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
+                                        StreamReader sr = new StreamReader(fsR);
+                                        string inhalt = sr.ReadToEnd();
+                                        string[] lines = inhalt.Split('\n');
+                                        bool bereitsverwendeterNutzername = false;
+
+
+                                        for (int k = 1; k < lines.Count(); k++)
+                                        {
+                                            if (nutzername == lines[k].Split("\t")[0])
+                                            {
+                                                bereitsverwendeterNutzername = true;
+                                                if (bereitsverwendeterNutzername)
+                                                {
+                                                    sr.Close();
+                                                    fsR.Close();
+                                                    throw new UserFalscheEingabeException("Dieser Benutzername wird bereits verwendet");
+                                                }
+                                            }
+                                        }
+                                        sr.Close();
+                                        fsR.Close();
+                                    }
+                                    catch (UserFalscheEingabeException e)
+                                    {
+                                        falscheEingabe = true;
+                                    }
+                                } while (falscheEingabe);
+
+                                do
+                                {
+                                    Console.WriteLine("Bitte geben Sie ein Passwort ein");
+                                    passwort = Passsworteinlesen();
+                                    Console.WriteLine();
+                                    if (passwort == null)
+                                    {
+                                        throw new AbbruchException();
+                                    }
+
+                                    Console.WriteLine("Bitte bestätigen Sie ihr Passwort (nochmal eingeben)");
+                                    passwort2 = Passsworteinlesen();
+                                    Console.WriteLine();
+
+                                    if (passwort != passwort2)
+                                    {
+                                        Console.WriteLine("Das Passwort stimmt nicht ueberein");
+                                    }
+
+                                } while (passwort != passwort2);
+                            }
+                            catch (AbbruchException)
+                            {
+                                auswahlwiederholen = true;
+                                abbruch = true;
+                            }
+                            if (!abbruch)
+                            {
+                                FileStream fsW = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+                                StreamWriter sw = new StreamWriter(fsW);
+                                sw.WriteLine($"{nutzername}\t{email}\t{passwort}");
+                            }
+
+                            break;
+
+                    }
+                } while (auswahlwiederholen);
+                
 
 
 
@@ -1199,27 +1254,27 @@ namespace Mensch_Aergere_Dich_Nicht
         private static string Passsworteinlesen()
         {
             string passwort = string.Empty;
-            ConsoleKeyInfo taste; 
+            ConsoleKeyInfo taste;
 
             do
             {
                 taste = Console.ReadKey(true);
 
-                if(taste.Key == ConsoleKey.Backspace )
+                if (taste.Key == ConsoleKey.Backspace)
                 {
-                    if(passwort.Length > 0)
+                    if (passwort.Length > 0)
                     {
                         passwort = passwort[0..^1];
 
-                        Console.Write("\b \b"); 
+                        Console.Write("\b \b");
                     }
                 }
-                else if(Char.IsPunctuation (taste.KeyChar)||Char.IsLetterOrDigit(taste.KeyChar) ||Char.IsSymbol(taste.KeyChar) )
+                else if (Char.IsPunctuation(taste.KeyChar) || Char.IsLetterOrDigit(taste.KeyChar) || Char.IsSymbol(taste.KeyChar))
                 {
                     Console.Write("*");
                     passwort += taste.KeyChar;
                 }
-            }while(taste.Key != ConsoleKey.Enter);
+            } while (taste.Key != ConsoleKey.Enter);
 
             return passwort;
         }
