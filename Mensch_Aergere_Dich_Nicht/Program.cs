@@ -524,6 +524,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
             for (int i = 0; i < spielerzahl; i++)                                                       //Erstellung der menschlichen Spieler
             {
+                
                 Console.WriteLine($"Bitte den Namen des {i + 1}. Spielers eingeben:");
                 string name = Console.ReadLine();
 
