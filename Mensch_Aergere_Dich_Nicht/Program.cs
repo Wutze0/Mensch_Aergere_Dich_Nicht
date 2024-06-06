@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Tracing;
 using System.Text.RegularExpressions;
 
 namespace Mensch_Aergere_Dich_Nicht
@@ -68,7 +71,7 @@ namespace Mensch_Aergere_Dich_Nicht
                     }
 
 
-                }                                                                                   
+                }
                 if (botYesNo)
                 {
                     Thread.Sleep(3000);
@@ -163,10 +166,10 @@ namespace Mensch_Aergere_Dich_Nicht
                         {
                             jaNein = false;
                         }
-                        else if(temp == "win")
+                        else if (temp == "win")
                         {
                             int temptemp = 41;
-                            foreach(Spielfigur s in haus.ZugehoerigeFiguren)
+                            foreach (Spielfigur s in haus.ZugehoerigeFiguren)
                             {
                                 s.Position = temptemp;
                                 temptemp++;
@@ -474,7 +477,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
                     }
                 }
-                catch (Exception)
+                catch (UserFalscheEingabeException)
                 {
                     Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
                 }
@@ -525,6 +528,153 @@ namespace Mensch_Aergere_Dich_Nicht
 
             for (int i = 0; i < spielerzahl; i++)                                                       //Erstellung der menschlichen Spieler
             {
+                Console.WriteLine("Wollen Sie sich [1] Anmelden, [2] Registrieren oder [3] als Gast Spielen?");
+                bool wiederholen = false;
+                int auswahl = 0;
+                do
+                {
+                    try
+                    {
+                        auswahl = Convert.ToInt32(Console.ReadLine());
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Bitte etwas eingeben");
+                        wiederholen = true;
+                    }
+                    catch (OverflowException)
+                    {
+                        Console.WriteLine("Bitte weniger eingeben");
+                        wiederholen = true;
+                    }
+
+                    if(auswahl > 3 || auswahl < 1)
+                    {
+                        wiederholen = true;
+                    }
+                } while (wiederholen);
+
+                string d = Directory.GetCurrentDirectory();                                                                                     //Wenn noch nicht vorhanden Erstellung des Spielerfiles und Header hineinschreiben
+                string path = d + @"/Spielerdaten";
+                Directory.CreateDirectory(path);
+                path += "/Spielerdaten.txt";
+                FileStream fsR = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
+
+                if(fsR.Length == 0)
+                {
+                    fsR.Close();
+                    FileStream fsW = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+                    StreamWriter sw = new StreamWriter(fsW);
+                    sw.WriteLine("Name\tEmail\tPasswort");
+                    sw.Close();
+                    fsW.Close();
+                }
+                else
+                {
+                    fsR.Close();
+                }
+
+                switch (auswahl)
+                {
+                    case 1:
+                        Console.WriteLine("Bitte geben Sie Ihren Nutzernamen ein:");
+                        string eingabe = Console.ReadLine();
+                        string dir = Directory.GetCurrentDirectory();
+                        string p = dir + @"/Spielerdaten";
+
+                        FileStream fss = new FileStream(p + "/Spielerdaten.txt", FileMode.OpenOrCreate, FileAccess.Read);
+                        StreamReader srr = new StreamReader(fss);
+
+                        string inhlt = srr.ReadToEnd();
+                        string[] inhlt2 = inhlt.Split('\t');
+                        for(int a = 1; a < inhlt2.Length; a++)
+                        {
+                            if (inhlt2[a-1].StartsWith(eingabe) || inhlt2[a - 1].StartsWith(eingabe))
+                            {
+                                Console.WriteLine($"Bitte geben Sie das Passwort für {eingabe} ein!");
+                                string pw = Passsworteinlesen();
+                                if(pw.Equals(inhlt2[a-1].Split('\t')[2]))
+                                {
+                                    Console.WriteLine("Sie haben sich erfolgreich angemeldet!");
+                                }
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        break;
+                    case 2:
+                        string passwort;
+                        string passwort2;
+                        string nutzername;
+                        string email;
+                        Regex r = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+                        do
+                        {
+                            Console.WriteLine("Bitte geben Sie ihre Email-Adresse ein:");
+                            email = Console.ReadLine();
+                        }while (!r.IsMatch(email));
+                        
+
+                        Console.WriteLine("Bitte geben Sie ihren Benutzernamen ein:");
+                        nutzername = Console.ReadLine();
+                        
+                        StreamReader sr = new StreamReader(fsR);
+                        string inhalt = sr.ReadToEnd();
+                        string[] lines = inhalt.Split('\n');
+                        bool bereitsverwendeterNutzername = false;
+
+
+                        for(int k = 1; k < lines.Count(); k++)
+                        {
+                            if(nutzername == lines[k].Split(";")[0])
+                            {
+                                bereitsverwendeterNutzername = true;
+                                if (bereitsverwendeterNutzername)
+                                {
+                                    throw new UserFalscheEingabeException("Dieser Benutzername wird bereits verwendet");
+                                }
+                            }
+                        }
+
+                        do
+                        {
+                            Console.WriteLine("Bitte geben Sie ein Passwort ein");
+                            passwort = Passsworteinlesen();
+                            Console.WriteLine();
+
+                            Console.WriteLine("Bitte bestätigen Sie ihr Passwort (nochmal eingeben)");
+                            passwort2 = Passsworteinlesen();
+                            Console.WriteLine();
+                                
+                            if(passwort != passwort2)
+                            {
+                                Console.WriteLine("Das Passwort stimmt nicht ueberein");
+                            }
+                                
+                        } while (passwort != passwort2);
+
+                        Console.WriteLine("");
+
+                        break;
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 Console.WriteLine($"Bitte den Namen des {i + 1}. Spielers eingeben:");
                 string name = Console.ReadLine();
 
@@ -1074,6 +1224,33 @@ namespace Mensch_Aergere_Dich_Nicht
 
             }
 
+        }
+        private static string Passsworteinlesen()
+        {
+            string passwort = string.Empty;
+            ConsoleKeyInfo taste; 
+
+            do
+            {
+                taste = Console.ReadKey(true);
+
+                if(taste.Key == ConsoleKey.Backspace )
+                {
+                    if(passwort.Length > 0)
+                    {
+                        passwort = passwort[0..^1];
+
+                        Console.Write("\b \b"); 
+                    }
+                }
+                else if(Char.IsPunctuation (taste.KeyChar)||Char.IsLetterOrDigit(taste.KeyChar) ||Char.IsSymbol(taste.KeyChar) )
+                {
+                    Console.Write("*");
+                    passwort += taste.KeyChar;
+                }
+            }while(taste.Key != ConsoleKey.Enter);
+
+            return passwort;
         }
     }
 
