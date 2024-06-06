@@ -517,11 +517,9 @@ namespace Mensch_Aergere_Dich_Nicht
                     Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
                     botAnzahl = -1; //Damit erneut abgefragt wird
                 }
-            } while (botAnzahl < 0 || botAnzahl > (4 - spielerzahl)); //Wenn keine Exception geworfen wird UND die Botanzahl in diesem Bereich liegt, dann gültig.
+            } while ((botAnzahl < 0 || botAnzahl > (4 - spielerzahl)) && spielerzahl + botAnzahl < 2); //Wenn keine Exception geworfen wird UND die Botanzahl in diesem Bereich liegt, dann gültig.
 
-            List<Spieler> spielerliste = new List<Spieler>();
-            List<Haus> haeuser = new List<Haus>();
-            Regex regex = new Regex(@"^[A-Za-zÄäÖöÜüß_\ \d]{2,16}$"); //Regex für Spielername. 2-16 Zeichen mit _ und [ ] und Zahlen
+            
 
 
 
@@ -547,13 +545,19 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
 
+            List<Spieler> spielerliste = new List<Spieler>();
+            List<Haus> haeuser = new List<Haus>();
+            Regex regex = new Regex(@"^[A-Za-zÄäÖöÜüß_\ \d]{2,16}$"); //Regex für Spielername. 2-16 Zeichen mit _ und [ ] und Zahlen
+
+
+
             for (int i = 0; i < spielerzahl; i++)                                                       //Erstellung der menschlichen Spieler
             {
-              
+                string nutzername = string.Empty;
                 bool auswahlwiederholen = false;
                 do
                 {
-                    Console.WriteLine("Wollen Sie sich [1] Anmelden, [2] Registrieren oder [3] als Gast Spielen?");
+                    Console.WriteLine($"Spieler {i}, wollen Sie sich [1] Anmelden, [2] Registrieren, [3] als Gast Spielen oder [0] aufhoeren?" );
                     bool wiederholen = false;
                     int auswahl = 0;
                     do
@@ -573,28 +577,29 @@ namespace Mensch_Aergere_Dich_Nicht
                             wiederholen = true;
                         }
 
-                        if (auswahl > 3 || auswahl < 1)
+                        if (auswahl > 3 || auswahl < 0)
                         {
                             Console.WriteLine("Bitte eine gültige Eingabe machen");
                             wiederholen = true;
                         }
                     } while (wiederholen);
 
+                    
 
                     switch (auswahl)
                     {
+
                         case 1: break;
                         case 2:
                             bool abbruch = false;
                             string passwort = string.Empty;
                             string passwort2;
-                            string nutzername = string.Empty;
                             string email = string.Empty;
+                            Regex r = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+
                             try
                             {
                                 Console.WriteLine("Zum abbrechen nichts eingeben und enter drücken");
-                                
-                                Regex r = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
                                 do
                                 {
                                     Console.WriteLine("Bitte geben Sie ihre Email-Adresse ein:");
@@ -612,19 +617,23 @@ namespace Mensch_Aergere_Dich_Nicht
                                     try
                                     {
 
-                                        Console.WriteLine("Bitte geben Sie ihren Benutzernamen ein:");
+                                        Console.WriteLine("Bitte geben Sie ihren Benutzernamen ein [2 - 16 Zeichen]:");
                                         nutzername = Console.ReadLine();
 
                                         if (nutzername == null)
                                         {
                                             throw new AbbruchException();
                                         }
-                                        fsR = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
+
+                                        if (regex.IsMatch(nutzername) && !nutzername.Contains("bot") && nutzername != "Spieler" && nutzername != "Siege")
+                                        {
+
+                                        }
+                                            fsR = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
                                         StreamReader sr = new StreamReader(fsR);
                                         string inhalt = sr.ReadToEnd();
                                         string[] lines = inhalt.Split('\n');
                                         bool bereitsverwendeterNutzername = false;
-
 
                                         for (int k = 1; k < lines.Count(); k++)
                                         {
@@ -679,29 +688,16 @@ namespace Mensch_Aergere_Dich_Nicht
                                 FileStream fsW = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
                                 StreamWriter sw = new StreamWriter(fsW);
                                 sw.WriteLine($"{nutzername}\t{email}\t{passwort}");
+                                
                             }
-
                             break;
 
                     }
                 } while (auswahlwiederholen);
-                
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-                Console.WriteLine($"Bitte den Namen des {i + 1}. Spielers eingeben:");
+                Menschlicher_Spieler ms = new Menschlicher_Spieler(nutzername);
                 string name = Console.ReadLine();
 
 
@@ -1146,12 +1142,12 @@ namespace Mensch_Aergere_Dich_Nicht
         {
 
             string d = Directory.GetCurrentDirectory();
-            string path = d + @"/PlayerWins";
+            string path = d + @"/Spielerdaten";
             FileStream fs = null;
             StreamReader sr = null;
             try
             {
-                fs = new FileStream(path + "/PlayerWins.txt", FileMode.Open, FileAccess.Read);
+                fs = new FileStream(path + "/Spielerdaten.txt", FileMode.Open, FileAccess.Read);
                 sr = new StreamReader(fs);
             }
             catch (FileNotFoundException) //Falls diese Exception geworfen wird, dann existiert das File noch nicht (kein Spieler hat jemals gewonnen)
