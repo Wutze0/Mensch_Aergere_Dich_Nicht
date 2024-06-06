@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
 namespace Mensch_Aergere_Dich_Nicht
@@ -475,7 +474,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
                     }
                 }
-                catch (Exception)
+                catch (UserFalscheEingabeException)
                 {
                     Console.WriteLine("Falsche Eingabe... erneuter Versuch:");
                 }
@@ -548,7 +547,7 @@ namespace Mensch_Aergere_Dich_Nicht
             List<Spieler> spielerliste = new List<Spieler>();
             List<Haus> haeuser = new List<Haus>();
             Regex regex = new Regex(@"^[A-Za-zÄäÖöÜüß_\ \d]{2,16}$"); //Regex für Spielername. 2-16 Zeichen mit _ und [ ] und Zahlen
-
+            Regex r = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
 
             for (int i = 0; i < spielerzahl; i++)                                                       //Erstellung der menschlichen Spieler
@@ -588,14 +587,39 @@ namespace Mensch_Aergere_Dich_Nicht
 
                     switch (auswahl)
                     {
+                        case 1:
+                            Console.WriteLine("Bitte geben Sie Ihren Nutzernamen ein:");
+                            string eingabe = Console.ReadLine();
+                            string dir = Directory.GetCurrentDirectory();
+                            string p = dir + @"/Spielerdaten";
 
-                        case 1: break;
+                            FileStream fss = new FileStream(p + "/Spielerdaten.txt", FileMode.OpenOrCreate, FileAccess.Read);
+                            StreamReader srr = new StreamReader(fss);
+
+                            string inhlt = srr.ReadToEnd();
+                            string[] inhlt2 = inhlt.Split('\t');
+                            for (int a = 1; a < inhlt2.Length; a++)
+                            {
+                                if (inhlt2[a - 1].StartsWith(eingabe) || inhlt2[a - 1].StartsWith(eingabe))
+                                {
+                                    Console.WriteLine($"Bitte geben Sie das Passwort für {eingabe} ein!");
+                                    string pw = Passsworteinlesen();
+                                    if (pw.Equals(inhlt2[a - 1].Split('\t')[2]))
+                                    {
+                                        Console.WriteLine("Sie haben sich erfolgreich angemeldet!");
+                                    }
+                                }
+                                else
+                                {
+
+                                }
+                            }
+                            break;
                         case 2:
-                            bool abbruch = false;
-                            string passwort = string.Empty;
+                            string passwort;
                             string passwort2;
                             string email = string.Empty;
-                            Regex r = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+                            
 
                             try
                             {
@@ -604,14 +628,7 @@ namespace Mensch_Aergere_Dich_Nicht
                                 {
                                     Console.WriteLine("Bitte geben Sie ihre Email-Adresse ein:");
                                     email = Console.ReadLine();
-                                } while (!r.IsMatch(email) && email != "");
-
-                                if (email == "")
-                                {
-                                    throw new AbbruchException();
-                                }
-
-                                bool falscheEingabe = false;
+                                } while (!r.IsMatch(email));
                                 do
                                 {
                                     try
@@ -651,6 +668,10 @@ namespace Mensch_Aergere_Dich_Nicht
                                         sr.Close();
                                         fsR.Close();
                                     }
+
+
+
+
                                     catch (UserFalscheEingabeException e)
                                     {
                                         falscheEingabe = true;
