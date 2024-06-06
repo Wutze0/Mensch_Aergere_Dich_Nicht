@@ -543,24 +543,26 @@ namespace Mensch_Aergere_Dich_Nicht
             }
 
 
-
+            Console.Clear();
             List<Spieler> spielerliste = new List<Spieler>();
             List<Haus> haeuser = new List<Haus>();
-            Regex regex = new Regex(@"^[A-Za-zÄäÖöÜüß_\ \d]{2,16}$"); //Regex für Spielername. 2-16 Zeichen mit _ und [ ] und Zahlen
-            Regex r = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+            Regex regexName = new Regex(@"^[A-Za-zÄäÖöÜüß_\ \d]{2,16}$"); //Regex für Spielername. 2-16 Zeichen mit _ und [ ] und Zahlen
+            Regex regexEmail = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
 
             for (int i = 0; i < spielerzahl; i++)                                                       //Erstellung der menschlichen Spieler
             {
+                bool justregistered = false;
                 string nutzername = string.Empty;
                 bool auswahlwiederholen = false;
                 do
                 {
-                    Console.WriteLine($"Spieler {i}, wollen Sie sich [1] Anmelden, [2] Registrieren, [3] als Gast Spielen oder [0] aufhoeren?" );
+                    Console.WriteLine($"Spieler {i + 1}, wollen Sie sich [1] Anmelden, [2] Registrieren oder [3] als Gast Spielen?" );
                     bool wiederholen = false;
                     int auswahl = 0;
                     do
                     {
+                        wiederholen = false;
                         try
                         {
                             auswahl = Convert.ToInt32(Console.ReadLine());
@@ -583,41 +585,67 @@ namespace Mensch_Aergere_Dich_Nicht
                         }
                     } while (wiederholen);
 
-                    
 
+                    bool abbruch = false;
                     switch (auswahl)
                     {
                         case 1:
-                            Console.WriteLine("Bitte geben Sie Ihren Nutzernamen ein:");
-                            string eingabe = Console.ReadLine();
-                            string dir = Directory.GetCurrentDirectory();
-                            string p = dir + @"/Spielerdaten";
-
-                            FileStream fss = new FileStream(p + "/Spielerdaten.txt", FileMode.OpenOrCreate, FileAccess.Read);
-                            StreamReader srr = new StreamReader(fss);
-
-                            string inhlt = srr.ReadToEnd();
-                            string[] inhlt2 = inhlt.Split('\t');
-                            for (int a = 1; a < inhlt2.Length; a++)
+                            bool erneut = true;
+                            while (erneut)
                             {
-                                if (inhlt2[a - 1].StartsWith(eingabe) || inhlt2[a - 1].StartsWith(eingabe))
+                                try
                                 {
-                                    Console.WriteLine($"Bitte geben Sie das Passwort für {eingabe} ein!");
+                                    Console.WriteLine("Zum abbrechen nichts eingeben und Enter druecken");
+                                    Console.WriteLine("Bitte geben Sie Ihren Nutzernamen ein:");
+                                    nutzername = Console.ReadLine();
+                                    Console.WriteLine($"Bitte geben Sie das Passwort ein!");
                                     string pw = Passsworteinlesen();
-                                    if (pw.Equals(inhlt2[a - 1].Split('\t')[2]))
-                                    {
-                                        Console.WriteLine("Sie haben sich erfolgreich angemeldet!");
-                                    }
-                                }
-                                else
-                                {
+                                    Console.WriteLine();
 
+                                    if (pw == "" || nutzername == "")
+                                    {
+                                        throw new AbbruchException();
+                                    }
+
+
+                                    FileStream fss = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
+                                    StreamReader srr = new StreamReader(fss);
+
+                                    string inhlt = srr.ReadToEnd();
+                                    string[] zeilen = inhlt.Split('\n');
+                                    string[] zeileninhalt;
+
+                                    for (int a = 1; a < zeilen.Count() && erneut; a++)
+                                    {
+                                        zeileninhalt = zeilen[a].Split('\t');
+                                        if (zeilen[0].Contains(nutzername) && zeilen[0].Contains(pw))
+                                        {
+                                            Console.WriteLine("Willkommen zurück," + nutzername);
+                                            Console.WriteLine($"Sie haben bis jetzt {GetWins(nutzername)} mal gewonnen");
+                                            erneut = false;
+                                        }
+                                    }
+
+                                    if (erneut)
+                                    {
+                                        Console.WriteLine("Benutzername oder Passwort falsch");
+                                    }
+
+                                    fss.Close();
+                                    srr.Close();
                                 }
+                                catch (AbbruchException)
+                                {
+                                    erneut = false;
+                                    auswahlwiederholen = true;
+                                }
+                               
                             }
+                           
                             break;
                         case 2:
-                            string passwort;
-                            string passwort2;
+                            string passwort = string.Empty;
+                            string passwort2 = string.Empty;
                             string email = string.Empty;
                             
 
@@ -628,7 +656,12 @@ namespace Mensch_Aergere_Dich_Nicht
                                 {
                                     Console.WriteLine("Bitte geben Sie ihre Email-Adresse ein:");
                                     email = Console.ReadLine();
-                                } while (!r.IsMatch(email));
+                                } while (!regexEmail.IsMatch(email) && email != "");
+                                if(email == "")
+                                {
+                                    throw new AbbruchException();
+                                }
+                                bool falscheEingabe = false;
                                 do
                                 {
                                     try
@@ -637,14 +670,14 @@ namespace Mensch_Aergere_Dich_Nicht
                                         Console.WriteLine("Bitte geben Sie ihren Benutzernamen ein [2 - 16 Zeichen]:");
                                         nutzername = Console.ReadLine();
 
-                                        if (nutzername == null)
+                                        if (nutzername == "")
                                         {
                                             throw new AbbruchException();
                                         }
 
-                                        if (regex.IsMatch(nutzername) && !nutzername.Contains("bot") && nutzername != "Spieler" && nutzername != "Siege")
+                                        if (!regexName.IsMatch(nutzername) || nutzername.Contains("bot") || nutzername == "Spieler" || nutzername == "Siege")
                                         {
-
+                                            throw new UserFalscheEingabeException("Dieser Nutzername ist ungueltig");
                                         }
                                             fsR = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
                                         StreamReader sr = new StreamReader(fsR);
@@ -668,10 +701,6 @@ namespace Mensch_Aergere_Dich_Nicht
                                         sr.Close();
                                         fsR.Close();
                                     }
-
-
-
-
                                     catch (UserFalscheEingabeException e)
                                     {
                                         falscheEingabe = true;
@@ -709,8 +738,23 @@ namespace Mensch_Aergere_Dich_Nicht
                                 FileStream fsW = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
                                 StreamWriter sw = new StreamWriter(fsW);
                                 sw.WriteLine($"{nutzername}\t{email}\t{passwort}");
+                                sw.Close();
+                                fsW.Close();
+                                justregistered = true;
                                 
                             }
+                            break;
+
+                        case 3:
+                            do
+                            {
+                                Console.WriteLine("Bitte gib deinen Namen ein[2 bis 16 Zeichen]:");
+                                nutzername = Console.ReadLine();
+                                if (!regexName.IsMatch(nutzername))
+                                {
+                                    Console.WriteLine("Name hat ungueltiges Format");
+                                }
+                            }while(!regexName.IsMatch(nutzername));
                             break;
 
                     }
@@ -718,17 +762,12 @@ namespace Mensch_Aergere_Dich_Nicht
 
 
 
-                Menschlicher_Spieler ms = new Menschlicher_Spieler(nutzername);
-                string name = Console.ReadLine();
+                haeuser.ElementAt(i).ZugehoerigerSpieler = new Menschlicher_Spieler(nutzername); //Wenn alles passt, dann wird ein neuer Menschlicher Spieler erstellt.
+                spielerliste.Add(haeuser.ElementAt(i).ZugehoerigerSpieler); //Und er wird zur Spielerliste hinzugefügt.
 
 
-                if (regex.IsMatch(name) && !name.Contains("bot") && name != "Spieler" && name != "Siege") //Man darf den Namen bot nicht haben, da es sonst zu Verwirrung kommen könnte (mehrere gleiche Namen)
-                {
-                    if (IsPlayerRegistered(name)) //Falls der Spieler schon mal gewonnen hat, dann soll er diese Nachricht bekommen:
-                    {
-                        Console.WriteLine($"\nWillkommen zurück {name}! Sie haben zurzeit {GetWins(name)} Siege.");
-                    }
-                    Console.WriteLine($"\n{name}, Bitte geben Sie Ihre gewünschte Hausfarbe ein\n" +
+              
+                    Console.WriteLine($"\n{nutzername}, Bitte geben Sie Ihre gewünschte Hausfarbe ein\n" +
                     $"Verfügbar sind folgende:\n{getAvailableColors(haeuser)}"); //Listet alle verwendete Farben der Häuser
                     bool check = true;
                     while (check == true)
@@ -755,14 +794,10 @@ namespace Mensch_Aergere_Dich_Nicht
                             Console.WriteLine("Diese Farbe existiert nicht, bitte eine andere Farbe wählen:");
                         }
                     }
-                    haeuser.ElementAt(i).ZugehoerigerSpieler = new Menschlicher_Spieler(name); //Wenn alles passt, dann wird ein neuer Menschlicher Spieler erstellt.
-                    spielerliste.Add(haeuser.ElementAt(i).ZugehoerigerSpieler); //Und er wird zur Spielerliste hinzugefügt.
-                }
-                else //Wenn Name ungültig (Regex):
-                {
-                    Console.WriteLine("Dieser Name ist ungültig. Versuchen Sie einen anderen.");
-                    i--;
-                }
+                    
+                    
+                
+               
 
             }
             for (int i = 0; i < botAnzahl; i++)//Erstellung der Bots:
