@@ -2,13 +2,15 @@
 {
     internal class AngemeldeterSpieler : Menschlicher_Spieler
     {
-        private string _email;
-        private string _password;
-        public int _wins { get; set; }
-        public AngemeldeterSpieler(string name, string passwort, string email) : base(name)
+        string _passwort;
+
+        public AngemeldeterSpieler(string name, string passwort) : base(name)
         {
-            _email = email;
-            _password = passwort;
+            _passwort = passwort;
+        }
+
+        public AngemeldeterSpieler(string name) : base(name)
+        {
         }
     }
 }
