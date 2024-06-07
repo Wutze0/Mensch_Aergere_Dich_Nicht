@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Speicherrung
     {
+        public Spiellogik Logik { get; set; }
         public Speicherrung()
         {
         }
@@ -45,7 +47,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 else
                 {
-                    sw.Write(string.Join(";", figurenPrintPositionen));
+                    sw.WriteLine(string.Join(";", figurenPrintPositionen));
                 }
 
 
@@ -59,62 +61,65 @@ namespace Mensch_Aergere_Dich_Nicht
         {
             string c = Directory.GetCurrentDirectory(); //Holt das aktuelle Verzeichnis
             DirectoryInfo d = new DirectoryInfo(c);
-            FileInfo[] files = d.GetFiles("*.txt");//alle files die die Dateiendung .txt haben.
+            FileInfo[] files = d.GetFiles("SaveFile_*.txt");//alle files die die Dateiendung .txt haben.
 
             return files;
         }
-        public void LadeSpiel()
+        public void LadeSpiel(FileStream? fs = null, int cheat = 0)
         {
-            FileStream fs = null;
             FileInfo[] f = GetAllSaveFiles();
             int i = 1;
             bool check = true;
             int eingabe = 0;
 
-            do//Auflistung der Save Files + Auswählen
+            if(fs == null)
             {
-                try
+                do//Auflistung der Save Files + Auswählen
                 {
-                    if (f.Length > 0)
-                        Console.WriteLine("\nWieder zum Hauptmenü zurückkehren[0]");
-                    foreach (FileInfo fi in f)
+                    try
                     {
-
-                        Console.WriteLine($"{fi.Name}[{i}]");
-                        i++;
-
-                    }
-                    if (f.Length > 0)
-                    {
-                        Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
-                        eingabe = Convert.ToInt32(Console.ReadLine()) - 1;
-                        if (eingabe == -1)
+                        if (f.Length > 0)
+                            Console.WriteLine("\nWieder zum Hauptmenü zurückkehren[0]");
+                        foreach (FileInfo fi in f)
                         {
-                            Console.Clear();
-                            return;
-                        }
-                        fs = f.ElementAt(eingabe).OpenRead();
-                    }
-                    else
-                    {
-                        Console.WriteLine("\nEs gibt keine Save Files!\n");
-                        check = true;
-                    }
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    Console.WriteLine("\nDieser Index ist ungültig!!! Erneuter Versuch.\n");
-                    i = 1;
-                    check = false;
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("\nFalsche Eingabe, erneuter Versuch!\n");
-                    i = 1;
-                    check = false;
-                }
 
-            } while (check == false);
+                            Console.WriteLine($"{fi.Name}[{i}]");
+                            i++;
+
+                        }
+                        if (f.Length > 0)
+                        {
+                            Console.WriteLine("Bitte geben Sie den Index des Savefiles ein: ");
+                            eingabe = Convert.ToInt32(Console.ReadLine()) - 1;
+                            if (eingabe == -1)
+                            {
+                                Console.Clear();
+                                return;
+                            }
+                            fs = f.ElementAt(eingabe).OpenRead();
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nEs gibt keine Save Files!\n");
+                            check = true;
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        Console.WriteLine("\nDieser Index ist ungültig!!! Erneuter Versuch.\n");
+                        i = 1;
+                        check = false;
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("\nFalsche Eingabe, erneuter Versuch!\n");
+                        i = 1;
+                        check = false;
+                    }
+
+                } while (check == false);
+            }
+            
             if (fs != null)
             {
                 StreamReader sr = new StreamReader(fs);
@@ -190,7 +195,14 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 sr.Close();
                 fs.Close();
-                Spielablauf(haeuser, spieler); //Mit den gerade Erstellten Spielern und Häusern das Spiel "starten"
+                if(cheat != 0)
+                {
+                    Logik.Spielablauf(haeuser, spieler, cheat);         //Dient dem Herzeigen von verschiedenen Szenarien
+                }
+                else
+                {
+                    Logik.Spielablauf(haeuser, spieler); //Mit den gerade Erstellten Spielern und Häusern das Spiel "starten"
+                }
             }
 
 
@@ -329,32 +341,6 @@ namespace Mensch_Aergere_Dich_Nicht
             }
 
         }
-        public string Passsworteinlesen()
-        {
-            string passwort = string.Empty;
-            ConsoleKeyInfo taste;
-
-            do
-            {
-                taste = Console.ReadKey(true);
-
-                if (taste.Key == ConsoleKey.Backspace)
-                {
-                    if (passwort.Length > 0)
-                    {
-                        passwort = passwort[0..^1];
-
-                        Console.Write("\b \b");
-                    }
-                }
-                else if (Char.IsPunctuation(taste.KeyChar) || Char.IsLetterOrDigit(taste.KeyChar) || Char.IsSymbol(taste.KeyChar))
-                {
-                    Console.Write("*");
-                    passwort += taste.KeyChar;
-                }
-            } while (taste.Key != ConsoleKey.Enter);
-
-            return passwort;
-        }
+        
     }
 }

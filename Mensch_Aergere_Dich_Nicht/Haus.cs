@@ -8,7 +8,7 @@ namespace Mensch_Aergere_Dich_Nicht
         public int ZiehbareFiguren { get; set; } = 4;                   //Wie viele Figuren theoretisch noch bewegt werden können
 
         public int HausID { get; private set; }                         //Die HausID dient hauptsächlich dazu, die Printpositionen innerhalb des Hauses zu bestimmen, geht von 1 - 4
-        public static int NumberOfHouses { get; private set; } = 0;     //Statische Variable um den Häusern IDs zu geben
+        public static int NumberOfHouses { get; set; } = 0;     //Statische Variable um den Häusern IDs zu geben
 
         public bool AuffuellHaus { get; set; } = false;                 //Speichert, ob das Haus einen zugehörigen Spieler hat oder nicht. Dient dazu, dass die Ausgabe funktioniert
         public int StartingPrintPosition { get; set; }                  //Speichert, wo die Figuren beim Rausziehen hingesetzt werden sollen

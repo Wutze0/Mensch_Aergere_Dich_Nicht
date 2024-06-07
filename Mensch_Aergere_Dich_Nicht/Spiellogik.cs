@@ -1,9 +1,17 @@
-﻿namespace Mensch_Aergere_Dich_Nicht
+﻿using System;
+using System.Text.RegularExpressions;
+
+namespace Mensch_Aergere_Dich_Nicht
 {
 
     internal class Spiellogik
     {
-        private static void wuerfeln(Haus haus, Print print, List<Haus> haueser)
+        public Speicherrung Speicherung { get; set; }
+        public Spiellogik()
+        {
+        }
+
+        private void wuerfeln(Haus haus, Print print, List<Haus> haueser)
         {
             int ziehe = 0;
             bool erneutWuerfeln = true;
@@ -119,7 +127,7 @@
 
         }
 
-        private static void auswaehlen(Haus haus, bool rausziehen, int gewuerfelt, Print print, List<Haus> haeuser) //rausziehen bestimmt, ob man eine Figur rausziehen darf oder nicht
+        private void auswaehlen(Haus haus, bool rausziehen, int gewuerfelt, Print print, List<Haus> haeuser) //rausziehen bestimmt, ob man eine Figur rausziehen darf oder nicht
         {
             bool falscheEingabe = true;
             bool wiederholen;
@@ -317,7 +325,7 @@
                                             aktuelleFigur.PrintPosition = aktuelleFigur.Position + ((haus.HausID - 1) * 4);
                                         }
                                         else
-                                        {
+                                            {
                                             throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");
                                         }
                                     }
@@ -437,11 +445,14 @@
 
         }
 
-        private static void Einführung()
+        public void Einführung()
         {
             bool stop = false;
+            
             while (!stop)
             {                                                                                               //Einführung. Hier wird der Benutzer gefragt, was er tun möchte
+                Haus.NumberOfHouses = 0;
+                Bot.ID = 0;
                 Console.WriteLine(
                   "Mensch Ärgere Dich Nicht!" +
                   "\n" +
@@ -460,8 +471,8 @@
                     switch (eingabe)
                     {
                         case "1": EinleitungNeuesSpiel(false); break;
-                        case "2": LadeSpiel(); break;
-                        case "3": LoescheSpielstand(); break;
+                        case "2": Speicherung.LadeSpiel(); break;
+                        case "3": Speicherung.LoescheSpielstand(); break;
                         case "4": if (Console.ReadLine() == "cheat") { EinleitungNeuesSpiel(true); } else { Console.WriteLine("Falsche Eingabe... erneuter Versuch"); }; break;
                         case "": stop = true; break;
                         default: Console.WriteLine("Falsche Eingabe... erneuter Versuch: "); break;
@@ -478,22 +489,29 @@
             Console.WriteLine("Vielen Dank fürs Spielen!!!");
 
         }
-        private static void EinleitungNeuesSpiel(bool cheat)                                                      //Hier wird ein Spiel "erzeugt"
+        private void EinleitungNeuesSpiel(bool cheat)                                                      //Hier wird ein Spiel "erzeugt"
         {
             Console.Clear();
 
             if (cheat)
             {
-                Console.WriteLine("Szenarien:\n[1] Figur schlagen\n[2]Im Haus ziehen\n[3]Ins Huas ziehen\n[4]Sieg\n[5]Bot Funktionalität");
-                int eingabe = Convert.ToInt16(Console.ReadLine());
-                switch (eingabe)
-                {
-                    case 1: break;
-                    case 2: break;
-                    case 3: break;
-                    case 4: break;
-                    case 5: break;
-                }
+                int eingabe;
+                
+                
+                    Console.WriteLine("Szenarien:\n[1]Figur schlagen\n[2]Im Haus ziehen\n[3]Ins Haus ziehen\n[4]Sieg\n[5]Bot Funktionalität");
+                    eingabe = Convert.ToInt16(Console.ReadLine());
+                    switch (eingabe)
+                    {
+                        case 1: eingabe = 3; Speicherung.LadeSpiel(new FileStream("TestFigurSchlagen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 3
+                        case 2: eingabe = 2; Speicherung.LadeSpiel(new FileStream("TestImHausZiehen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 2
+                        case 3: eingabe = 5; Speicherung.LadeSpiel(new FileStream("TestInsHausZiehen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 5
+                        case 4: eingabe = 1; Speicherung.LadeSpiel(new FileStream("TestSieg.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 1
+                        case 5: eingabe = 4; Speicherung.LadeSpiel(new FileStream("TestBotFunktionalitaet.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 4
+                    }
+                
+                
+
+                
             }
             else
             {
@@ -640,7 +658,7 @@
                                             if (zeileninhalt[0].StartsWith(nutzername) && zeileninhalt[2].StartsWith(pw))
                                             {
                                                 Console.WriteLine("Willkommen zurück," + nutzername);
-                                                Console.WriteLine($"Sie haben bis jetzt {GetWins(nutzername)} mal gewonnen");
+                                                Console.WriteLine($"Sie haben bis jetzt {Speicherung.GetWins(nutzername)} mal gewonnen");
                                                 erneut = false;
                                                 passwort = zeileninhalt[2];
                                             }
@@ -879,7 +897,7 @@
 
         }
 
-        private static void Spielablauf(List<Haus> haeuser, List<Spieler> spieler)
+        public void Spielablauf(List<Haus> haeuser, List<Spieler> spieler, int cheat = 100)
         {
             Console.Clear();
             Print p = new Print(haeuser);
@@ -892,7 +910,7 @@
             while (!win) //Solange kein Spieler gewonnen hat.
             {
                 //Hier kommen die Spieler nacheinander zum Zug
-                if (abtauschen < spieler.Count)
+                if (abtauschen < spieler.Count && cheat != 4)
                 {
                     Console.WriteLine($"Der Spieler {spieler.ElementAt(abtauschen).Name} ist dran!");
                 }
@@ -900,8 +918,14 @@
                 switch (abtauschen)
                 {
                     case 0:
-
-                        if (!haeuser.ElementAt(abtauschen).AuffuellHaus)                                                //Hier wird geschaut ob in diesem Haus ein Pseudo Bot wohnt
+                        if (cheat != 100 && cheat != 4)
+                        {
+                  
+                            auswaehlen(haeuser.ElementAt(abtauschen), false, cheat, p, haeuser);
+                            p.PrintSpielfeld();
+                            cheat = 90;
+                        }
+                        else if (!haeuser.ElementAt(abtauschen).AuffuellHaus && cheat != 4)                                                //Hier wird geschaut ob in diesem Haus ein Pseudo Bot wohnt
                         {
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);                                        //Wenn nicht, wird für diesen Spieler oder Bot gewürfelt
 
@@ -916,8 +940,25 @@
                         break;
 
                     case 1:
+                        if (cheat == 4)
+                        {
+                            Console.WriteLine($"Der Spieler {spieler.ElementAt(abtauschen).Name} ist dran!");
+                           
+                            p.PrintSpielfeld();
+                            Thread.Sleep(10000);
+                            Bot b = haeuser.ElementAt(abtauschen).ZugehoerigerSpieler as Bot;
+                            for (int i = 0; i < 3; i++)
+                            {
+                                Console.WriteLine($"{cheat} gewürfelt");
+                                b.Spielfigurbewegen(haeuser.ElementAt(abtauschen), haeuser, cheat);
+                                p.PrintSpielfeld();
+                                Thread.Sleep(5000);
+                            }
 
-                        if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
+                            cheat = 90;
+                            
+                        }
+                        else if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
                         {
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
 
@@ -947,6 +988,10 @@
                         break;
 
                     case 3:
+                        if(cheat == 90)
+                        {
+                            return;
+                        }
                         if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
                         {
                             wuerfeln(haeuser.ElementAt(abtauschen), p, haeuser);
@@ -962,7 +1007,7 @@
                         abtauschen = 0;
                         char eingabe = '\0';
 
-                        FileInfo[] list = GetAllSaveFiles();                                                //Nachdem der letzte Spieler gezogen ist, wird gefragt ob das Spiel gespeichert werden soll
+                        FileInfo[] list = Speicherung.GetAllSaveFiles();                                                //Nachdem der letzte Spieler gezogen ist, wird gefragt ob das Spiel gespeichert werden soll
                         if (list.Length <= 5) //Man darf nur 5 Save Files insgesamt haben
                         {
                             Console.WriteLine("Wollen Sie das Spiel speichern? [y]");
@@ -970,7 +1015,7 @@
                         }
                         if (eingabe.Equals('Y') || eingabe.Equals('y'))
                         {
-                            SpielSpeichern(spieler, haeuser, path);
+                            Speicherung.SpielSpeichern(spieler, haeuser, path);
                         }
                         Console.WriteLine("Aktuelles Spielfeld:");
                         p.PrintSpielfeld(); //Spielfeld ausgeben (nur hier, da in der wuerfeln Methode schon das Feld ausgegeben wird.
@@ -986,11 +1031,11 @@
             Console.WriteLine("-------------------------------------");
             if (gewinner is AngemeldeterSpieler) //Der Sieg sollte nur gespeichert werden, wenn der Sieger angemeldet ist.
             {
-                SaveWins((AngemeldeterSpieler)gewinner);
+                Speicherung.SaveWins((AngemeldeterSpieler)gewinner);
             }
 
         }
-        private static string getAvailableColors(List<Haus> haeuser)                                        //Diese Funktion berechnet, welche Farben noch verfügbar sind
+        private string getAvailableColors(List<Haus> haeuser)                                        //Diese Funktion berechnet, welche Farben noch verfügbar sind
         {
             List<Verfuegbare_Farben> liste = new List<Verfuegbare_Farben>();
             List<Verfuegbare_Farben> verwendeteFarben = new List<Verfuegbare_Farben>();
@@ -1018,6 +1063,33 @@
             }
 
             return alleFarben; //return alle verfügbaren Farben.
+        }
+        private string Passsworteinlesen()
+        {
+            string passwort = string.Empty;
+            ConsoleKeyInfo taste;
+
+            do
+            {
+                taste = Console.ReadKey(true);
+
+                if (taste.Key == ConsoleKey.Backspace)
+                {
+                    if (passwort.Length > 0)
+                    {
+                        passwort = passwort[0..^1];
+
+                        Console.Write("\b \b");
+                    }
+                }
+                else if (Char.IsPunctuation(taste.KeyChar) || Char.IsLetterOrDigit(taste.KeyChar) || Char.IsSymbol(taste.KeyChar))
+                {
+                    Console.Write("*");
+                    passwort += taste.KeyChar;
+                }
+            } while (taste.Key != ConsoleKey.Enter);
+
+            return passwort;
         }
     }
 }

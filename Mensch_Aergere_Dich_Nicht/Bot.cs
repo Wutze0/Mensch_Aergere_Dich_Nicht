@@ -2,9 +2,10 @@
 {
     internal class Bot : Spieler
     {
-        public Bot() : base($"bot{NumberOfPlayers + 1}", true)
+        public static int ID { get; set; } = 0;
+        public Bot() : base($"bot{ID + 1}", true)
         {
-
+            ID++;
         }
 
 
