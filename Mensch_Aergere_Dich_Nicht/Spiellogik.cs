@@ -32,11 +32,11 @@ namespace Mensch_Aergere_Dich_Nicht
                         erneutWuerfeln = true;
                         if (botYesNo)                                                               //Wenn der Spieler ein Bot ist, dann wird eine andere Funktion aufgerufen
                         {
-                            //Thread.Sleep(3000);
+                            Thread.Sleep(3000);
                             Bot x = haus.ZugehoerigerSpieler as Bot;
                             x.Spielfigurbewegen(haus, haueser, ziehe);
                             print.PrintSpielfeld();                                                 //Nach jedem Zug wird das Spielfeld nochmal ausgegeben
-                            //Thread.Sleep(3000);
+                            Thread.Sleep(3000);
                         }
                         else
                         {
@@ -70,11 +70,11 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 if (botYesNo)
                 {
-                    //Thread.Sleep(3000);
+                    Thread.Sleep(3000);
                     Bot x = haus.ZugehoerigerSpieler as Bot;
                     x.Spielfigurbewegen(haus, haueser, ziehe);
                     print.PrintSpielfeld();
-                    //Thread.Sleep(3000);
+                    Thread.Sleep(3000);
                 }
                 else
                 {
@@ -99,12 +99,12 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     if (botYesNo)
                     {
-                        //Thread.Sleep(3000);
+                        Thread.Sleep(3000);
                         Bot x = haus.ZugehoerigerSpieler as Bot;
                         x.Spielfigurbewegen(haus, haueser, ziehe);
                         print.PrintSpielfeld();
                         wuerfeln(haus, print, haueser);
-                        //Thread.Sleep(3000);
+                        Thread.Sleep(3000);
                     }
                     else
                     {
@@ -117,7 +117,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 else
                 {
                     Console.WriteLine("Leider keine 6 gewuerfelt\n");
-                    //Thread.Sleep(3000);
+                    Thread.Sleep(3000);
                     print.PrintSpielfeld();
                 }
 
@@ -1010,7 +1010,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (list.Length <= 5) //Man darf nur 5 Save Files insgesamt haben
                         {
                             Console.WriteLine("Wollen Sie das Spiel speichern? [y]");
-                            //char.TryParse(Console.ReadLine(), out eingabe);
+                            char.TryParse(Console.ReadLine(), out eingabe);
                         }
                         if (eingabe.Equals('Y') || eingabe.Equals('y'))
                         {
