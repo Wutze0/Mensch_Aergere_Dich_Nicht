@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Mensch_Aergere_Dich_Nicht
+﻿namespace Mensch_Aergere_Dich_Nicht
 {
     internal class Speicherrung
     {
@@ -72,7 +65,7 @@ namespace Mensch_Aergere_Dich_Nicht
             bool check = true;
             int eingabe = 0;
 
-            if(fs == null)
+            if (fs == null)
             {
                 do//Auflistung der Save Files + Auswählen
                 {
@@ -119,7 +112,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
                 } while (check == false);
             }
-            
+
             if (fs != null)
             {
                 StreamReader sr = new StreamReader(fs);
@@ -195,7 +188,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 sr.Close();
                 fs.Close();
-                if(cheat != 0)
+                if (cheat != 0)
                 {
                     Logik.Spielablauf(haeuser, spieler, cheat);         //Dient dem Herzeigen von verschiedenen Szenarien
                 }
@@ -286,7 +279,7 @@ namespace Mensch_Aergere_Dich_Nicht
             fs.Close();
             return 0;
         }
-         public void LoescheSpielstand()
+        public void LoescheSpielstand()
         {
             FileInfo[] f = GetAllSaveFiles();
             int i = 1;
@@ -341,6 +334,6 @@ namespace Mensch_Aergere_Dich_Nicht
             }
 
         }
-        
+
     }
 }

@@ -126,22 +126,23 @@ namespace Mensch_Aergere_Dich_Nicht
 
         public bool NichtsBewegbar(int wieWeitZiehen)                                               //Diese Methode gibt true zurück, wenn keine Figur bewegt werden kann. Figuren im Haus zählen auch als unbewegbar
         {
-            int groesstesBefahrbaresfeld;
+            int letzteFigurFeld;
             int maximalZiehbareAnz;
             int i = 0;
             foreach (Spielfigur s in ZugehoerigeFiguren)
             {
                 if (s.Position > 40)
                 {
-                    groesstesBefahrbaresfeld = 44;
+                    letzteFigurFeld = 45;                                                           //Wenn keine Figur im Haus steht die letzte Figur am imaginären Feld 45.
                     foreach (Spielfigur s2 in ZugehoerigeFiguren)
                     {
-                        if (s2.Position > s.Position && s2.Position < groesstesBefahrbaresfeld)
+                        if (s2.Position > s.Position && s2.Position < letzteFigurFeld)
                         {
-                            groesstesBefahrbaresfeld = s2.Position;
+                            letzteFigurFeld = s2.Position;
                         }
                     }
-                    maximalZiehbareAnz = groesstesBefahrbaresfeld - s.Position;
+                    maximalZiehbareAnz = letzteFigurFeld - s.Position;
+                    maximalZiehbareAnz--;
                     if (maximalZiehbareAnz >= wieWeitZiehen)
                     {
 

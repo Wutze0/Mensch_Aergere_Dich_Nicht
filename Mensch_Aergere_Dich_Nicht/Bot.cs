@@ -210,36 +210,84 @@
                         }
                     }
                 }
-                if (priority == 5)                                                                                                                                   //Vorderste Figur ziehen
+                if (priority == 5)                                                                                                                                   //Vorderste Figur ziehen, die vorzugsweise nicht vorm Haus wartet
                 {
+                    List<Spielfigur> figurenAusserHausNichtImZiel = new List<Spielfigur>();
+                    List<Spielfigur> figurenVormZiel = new List<Spielfigur>();
                     int amWeitestenVorne = 0;
                     foreach (Spielfigur s in hausDesBots.ZugehoerigeFiguren)
                     {
                         if (!s.IsInHouse)
                         {
-                            if (s.Position > amWeitestenVorne && s.Position < 41)
+                            if (s.Position < 41)
                             {
-                                amWeitestenVorne = s.Position;
+                                figurenAusserHausNichtImZiel.Add(s);                                                                                //Figuren die sich am Feld befinden berechnen
                             }
                         }
                     }
-                    if (amWeitestenVorne != 0)
+                    if (figurenAusserHausNichtImZiel.Count() > 0)
                     {
-                        foreach (Spielfigur s in hausDesBots.ZugehoerigeFiguren)
+
+                        foreach (Spielfigur s in figurenAusserHausNichtImZiel)
                         {
-                            if (s.Position == amWeitestenVorne)
+                            if (s.Position >= (41 - 6))
                             {
-                                s.Position += wieWeitZiehen;
-                                if (s.Position > 40)
+                                figurenVormZiel.Add(s);                                                                                         //Figuren berechnen, die vorm Ziel warten
+                            }
+                        }
+                        if (figurenVormZiel.Count() == figurenAusserHausNichtImZiel.Count())                                                     //Wenn alle Figuren vorm Ziel warten
+                        {
+                            
+                            foreach (Spielfigur s in figurenVormZiel)
+                            {
+                                if (s.Position > amWeitestenVorne)                                                                               //Figur, die am weitesten vorn ist berechnen
                                 {
-                                    s.Position %= 40;
+                                    amWeitestenVorne = s.Position;
                                 }
-                                s.PrintPosition += wieWeitZiehen;
-                                if (s.PrintPosition > 40)
+                            }
+                            foreach (Spielfigur s in figurenVormZiel)
+                            {
+                                if (amWeitestenVorne == s.Position)
                                 {
-                                    s.PrintPosition %= 40;
+                                    s.Position += wieWeitZiehen;
+                                    if (s.Position > 40)
+                                    {
+                                        s.Position %= 40;
+                                    }
+                                    s.PrintPosition += wieWeitZiehen;
+                                    if (s.PrintPosition > 40)
+                                    {
+                                        s.PrintPosition %= 40;
+                                    }
                                 }
-                                Console.WriteLine($"{Name} zieht mit F{s.ID}");
+                            }
+
+                        }
+                        else
+                        {;
+                            foreach (Spielfigur s in figurenAusserHausNichtImZiel)
+                            {
+                                if (!figurenVormZiel.Contains(s) && s.Position > amWeitestenVorne)
+                                {
+                                    amWeitestenVorne = s.Position;
+                                }
+
+                            }
+                            foreach (Spielfigur s in figurenAusserHausNichtImZiel)
+                            {
+                                if (amWeitestenVorne == s.Position)
+                                {
+                                    s.Position += wieWeitZiehen;
+                                    if (s.Position > 40)
+                                    {
+                                        s.Position %= 40;
+                                    }
+                                    s.PrintPosition += wieWeitZiehen;
+                                    if (s.PrintPosition > 40)
+                                    {
+                                        s.PrintPosition %= 40;
+                                    }
+                                }
                             }
                         }
                     }

@@ -9,7 +9,7 @@ namespace Mensch_Aergere_Dich_Nicht
             start.Speicherung = speicherrung;
             speicherrung.Logik = start;
             start.Einführung();
-            
+
         }
     }
 

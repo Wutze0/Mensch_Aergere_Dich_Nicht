@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Mensch_Aergere_Dich_Nicht
 {
@@ -33,11 +32,11 @@ namespace Mensch_Aergere_Dich_Nicht
                         erneutWuerfeln = true;
                         if (botYesNo)                                                               //Wenn der Spieler ein Bot ist, dann wird eine andere Funktion aufgerufen
                         {
-                            Thread.Sleep(3000);
+                            //Thread.Sleep(3000);
                             Bot x = haus.ZugehoerigerSpieler as Bot;
                             x.Spielfigurbewegen(haus, haueser, ziehe);
                             print.PrintSpielfeld();                                                 //Nach jedem Zug wird das Spielfeld nochmal ausgegeben
-                            Thread.Sleep(3000);
+                            //Thread.Sleep(3000);
                         }
                         else
                         {
@@ -71,11 +70,11 @@ namespace Mensch_Aergere_Dich_Nicht
                 }
                 if (botYesNo)
                 {
-                    Thread.Sleep(3000);
+                    //Thread.Sleep(3000);
                     Bot x = haus.ZugehoerigerSpieler as Bot;
                     x.Spielfigurbewegen(haus, haueser, ziehe);
                     print.PrintSpielfeld();
-                    Thread.Sleep(3000);
+                    //Thread.Sleep(3000);
                 }
                 else
                 {
@@ -100,12 +99,12 @@ namespace Mensch_Aergere_Dich_Nicht
                 {
                     if (botYesNo)
                     {
-                        Thread.Sleep(3000);
+                        //Thread.Sleep(3000);
                         Bot x = haus.ZugehoerigerSpieler as Bot;
                         x.Spielfigurbewegen(haus, haueser, ziehe);
                         print.PrintSpielfeld();
                         wuerfeln(haus, print, haueser);
-                        Thread.Sleep(3000);
+                        //Thread.Sleep(3000);
                     }
                     else
                     {
@@ -118,7 +117,7 @@ namespace Mensch_Aergere_Dich_Nicht
                 else
                 {
                     Console.WriteLine("Leider keine 6 gewuerfelt\n");
-                    Thread.Sleep(3000);
+                    //Thread.Sleep(3000);
                     print.PrintSpielfeld();
                 }
 
@@ -325,7 +324,7 @@ namespace Mensch_Aergere_Dich_Nicht
                                             aktuelleFigur.PrintPosition = aktuelleFigur.Position + ((haus.HausID - 1) * 4);
                                         }
                                         else
-                                            {
+                                        {
                                             throw new UserFalscheEingabeException("Diese Figur kann nicht gezogen werden");
                                         }
                                     }
@@ -448,7 +447,7 @@ namespace Mensch_Aergere_Dich_Nicht
         public void Einführung()
         {
             bool stop = false;
-            
+
             while (!stop)
             {                                                                                               //Einführung. Hier wird der Benutzer gefragt, was er tun möchte
                 Haus.NumberOfHouses = 0;
@@ -496,22 +495,22 @@ namespace Mensch_Aergere_Dich_Nicht
             if (cheat)
             {
                 int eingabe;
-                
-                
-                    Console.WriteLine("Szenarien:\n[1]Figur schlagen\n[2]Im Haus ziehen\n[3]Ins Haus ziehen\n[4]Sieg\n[5]Bot Funktionalität");
-                    eingabe = Convert.ToInt16(Console.ReadLine());
-                    switch (eingabe)
-                    {
-                        case 1: eingabe = 3; Speicherung.LadeSpiel(new FileStream("TestFigurSchlagen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 3
-                        case 2: eingabe = 2; Speicherung.LadeSpiel(new FileStream("TestImHausZiehen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 2
-                        case 3: eingabe = 5; Speicherung.LadeSpiel(new FileStream("TestInsHausZiehen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 5
-                        case 4: eingabe = 1; Speicherung.LadeSpiel(new FileStream("TestSieg.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 1
-                        case 5: eingabe = 4; Speicherung.LadeSpiel(new FileStream("TestBotFunktionalitaet.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 4
-                    }
-                
-                
 
-                
+
+                Console.WriteLine("Szenarien:\n[1]Figur schlagen\n[2]Im Haus ziehen\n[3]Ins Haus ziehen\n[4]Sieg\n[5]Bot Funktionalität");
+                eingabe = Convert.ToInt16(Console.ReadLine());
+                switch (eingabe)
+                {
+                    case 1: eingabe = 3; Speicherung.LadeSpiel(new FileStream("TestFigurSchlagen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 3
+                    case 2: eingabe = 2; Speicherung.LadeSpiel(new FileStream("TestImHausZiehen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 2
+                    case 3: eingabe = 5; Speicherung.LadeSpiel(new FileStream("TestInsHausZiehen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 5
+                    case 4: eingabe = 1; Speicherung.LadeSpiel(new FileStream("TestSieg.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 1
+                    case 5: eingabe = 4; Speicherung.LadeSpiel(new FileStream("TestBotFunktionalitaet.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 4
+                }
+
+
+
+
             }
             else
             {
@@ -920,7 +919,7 @@ namespace Mensch_Aergere_Dich_Nicht
                     case 0:
                         if (cheat != 100 && cheat != 4)
                         {
-                  
+
                             auswaehlen(haeuser.ElementAt(abtauschen), false, cheat, p, haeuser);
                             p.PrintSpielfeld();
                             cheat = 90;
@@ -943,7 +942,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (cheat == 4)
                         {
                             Console.WriteLine($"Der Spieler {spieler.ElementAt(abtauschen).Name} ist dran!");
-                           
+
                             p.PrintSpielfeld();
                             Thread.Sleep(10000);
                             Bot b = haeuser.ElementAt(abtauschen).ZugehoerigerSpieler as Bot;
@@ -956,7 +955,7 @@ namespace Mensch_Aergere_Dich_Nicht
                             }
 
                             cheat = 90;
-                            
+
                         }
                         else if (!haeuser.ElementAt(abtauschen).AuffuellHaus)
                         {
@@ -988,7 +987,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         break;
 
                     case 3:
-                        if(cheat == 90)
+                        if (cheat == 90)
                         {
                             return;
                         }
@@ -1011,7 +1010,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         if (list.Length <= 5) //Man darf nur 5 Save Files insgesamt haben
                         {
                             Console.WriteLine("Wollen Sie das Spiel speichern? [y]");
-                            char.TryParse(Console.ReadLine(), out eingabe);
+                            //char.TryParse(Console.ReadLine(), out eingabe);
                         }
                         if (eingabe.Equals('Y') || eingabe.Equals('y'))
                         {
