@@ -2,7 +2,7 @@
 {
     internal class AngemeldeterSpieler : Menschlicher_Spieler
     {
-        string _passwort;
+        private string _passwort;
 
         public AngemeldeterSpieler(string name, string passwort) : base(name)
         {
