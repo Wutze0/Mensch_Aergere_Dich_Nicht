@@ -5,7 +5,7 @@ namespace Mensch_Aergere_Dich_Nicht
 
     internal class Spiellogik
     {
-        public Speicherrung Speicherung { get; set; }
+        public Speicherung Speicherungsmodul { get; set; }
         public Spiellogik()
         {
         }
@@ -470,8 +470,8 @@ namespace Mensch_Aergere_Dich_Nicht
                     switch (eingabe)
                     {
                         case "1": EinleitungNeuesSpiel(false); break;
-                        case "2": Speicherung.LadeSpiel(); break;
-                        case "3": Speicherung.LoescheSpielstand(); break;
+                        case "2": Speicherungsmodul.LadeSpiel(); break;
+                        case "3": Speicherungsmodul.LoescheSpielstand(); break;
                         case "4": if (Console.ReadLine() == "cheat") { EinleitungNeuesSpiel(true); } else { Console.WriteLine("Falsche Eingabe... erneuter Versuch"); }; break;
                         case "": stop = true; break;
                         default: Console.WriteLine("Falsche Eingabe... erneuter Versuch: "); break;
@@ -501,11 +501,11 @@ namespace Mensch_Aergere_Dich_Nicht
                 eingabe = Convert.ToInt16(Console.ReadLine());
                 switch (eingabe)
                 {
-                    case 1: eingabe = 3; Speicherung.LadeSpiel(new FileStream("TestFigurSchlagen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 3
-                    case 2: eingabe = 2; Speicherung.LadeSpiel(new FileStream("TestImHausZiehen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 2
-                    case 3: eingabe = 5; Speicherung.LadeSpiel(new FileStream("TestInsHausZiehen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 5
-                    case 4: eingabe = 1; Speicherung.LadeSpiel(new FileStream("TestSieg.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 1
-                    case 5: eingabe = 4; Speicherung.LadeSpiel(new FileStream("TestBotFunktionalitaet.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 4
+                    case 1: eingabe = 3; Speicherungsmodul.LadeSpiel(new FileStream("TestFigurSchlagen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 3
+                    case 2: eingabe = 2; Speicherungsmodul.LadeSpiel(new FileStream("TestImHausZiehen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 2
+                    case 3: eingabe = 5; Speicherungsmodul.LadeSpiel(new FileStream("TestInsHausZiehen.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 5
+                    case 4: eingabe = 1; Speicherungsmodul.LadeSpiel(new FileStream("TestSieg.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 1
+                    case 5: eingabe = 4; Speicherungsmodul.LadeSpiel(new FileStream("TestBotFunktionalitaet.txt", FileMode.Open, FileAccess.Read), eingabe); break;          //Wurf: 4
                 }
 
 
@@ -657,7 +657,7 @@ namespace Mensch_Aergere_Dich_Nicht
                                             if (zeileninhalt[0].StartsWith(nutzername) && zeileninhalt[2].StartsWith(pw))
                                             {
                                                 Console.WriteLine("Willkommen zurück," + nutzername);
-                                                Console.WriteLine($"Sie haben bis jetzt {Speicherung.GetWins(nutzername)} mal gewonnen");
+                                                Console.WriteLine($"Sie haben bis jetzt {Speicherungsmodul.GetWins(nutzername)} mal gewonnen");
                                                 erneut = false;
                                                 passwort = zeileninhalt[2];
                                             }
@@ -1006,7 +1006,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         abtauschen = 0;
                         char eingabe = '\0';
 
-                        FileInfo[] list = Speicherung.GetAllSaveFiles();                                                //Nachdem der letzte Spieler gezogen ist, wird gefragt ob das Spiel gespeichert werden soll
+                        FileInfo[] list = Speicherungsmodul.GetAllSaveFiles();                                                //Nachdem der letzte Spieler gezogen ist, wird gefragt ob das Spiel gespeichert werden soll
                         if (list.Length <= 5) //Man darf nur 5 Save Files insgesamt haben
                         {
                             Console.WriteLine("Wollen Sie das Spiel speichern? [y]");
@@ -1014,7 +1014,7 @@ namespace Mensch_Aergere_Dich_Nicht
                         }
                         if (eingabe.Equals('Y') || eingabe.Equals('y'))
                         {
-                            Speicherung.SpielSpeichern(spieler, haeuser, path);
+                            Speicherungsmodul.SpielSpeichern(spieler, haeuser, path);
                         }
                         Console.WriteLine("Aktuelles Spielfeld:");
                         p.PrintSpielfeld(); //Spielfeld ausgeben (nur hier, da in der wuerfeln Methode schon das Feld ausgegeben wird.
@@ -1030,7 +1030,7 @@ namespace Mensch_Aergere_Dich_Nicht
             Console.WriteLine("-------------------------------------");
             if (gewinner is AngemeldeterSpieler) //Der Sieg sollte nur gespeichert werden, wenn der Sieger angemeldet ist.
             {
-                Speicherung.SaveWins((AngemeldeterSpieler)gewinner);
+                Speicherungsmodul.SaveWins((AngemeldeterSpieler)gewinner);
             }
 
         }

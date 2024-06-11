@@ -1,9 +1,9 @@
 ﻿namespace Mensch_Aergere_Dich_Nicht
 {
-    internal class Speicherrung
+    internal class Speicherung
     {
         public Spiellogik Logik { get; set; }
-        public Speicherrung()
+        public Speicherung()
         {
         }
 

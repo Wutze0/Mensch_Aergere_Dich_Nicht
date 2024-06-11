@@ -5,8 +5,8 @@ namespace Mensch_Aergere_Dich_Nicht
         static void Main(string[] args)
         {
             Spiellogik start = new Spiellogik();
-            Speicherrung speicherrung = new Speicherrung();
-            start.Speicherung = speicherrung;
+            Speicherung speicherrung = new Speicherung();
+            start.Speicherungsmodul = speicherrung;
             speicherrung.Logik = start;
             start.Einführung();
 
