@@ -259,6 +259,7 @@
                                     {
                                         s.PrintPosition %= 40;
                                     }
+                                    Console.WriteLine($"{Name} fährt mit F{s.ID}");
                                 }
                             }
 
@@ -287,6 +288,7 @@
                                     {
                                         s.PrintPosition %= 40;
                                     }
+                                    Console.WriteLine($"{Name} fährt mit F{s.ID}");
                                 }
                             }
                         }

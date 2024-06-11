@@ -121,7 +121,6 @@ namespace Mensch_Aergere_Dich_Nicht
 
             }
             ZiehbareFiguren = x;
-
         }
 
         public bool NichtsBewegbar(int wieWeitZiehen)                                               //Diese Methode gibt true zurück, wenn keine Figur bewegt werden kann. Figuren im Haus zählen auch als unbewegbar
